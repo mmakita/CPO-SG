@@ -1,0 +1,214 @@
+dbo.arcon,CODIGO 
+dbo.arcon,TIPO ,descricao ,area ,UN ,FORMULA 
+dbo.ATARQ,pai ,codigo ,INICIO ,TERMINO ,TIPO 
+dbo.AUTALIZA,INSU1_COD ,insu1_nom ,INSU1_IDE ,ITEM1_NOM ,ITEM1_COD_VELHO 
+dbo.AUTOPOWER,CODIGO ,OBRA ,CODIGOPINI ,UN ,QTD ,DESCRICAOITEM ,DESCRICAOOBRA ,CLASSIFICACAO 
+dbo.CAD,idcad ,obra2_cod ,NIVEL ,TIPO ,CLASSE ,LOCAL ,RECINTO ,descricao ,area ,UN ,FORMULA ,nome 
+dbo.chave,chave ,ordem ,base1cod 
+dbo.COMPVS21,CODIGO ,SEQUENCIA ,ELEMENTAR ,QUANTIDADE ,PERCENTUAL 
+dbo.ConstruCompras,CATEGORIA ,GRUPO ,TIPO ,IDconstru 
+dbo.DATA,DATA ,HORA ,versao ,taxa ,id 
+dbo.DIPREVS1,CODIGO ,DESCR1 ,DESCR2 ,UNID 
+dbo.ELEM0903,ELEMENTAR ,PRECO 
+dbo.ELEMVS21,ELEMENTAR ,DESCRICAO ,UNID 
+dbo.EMOP0903,CODIGO ,PRECO 
+dbo.INSUMOS,INSCODIGO ,INSESP ,INSUN ,INSPREC ,INSCONDPG ,INSTIPO ,INSDULT ,INSFLAG 
+dbo.modcron,ordem ,codigo ,descricao ,inicio ,termino ,nome ,estr1_cod ,nive1_cod ,tipo ,plor1_cod ,plor1_cod0 
+dbo.modulos,modulo 
+dbo.ORCAD,obra2_cod ,idcad ,itba1_cod 
+dbo.perfil,PERF0_tip ,perfil 
+dbo.PINI4_TB1_ITEM,ITEM1_COD ,ITEM1_COD_VELHO 
+dbo.PINI4_TV0_TEMP_RASC,ITEM1_COD ,CLAS1_COD ,ITEM1_NOM ,ITEM1_COD_PINI ,UNIM1_COD ,ITEM1_COD_VELHO 
+dbo.project,ordem ,cron1_cod ,nivel ,estru ,codigo ,descricao ,classe ,un ,ini ,fim ,Campo11 
+dbo.RERVICOS,SERVCODIGO ,SERVCONTR ,SERVINS ,SERVCOEF ,SERVFLAG ,INSFLAG 
+dbo.REUTVS21,ELEMENTAR ,COMPOSICAO ,DESCRICAO ,UNIDADE ,codigo 
+dbo.SERVICOS,SERVCODIGO ,SERVESP ,SERVUN ,SERVBDI ,SERVTX ,SERVFLAG ,SERVFLAGP ,SERVQTD ,SERVARQCAD ,SERVTMO ,SERVTMAT ,SERVTEMPR ,SERVTVERBA ,SERVTEQUIP ,SERVT19999 ,SERVT99997 ,SERVT99998 ,SERVTMAN ,SERVTDEP ,SERVTJUR ,SERVID 
+dbo.SUBOBRA,SUBOBRA_COD ,subobra_tipo ,SUBOBRA_NOM ,subobra_cod0 
+dbo.TB1_CITE,CITE1_QTD ,INSU1_COD ,INSU1_COD0 ,cite1_cod 
+dbo.TB1_CLAS,CLAS1_ABR ,CLAS1_COD ,CLAS1_COD_PINI ,CLAS1_DES ,CLAS1_IND_COTAVEL ,CLAS1_NOM ,CLAS1_PRO 
+dbo.TB1_DIVI,DIVI1_COD ,DIVI1_COD_PINI ,DIVI1_DES ,DIVI1_NOM 
+dbo.TB1_ITMP,INSU1_COD ,ITEM1_COD ,ITMP1_COD ,ITMP1_COD_PINI ,ITMP1_COD_PINI_COMP ,MASB1_COD 
+dbo.TB1_MASB,CLAS1_COD ,MASB1_COD_PINI ,MASB1_COD_PINI_COMP ,MASB1_DES ,MASB1_NOM ,SUBS1_COD ,MASB1_COD_SITE ,MASB1_COD ,masb1_aux1 ,masb1_aux2 
+dbo.Tb1_obim,obim1_cod ,figura ,itor1_cod ,itba1_cod ,tipo ,base ,ordem 
+dbo.TB1_OBIT,ITEM1_COD ,OBIT1_TXT ,OBIT1_CAD_ENC ,OBIT1_TEC_ED ,OBIT1_CRITMED ,OBIT1_NORM ,OBIT1_PROCEX ,insu1_cod ,obit1_cod ,orca1_cod ,itba1_cod ,obra2_cod 
+dbo.TB1_SUBS,DIVI1_COD ,SECA1_COD ,SUBS1_COD_PINI ,SUBS1_COD_PINI_COMP ,SUBS1_COD0 ,SUBS1_DES ,SUBS1_INC ,SUBS1_NOM ,SUBS1_COD_SITE ,SUBS1_COD 
+dbo.TB1_UNIM,UNIM1_ABR ,UNIM1_COD ,UNIM1_FAT ,UNIM1_NOM ,UNIM1_UNI_REL ,unim1_pro ,EMBALA 
+dbo.TB2_CIDA,CIDA2_COD ,CIDA2_COD_FIS ,CIDA2_COD_IBGE ,CIDA2_DDD ,CIDA2_NOM ,ESTA2_COD ,PAIS2_COD 
+dbo.TB2_ESTA,ESTA2_ABR ,ESTA2_COD ,ESTA2_ICMS ,ESTA2_ICMS_COM ,ESTA2_ICMS_VEN ,ESTA2_NOM ,ESTA2_REG ,PAIS2_COD 
+dbo.TB2_OBRA,CEMP1_COD ,CIDA2_COD ,ENDE2_COD ,OBRA2_ARE ,OBRA2_ARE_TOT ,OBRA2_ATU_PED ,OBRA2_ATU_REQ ,OBRA2_BAI ,OBRA2_BDI_INS ,OBRA2_BDI_SER ,OBRA2_BDI_TAX ,OBRA2_BDI_TER ,OBRA2_CEI ,OBRA2_CEP ,OBRA2_COD ,OBRA2_COD_OBRA ,OBRA2_DAT_ARQ ,OBRA2_DAT_CON ,OBRA2_DAT_ENT ,OBRA2_DAT_FIN ,OBRA2_DAT_INI ,OBRA2_EMP ,OBRA2_END ,OBRA2_END_NUM ,OBRA2_EST ,OBRA2_FLG_EST ,OBRA2_FLG_RAT ,OBRA2_GER_RAT ,OBRA2_LEIS ,OBRA2_NIV ,OBRA2_NOEM ,OBRA2_NOM ,OBRA2_NOM_RES ,OBRA2_OBS ,OBRA2_ORC ,OBRA2_ORC_ITE ,OBRA2_PRA ,OBRA2_PRO ,OBRA2_RAT ,OBRA2_RAT_PRO ,OBRA2_TAX_RAT ,OBRA2_TELE ,OBRA2_VAL ,OBRA2_VAL_COMTAXA ,PESS2_COD ,REGI8_COD ,SIND1_COD ,TELE2_COD ,TPOB1_COD ,OBRA2_PERI ,subobra_cod ,estr1_cod ,obra2_base ,obra2_supri 
+dbo.TB2_PESF,CARG2_COD ,CARG2_CON_COD ,CIDA2_COD ,CIDA2_COD_CON_NAT ,ESCI2_COD ,ESCO2_COD ,ESCO2_CON_COD ,FORM2_COD ,FORM2_CON_COD ,OCUP2_COD ,PESF2_COD ,PESF2_CON_CPF ,PESF2_CON_DAT_EXP ,PESF2_CON_DAT_NAS ,PESF2_CON_NAC ,PESF2_CON_NOM ,PESF2_CON_ORG ,PESF2_CON_RG ,PESF2_CPF ,PESF2_DAT_CAS ,PESF2_DAT_EXP ,PESF2_DAT_NAS ,PESF2_NAC ,PESF2_NAT ,PESF2_OBS_BAN ,PESF2_OBS_COM ,PESF2_OBS_PES ,PESF2_ORG ,PESF2_RG ,PESS2_COD ,RECA1_COD 
+dbo.TB2_PESJ,PESJ2_CNPJ ,PESJ2_COD ,PESJ2_DAT_FUN ,PESJ2_IE ,PESJ2_IM ,PESS2_COD 
+dbo.TB2_PESS,CIDA2_COD ,CIDA2_COD_COB ,CIDA2_COD_TRA ,PESS2_BAI ,PESS2_CEP ,PESS2_COD ,PESS2_EMAIL ,PESS2_END ,PESS2_END_COB ,PESS2_END_COB_BAI ,PESS2_END_COB_CEP ,PESS2_END_COB_CID ,PESS2_END_COB_NUM ,PESS2_END_NUM ,PESS2_END_TRA ,PESS2_END_TRA_BAI ,PESS2_END_TRA_CEP ,PESS2_END_TRA_CID ,PESS2_END_TRA_NUM ,PESS2_FAX ,PESS2_NOM ,PESS2_NOM_CONT ,PESS2_PES_FIS ,PESS2_RAZ ,PESS2_TEL_CEL ,PESS2_TEL_COM ,PESS2_TEL_RES ,PESS2_TIP ,pess2_ide ,forn1_cod ,tipo 
+dbo.TB8_PEPR,PEPR8_DAT_FIN ,PEPR8_DAT_INI ,PEPR8_LIB ,PEPR8_NOM ,PEPR8_OBS ,pepr8_cod 
+dbo.TB8_REGI,PESS2_COD ,REGI8_DES ,REGI8_NOM ,REGI8_ORD ,regi8_pro ,regi8_cod 
+dbo.ti1_crono,CUST1_IDE ,CUST1_NOM ,INSU1_IDE ,INSU1_NOM ,UNIM1_ABR ,DIVI1_NOM ,SUBS1_NOM ,NIVE1_COD ,CLAS1_NOM ,QUANTIDADE ,VALOR ,ORCA1_COD ,OBRA2_COD ,data ,tipo ,ordem 
+dbo.ti1_obra,obra2_cod ,orca1_cod_volare ,obra2_ide ,OBRA2_NOM 
+dbo.ti1_orca,CUST1_IDE ,CUST1_NOM ,INSU1_IDE ,INSU1_NOM ,UNIM1_ABR ,DIVI1_NOM ,SUBS1_NOM ,NIVE1_COD ,CLAS1_NOM ,QUANTIDADE ,VALOR ,ORCA1_COD ,OBRA2_COD ,ordem 
+dbo.Ti2_orca,tipo ,itemizacao ,coditem ,pai ,descricao ,unidade ,nivel ,classificacao ,itemiza ,quantidade ,preco ,coeficiente ,ORCA1COD ,ordem ,clas1_cod ,OBRA2COD 
+dbo.TS1_INSU,CLAS1_COD ,ESPE1_COD ,INSU1_COD ,INSU1_DES ,INSU1_EST ,INSU1_IDE ,INSU1_MAX ,INSU1_MED ,INSU1_OBS ,INSU1_QTD_EST ,INSU1_QTD_MAX ,INSU1_QTD_MIN ,INSU1_QTD_REP ,INSU1_REP ,INSU1_VAL ,INSU1_VAL_MAX ,INSU1_VAL_MED ,INSU1_VAL_MIN ,INSU1_VAL_ULT ,ITEM1_COD ,TPIC1_COD ,UNIM1_COD ,INSU1_PRC ,INSU1_PRC_COMTAXA ,INSU1_COD_PINI ,INSU1_COD_USU ,insu1_nom ,INSU1_AUX2 ,insu1_aux ,insu1_alt ,divi1_cod ,subs1_cod ,insu1_data_val ,masb1_cod ,insu1_tcpo 
+dbo.TS1_USUA,USUA1_COD ,USUA1_IDE ,USUA1_NOM ,USUA1_SEN ,USUA1_TIP ,ORCA1_COD ,USUA1_HORA ,usua1_maquina ,usua1_email ,usua1_fone ,usua1_Orc ,usua1_Qtd ,Usua1_Prc ,usua1_limite1 ,usua1_limite2 ,PERF0_tip 
+dbo.TS8_PMPE,INSU1_COD ,ITEM1_COD ,PEPR8_COD ,PMPE8_PRC ,REGI8_COD ,PMPE8_COD ,pmpe8_pro ,pmpe8_ide ,pmpe8_data 
+dbo.TV0_ACAO,ACAO0_COD ,ACAO0_NOM ,ACAO0_TIP ,ACAO0_niv ,ACAO0_MOD ,ACAO0_ORD 
+dbo.TV0_OBRA,OBRA0_AIMP ,OBRA0_COD ,OBRA0_COD0 ,OBRA0_EMP ,OBRA0_QTD ,OBRA0_TOT ,OBRA2_COD ,PESS2_COD 
+dbo.TV0_PERF,PERF0_COD ,ACAO0_COD ,PERF0_TIP 
+dbo.TV0_REST,REST0_COD ,USUA1_COD ,ORCA1_COD ,ACAO0_COD ,USUA1_COD0 ,REST0_DAT 
+dbo.TV1_APRO,apro1_cod ,apro1_qtd ,itor1_cod ,plmd1_cod ,orca1_cod ,denf1_cod 
+dbo.TV1_BASE,base1_nom ,regi8_cod ,pepr8_cod ,base1_tip ,base1_pro ,estr1_cod ,base1_serie ,base1_cod ,base1_lib ,base1_fecha 
+dbo.TV1_BATX,BATX1_cod ,BASE1_COD ,ITBA1_COD ,clas1_COD ,TAXA1_COD ,TAXA1_ABR ,VALOR 
+dbo.TV1_CABC,CABC1_cod ,ITOR1_COD ,CABC1_INI ,orca1_cod ,CABC1_QTD 
+dbo.TV1_CANF,CANF1_COD ,CANF1_DATA ,CANF1_NUNF ,CANF1_IDNF ,CANF1_VAL ,CANF1_FORN ,CANF1_CNPJ ,CANF1_CPF ,PESS2_COD ,ORCA1_COD ,canf1_obs 
+dbo.TV1_CITE,CITE1_cod ,ITBA1_COD ,ITBA1_COD0 ,base1_COD ,CITE1_COE ,cite1_coe1 ,cite1_coe2 ,cite1_coe3 ,cite1_coe4 
+dbo.TV1_CLTX,CLTX1_cod ,ORCA1_COD ,BASE1_COD ,CLAS1_COD ,TAXA1_COD ,TAXA1_ABR ,VALOR ,obra2_cod 
+dbo.TV1_CMDD,CMDD1_COD ,CMDD1_COE ,ITMD1_COD ,ITMD1_COD0 ,ORCA1_COD ,CMDD1_TIP 
+dbo.TV1_CMDI,CMDI1_COD ,CMDI1_COE ,ITMD1_COD ,ITMD1_COD0 ,ORCA1_COD ,COMP1_COD ,cmdi1_aux 
+dbo.TV1_CODE,CODE1_COD ,CODE1_COE ,ITOR1_COD ,ITOR1_COD0 ,ORCA1_COD ,code1_tip ,code1_coe1 ,code1_coe2 ,code1_coe3 ,code1_coe4 ,obra2_cod 
+dbo.TV1_CODI,CODI1_cod ,ITOR1_COD ,CODI1_INI ,orca1_cod ,CODI1_ORD ,CODI1_QTD 
+dbo.TV1_COME,COME1_COD ,COME1_COE ,ITME1_COD ,ITME1_COD0 ,ORCA1_COD ,COMP1_COD 
+dbo.TV1_COMP,COMP1_COD ,ITOR1_COD ,ITOR1_COD0 ,ORCA1_COD ,comp1_aux ,COMP1_COE ,comp1_coe1 ,comp1_coe2 ,comp1_coe3 ,comp1_coe4 ,obra2_cod 
+dbo.TV1_CONTA,CONTA1_COD ,CONTA1_IDE ,CONTA1_DES ,CONTA1_SALDO ,CONTA1_EXEC ,CONTA1_PREV ,orca1_cod 
+dbo.TV1_CONV,conv1_cod ,unim1_codo ,unim1_codd ,formula ,itera 
+dbo.TV1_CROD,CROD1_COD ,CRON1_COD ,CROD1_INI ,CROD1_FIN ,CROD1_ORD ,CROD1_QTD ,plor1_cod ,orca1_cod 
+dbo.TV1_CRON,CRON1_COD ,ITOR1_COD ,ORCA1_COD ,PLOR1_AIMP ,PLOR1_COD ,PLOR1_COD0 ,PLOR1_ITPL ,PLOR1_QTD ,PLOR1_TOT ,CRON1_INI ,CRON1_FIN ,CRON1_TDIS ,CRON1_ORD ,CRON1_AT ,CRON1_DIA ,plor1_qtdoriginal ,cron1_inioriginal ,cron1_finoriginal ,CRON1_EXE ,PLOR1_PRE 
+dbo.TV1_DAMD,DAMD1_COD ,PLMD1_COD ,DAMD1_QTD ,DAMD1_DATA ,ORCA1_COD ,DAMD1_ORD 
+dbo.TV1_DAME,DAME1_COD ,MEDI1_COD ,DAME1_QTD ,DAME1_DATA ,ORCA1_COD ,DAME1_ORD ,PLOR1_COD 
+dbo.tv1_deco,code1_COD ,code1_COE ,ITOR1_COD ,ITOR1_COD0 ,ORCA1_COD 
+dbo.TV1_DENF,CLAS1_COD ,INSU1_COD ,DENF1_AUX ,DENF1_CHAV_PORT ,DENF1_COD ,DENF1_COD_ITEM ,DENF1_COD_PINI ,DENF1_DES ,DENF1_OBS ,DENF1_PRC ,DENF1_PRC_COMTAXA ,NIVE1_COD ,ORCA1_COD ,UNIM1_COD ,DENF1_alt ,DENF1_origem ,DENF1_data_val ,ITOR1_COD ,DENF1_QTD ,CANF1_COD 
+dbo.TV1_DICO,DICO1_COD ,CRON1_COD ,code1_COD ,DICO1_QTD ,DICO1_INI ,orca1_cod ,plor1_cod 
+dbo.TV1_DIEM,DIEM1_cod ,PLME1_COD ,ORCA1_COD ,PESS2_COD ,PESS2_IDE ,DIEM1_DATA ,DIEM1_QTD 
+dbo.TV1_DIME,DIME1_COD ,ORCA1_COD ,PLME1_COD ,DIME1_QTD ,DIME1_DATA ,PESS2_COD ,PESS2_IDE 
+dbo.TV1_DIPE,DIPE1_COD ,CRON1_COD ,DIPE1_QTD ,DIPE1_Data ,DIPE1_ORD ,plor1_cod ,orca1_cod ,crod1_cod 
+dbo.tv1_dipe_original,CRON1_COD ,DIPE1_ORD ,plor1_cod ,dipe1_cod ,orca1_cod ,DIPE1_INI ,DIPE1_FIN ,DIPE1_QTD 
+dbo.TV1_DISM,DISM1_COD ,CRON1_COD ,DISM1_IDE ,DISM1_QTD ,ORCA1_COD 
+dbo.TV1_DIST,dist1_cod ,dist1_ide ,dist1_qtd ,plmd1_cod 
+dbo.TV1_EMLI,ORCA1_COD ,ORCA1_NOM ,OBRA2_COD ,OBRA2_COD_OBRA ,PLOR1_COD ,PLOR1_COD0 ,ITOR1_COD ,ITOR1_COD0 ,PESS2_COD ,ITOR1_COD_ITEM ,ITOR1_COD_ITEM0 ,ITOR1_DES ,CLAS1_COD ,ITOR1_OBS ,UNIM1_COD ,PLOR1_QTD ,ITOR1_COEF ,ITOR1_PRC ,EMLI1_COD_ORI ,EMLI1_COD_SUB ,EMLI1_TIP ,EMLI1_PRC_UNIT ,EMLI1_PRC_UNIT_MO ,EMLI1_PRC_UNIT_MAT ,EMLI1_PRC_TOT_UNIT ,EMLI1_PRC_UNIT_TX ,EMLI1_PRC_ITEM_TX ,EMLI1_PRC_UNIT_TX_MO ,EMLI1_PRC_UNIT_TX_MAT ,EMLI1_PRC_UNIT_TX_TOT ,EMLI1_PRC_TX ,EMLI1_PRC_TX_MO ,EMLI1_PRC_TX_MAT ,EMLI1_PRC_LS ,EMLI1_PRC_BDI ,EMLI1_PRC_ADM ,EMLI1_PRC_TX_TOT ,EMLI1_PRC_UNIT_TOT_TX ,EMLI1_QTD_CURVA ,EMLI1_PRC_ORC ,EMLI1_ORD 
+dbo.TV1_ESTR,ESTR1_COD ,ESTR1_NIV_ITEM ,ESTR1_NOM ,ESTR1_PRO ,PESS2_COD ,estr1_lib ,estr1_wbs 
+dbo.TV1_FERI,FERI1_COD ,FERI1_NOM ,MESNUM ,DIASNUM ,DIASOCORRE ,DIASDASEMA ,DIASTIPO ,orca1_cod ,NOAPLICA ,anonum 
+dbo.TV1_inda,inda1_cod ,indA1_data ,indi1_COD ,indA1_val 
+dbo.TV1_INDI,indi1_cod ,indi1_tit ,indi1_fon ,indi1_pro ,indi1_nom 
+dbo.TV1_INVE,inve1_cod ,inve1_qtd ,inve1_prc ,inve1_prc_comtaxa ,itor1_cod ,inve1_des ,unim1_cod ,clas1_cod ,inve1_cod_item ,orca1_cod 
+dbo.TV1_ITBA,ITBA1_cod ,CLAS1_COD ,NIVE1_COD ,ITBA1_COD0 ,ITEM1_COD ,UNIM1_COD ,ITBA1_AUX ,ITBA1_AUX1 ,BASE1_COD ,ITBA1_ALT ,ITBA1_AIMP ,ITBA1_PRC ,ITBA1_PRC_COMTAXA ,ITBA1_IDE ,ITBA1_COD_PINI ,ITBA1_NOM ,ITBA1_TCPO ,ITBA1_DATA_VAL ,ITBA1_AUX2 ,ITBA1_OBS ,ITBA1_DES ,ITBA1_ORD ,itba1_origem ,itba1_versato ,itba1_prc1 ,itba1_prc_comtaxa1 ,itba1_prc2 ,itba1_prc_comtaxa2 ,itba1_prc3 ,itba1_prc_comtaxa3 ,itba1_prc4 ,itba1_prc_comtaxa4 ,itba1_coef 
+dbo.TV1_ITMD,CLAS1_COD ,INSU1_COD ,ITMD1_AUX ,ITMD1_CHAV_PORT ,ITMD1_COD ,ITMD1_COD_ITEM ,ITMD1_COD_PINI ,ITMD1_nom ,ITMD1_OBS ,ITMD1_PRC ,ITMD1_PRC_COMTAXA ,NIVE1_COD ,ORCA1_COD ,UNIM1_COD ,ITMD1_alt ,ITOR1_COD ,ITMD1_data_val ,itmd1_des ,itmd1_origem 
+dbo.TV1_ITME,CLAS1_COD ,INSU1_COD ,ITME1_AUX ,ITME1_CHAV_PORT ,ITME1_COD ,ITME1_COD_ITEM ,ITME1_COD_PINI ,ITME1_DES ,ITME1_OBS ,ITME1_PRC ,ITME1_PRC_COMTAXA ,NIVE1_COD ,ORCA1_COD ,UNIM1_COD ,ITME1_alt ,ITOR1_COD ,ITME1_data_val 
+dbo.TV1_ITOR,CLAS1_COD ,INSU1_COD ,ITOR1_AUX ,ITOR1_CHAV_PORT ,ITOR1_COD ,ITOR1_COD_ITEM ,ITOR1_COD_PINI ,itor1_des ,ITOR1_OBS ,ITOR1_PRC ,ITOR1_PRC_COMTAXA ,ITOR1_UNI_PRO ,NIVE1_COD ,ORCA1_COD ,UNIM1_COD ,itor1_alt ,itor1_origem ,itor1_data_val ,itor1_nom ,itor1_versato ,unim1_cod_abc ,itor1_prc1 ,itor1_prc_comtaxa1 ,itor1_prc2 ,itor1_prc_comtaxa2 ,itor1_prc3 ,itor1_prc_comtaxa3 ,itor1_prc4 ,itor1_prc_comtaxa4 ,itor1_coef ,obra2_cod 
+dbo.TV1_ITTX,ITTX1_ABR ,ITTX1_APL ,ITTX1_COD ,ITTX1_COD_TAXA ,ITTX1_DES ,ITTX1_VLR ,PESS2_COD ,TAXA1_COD ,orca1_cod ,ittx1_tip ,obra2_cod 
+dbo.TV1_LICI,orca1_cod ,plor1_cod ,itor1_cod ,itor1_cod0 ,LICI1_PRC_UNIT ,LICI1_PRC_UNIT_MO ,LICI1_PRC_UNIT_MAT ,LICI1_PRC_TOT_UNIT ,LICI1_PRC_UNIT_TX ,LICI1_PRC_ITEM_TX ,LICI1_PRC_UNIT_TX_MO ,LICI1_PRC_UNIT_TX_MAT ,LICI1_PRC_UNIT_TX_TOT ,LICI1_PRC_TX ,LICI1_PRC_TX_MO ,LICI1_PRC_TX_MAT ,LICI1_PRC_LS ,LICI1_PRC_BDI ,LICI1_PRC_ADM ,LICI1_PRC_TX_TOT ,LICI1_PRC_UNIT_TOT_TX ,LICI1_QTD_CURVA ,LICI1_PRC_ORC 
+dbo.TV1_MEDI,medi1_cod ,itor1_cod_item ,itor1_cod ,plor1_cod ,plor1_cod0 ,plor1_itpl ,itor1_des ,unim1_cod ,clas1_cod ,nive1_cod ,plor1_ord ,plor1_qtd ,itor1_prc ,medi1_prc ,medi1_qtd ,medi1_data ,aux1 ,aux2 ,aux3 ,PLAN1_COD ,orca1_cod ,medi1_ord ,medi1_prc_comtaxa 
+dbo.TV1_NIVE,ESTR1_COD ,NIVE1_COD ,NIVE1_COD0 ,NIVE1_NOM ,NIVE1_PRO ,PESS2_COD 
+dbo.TV1_ORCA,ESTR1_COD ,OBRA2_COD ,ORCA1_COD ,ORCA1_DATA ,ORCA1_MES_PRC ,ORCA1_NOM ,ORCA1_PRO ,ORCA1_REGI_REF ,PESS2_COD ,regi8_cod ,pepr8_cod ,orca1_tip ,inve1_data ,apro1_niv ,apro2_niv ,orca1_fecha ,obra2_cod_base ,precolici ,coeflici ,quantlici ,itensadtlici ,taxaslici ,serielici 
+dbo.TV1_ORTX,ORTX1_cod ,ORCA1_COD ,ITOR1_COD ,clas1_COD ,TAXA1_COD ,TAXA1_ABR ,VALOR ,obra2_cod 
+dbo.TV1_PLAN,plan1_cod ,plan1_des ,plan1_data ,pess2_cod ,plan1_ret ,plan1_cau ,plan1_Ind ,ORCA1_COD ,indi1_cod ,contrato ,execucao ,fiscalizacao 
+dbo.TV1_PLMD,ITMD1_COD ,ORCA1_COD ,PLMD1_AIMP ,PLMD1_COD ,PLMD1_COD0 ,PLMD1_ITPL ,PLMD1_QTD ,PLMD1_TOT ,PLOR1_QTD ,PLOR1_COD ,PLmd1_ORD 
+dbo.TV1_PLME,ITME1_COD ,ORCA1_COD ,PLME1_AIMP ,PLME1_COD ,PLME1_COD0 ,PLME1_ITPL ,PLME1_QTD ,PLME1_TOT ,PLOR1_QTD ,PLOR1_COD ,PLME1_TDIS 
+dbo.TV1_PLOR,ITOR1_COD ,ORCA1_COD ,PLOR1_AIMP ,PLOR1_COD ,PLOR1_COD0 ,PLOR1_ITPL ,PLOR1_QTD ,PLOR1_TOT ,PLOR1_ORD ,orditemiza ,versato ,obra2_cod ,obra2_cod_base ,PLOR1_COD_ORI 
+dbo.TV1_PRER,PRER1_COD ,PRER1_DATA ,PRER1_VAL ,PRER1_TIP ,CONTA1_COD ,PRER1_OBS ,orca1_cod 
+dbo.TV1_RECE,RECE1_COD ,RECE1_DATA ,RECE1_VAL ,RECE1_TIP ,CONTA1_COD ,RECE1_OBS ,orca1_cod ,prer1_cod 
+dbo.TV1_TAXA,OBRA2_COD ,ORCA1_COD ,TAXA1_ABR ,TAXA1_COD ,TAXA1_COD_TAXA ,TAXA1_DES ,TAXA1_VLR ,taxa1_tip 
+dbo.TV1_TXDI,TXDI1_COD ,TXDI1_DATA ,TXDI1_FIN ,TXDI1_REN ,CONTA1_COD ,orca1_cod 
+dbo.TV1_VENF,VENF1_COD ,VENF1_DATA ,VENF1_VAL ,CANF1_COD ,ORCA1_COD 
+dbo.TV2_ACOM,ACOM2_cod ,acom2_idre ,obra2_cod ,recitreq2_cod ,acom2_origem 
+dbo.TV2_APRO,apro2_cod ,ITOR1_COD ,plor1_COD ,itreq2_COD ,orca1_cod ,apro2_QTD 
+dbo.TV2_AUMO,obra2_dest_cod ,motr2_cod 
+dbo.TV2_CANF,Canf2_chave ,Pess2_cod ,Canf2_cod ,Obra2_cod ,OBRA2_COD_OBRA ,Canf2_DATA ,Canf2_OBS ,Canf2_resp_rec ,Canf2_fone_rec ,Canf2_email_rec ,Canf2_val ,Canf2_SITUA ,Canf2_nunf ,Canf2_cnpj ,Canf2_cpf ,Canf2_forn ,Canf2_data_rec ,Canf2_idnf ,Canf2_loc_rec 
+dbo.TV2_cdpg,cdpg2_cod ,parcela ,dias ,perfil ,valor 
+dbo.TV2_CONSTRU,codcliente ,usupadrao ,ccusto ,regiao ,regentrega ,contato ,fone ,obra ,aviso ,liberar ,tipo ,perfil 
+dbo.TV2_COTA,cota2_cod ,Obra2_cod ,OBRA2_COD_OBRA ,Cota2_DATA ,cota2_resp ,Pedi2_FONE_ent ,cota2_email_resp ,cota2_loc_ent ,cota2_fone_resp ,cota2_data_dev ,cota2_obs ,cota2_situa ,cota2_hora ,cota2_cont 
+dbo.TV2_denf,Denf2_cod ,Obra2_cod ,recitreq2_cod ,OBRA2_COD_OBRA ,Denf2_data_val ,Itor1_obs ,Itor1_cod_item ,Itor1_des ,Denf2_Unim_abr ,Denf2_prc ,Denf2_qtd ,Denf2_situa ,denf2_aux ,Canf2_cod ,denf2_obs 
+dbo.TV2_DEST,dest2_cod ,dest2_fluxo ,dest2_local ,dest2_id ,dest2_data ,esto2_cod ,dest2_qtd ,obra2_cod_obra ,obra2_cod ,dest2_situa 
+dbo.TV2_ESIT,itor1_cod_item ,estoque ,OBRA2_COD 
+dbo.TV2_ESTO,esto2_cod ,itor1_cod_item ,itor1_des ,itor1_obs ,unim1_cod ,obra2_cod ,obra2_cod_obra ,esto2_qtd ,esto2_min ,esto2_max ,esto2_rep ,esto2_situa 
+dbo.TV2_FOCO,Foco2_cod ,Cota2_cod ,Foco2_data ,itor1_cod_Item ,itco2_data_ent ,itor1_obs ,FOCO2_prc ,foco2_situa ,Pess2_cod ,foco2_qtd ,foco2_unim_abr 
+dbo.TV2_HISCANF,canf2_cod ,OBRA2_COD ,Hiscanf2_data ,Hiscanf2_Hora ,canf2_usu ,canf2_Status ,HIScanf2_DEOR 
+dbo.TV2_HISCOTA,Cota2_cod ,OBRA2_COD ,Hiscota2_data ,Hiscota2_Hora ,cota2_usu ,cota2_Status ,cota2_DEOR 
+dbo.TV2_HISITREQ,Req2_cod ,OBRA2_COD ,itreq2_cod ,OBRA2_COD_OBRA ,HISREQ2_DATA ,HISREQ2_HORA ,HISREQ2_USU ,HISREQ2_STATUS ,HISREQ2_DEOR 
+dbo.TV2_HISPEDI,Pedi2_cod ,OBRA2_COD ,HisPedi2_data ,HisPedi2_Hora ,Pedi2_usu ,Pedi2_Status ,HISREQ2_DEOR 
+dbo.TV2_HISREQ,Req2_cod ,OBRA2_COD ,OBRA2_COD_OBRA ,HISREQ2_DATA ,HISREQ2_HORA ,REQ2_USU ,REQ2_STATUS ,HISREQ2_DEOR 
+dbo.TV2_itco,itco2_cod ,Obra2_cod ,cota2_cod ,recitreq2_cod ,OBRA2_COD_OBRA ,itco2_data_ent ,itor1_cod_item ,itor1_des ,itreq2_unim_abr ,itreq2_qtd ,itco2_qtd ,itco2_unim1_abr ,itco2_situa ,itco2_loc_ent ,itco2_obs ,itor1_obs 
+dbo.TV2_ITFO,itfo2_cod ,itor1_cod_item ,itor1_des ,itfo2_unim1_abr ,itfo2_data ,pess2_cod ,itfo2_situa ,itfo2_obs ,item1_cod 
+dbo.TV2_ITPE,ITPe2_cod ,Pedi2_cod ,Obra2_cod ,OBRA2_COD_OBRA ,itor1_cod_item ,itor1_des ,itor1_obs ,itpe2_unim1_abr ,itpe2_qtd ,itpe2_val ,itpe2_data_ent ,itpe2_obs ,req2_cod ,ITreq2_cod ,recITreq2_cod ,cota2_cod ,itco2_cod ,itpe2_situa ,itpe2_aux 
+dbo.TV2_ITREQ,ItReq2_cod ,OBRA2_COD ,OBRA2_COD_OBRA ,ITREQ2_DATA ,ITREQ2_HORA ,REQ2_COD ,ITOR1_COD_ITEM ,ITOR1_DES ,UNIM1_COD ,ITOR1_OBS ,PLOR1_COD ,PLOR1_QTD ,cota2_cod ,pedi2_cod ,canf2_cod ,ITREQ2_unim1_abr ,ITREQ2_QTD ,ITREQ2_obs_sol ,ITREQ2_DATA_SOL ,ITREQ2_SITUA ,ITREQ2_STATUS ,ITREQ2_RESP_APRO ,ITREQ2_FONE_APRO ,RECITREQ2_DATA ,RECITREQ2_HORA ,ITREQ2_QTD_APRO ,ITREQ2_OBS_APRO ,ITREQ2_EMAIL_APRO ,motr2_cod ,recitreq2_qtd_atua ,itor1_cod 
+dbo.TV2_lisa,lisa2_cod ,itco2_cod ,itor1_cod_item ,itreq2_cod ,recitreq2_cod ,itpe2_cod ,denf2_cod ,data_entrega ,cota2_cod ,descricao ,unidade ,itco2_obs ,quantidade ,preco ,Foco2_cod ,pess2_cod ,fornecedor ,taxafin ,data_fechamento ,vencedor ,cdpg2_cod ,txco2_seguro ,txco2_icms ,TXCO2_desconto ,pedi2_cod ,TXCO2_frete ,TXCO2_taxas ,OBRA2_COD 
+dbo.TV2_MOTR,MOTR2_COD ,ITOR1_COD_ITEM ,ITOR1_DES ,ITOR1_OBS ,UNIM1_ABR ,MOTR2_QTD_SOL ,MOTR2_QTD_TRA ,OBRA2_DEST_OBRA ,OBRA2_ORIG_OBRA ,OBRA2_ORIG_COD ,OBRA2_DEST_COD ,TRAN2_COD ,MOTR2_DATA_ENT ,TRAN2_COD2 ,MOTR2_SITUA ,MOTR2_COD_ORI ,MOTR2_QTD_REC ,RECITREQ2_COD 
+dbo.TV2_OBEM,OBEM2_COD ,PESS2_COD ,OBRA2_COD 
+dbo.TV2_PEDI,Pedi2_chave ,Pedi2_cod ,Pess2_cod ,Obra2_cod ,OBRA2_COD_OBRA ,Pedi2_DATA ,Pedi2_HORA ,Pedi2_end ,Pedi2_resp_ent ,Pedi2_FONE_ent ,Pedi2_EMAIL_ent ,Pedi2_resp_env ,Pedi2_FONE_env ,Pedi2_EMAIL_env ,Pedi2_OBS ,Pedi2_total ,Pedi2_SITUA ,Pedi2_STATUS ,Pedi2_pagto ,Pedi2_data_prev ,Pedi2_CONT ,Pedi2_LOC_ENT 
+dbo.TV2_PEEM,PEEM2_COD ,PEDI2_COD ,OBRA2_COD 
+dbo.TV2_PENF,Penf2_cod ,Pedi2_cod ,Obra2_cod ,OBRA2_COD_OBRA ,itpe2_cod ,canf2_cod ,denf2_cod ,Penf2_data_sol ,Penf2_data_rec ,Penf2_qtd_sol ,Penf2_qtd_rec ,penf2_loc_rec ,penf2_loc_sol 
+dbo.TV2_proma,itor1_cod_item ,itco2_cod ,itreq2_cod ,recitreq2_cod ,itpe2_cod ,denf2_cod ,data_entrega ,OBRA2_COD 
+dbo.TV2_recdoc,recitreq2_doc 
+dbo.TV2_RECITREQ,RecItReq2_cod ,ItReq2_cod ,REQ2_COD ,OBRA2_COD ,OBRA2_COD_OBRA ,ITREQ2_DATA ,ITREQ2_HORA ,ITOR1_COD_ITEM ,ITOR1_DES ,UNIM1_COD ,ITOR1_OBS ,PLOR1_COD ,PLOR1_QTD ,ITREQ2_unim1_abr ,ITREQ2_QTD ,ITREQ2_obs_sol ,ITREQ2_DATA_SOL ,RECITREQ2_DOC ,cota2_cod ,pedi2_cod ,canf2_cod ,RECITREQ2_SITUA ,RECITREQ2_STATUS ,RECITREQ2_RESP_APRO ,RECITREQ2_FONE_APRO ,RECITREQ2_DATA ,RECITREQ2_HORA ,RECITREQ2_QTD_APRO ,RECITREQ2_OBS_APRO ,RECITREQ2_EMAIL_APRO ,motr2_cod ,recitreq2_qtd_atua ,itor1_cod 
+dbo.TV2_RECREQ,RecReq2_cod ,Req2_cod ,OBRA2_COD ,OBRA2_COD_OBRA ,REQ2_DATA ,RECREQ2_HORA ,RECREQ2_DATA ,REQ2_HORA ,REQ2_USU ,REQ2_FONE ,REQ2_EMAIL ,RECREQ2_SITUA ,RECREQ2_STATUS ,REQ2_OBS ,REQ2_MONTA ,REQ2_CONT ,REQ2_LOC_ENT 
+dbo.TV2_REQ,Req2_cod ,OBRA2_COD ,REQ2_CONT ,OBRA2_COD_OBRA ,REQ2_DATA ,REQ2_HORA ,REQ2_USU ,REQ2_FONE ,REQ2_EMAIL ,REQ2_SITUA ,REQ2_STATUS ,REQ2_OBS ,REQ2_MONTA ,REQ2_LOC_ENT 
+dbo.TV2_TAB1,tab2_cod ,tab2_nom ,grupo 
+dbo.TV2_TRAN,TRAN2_COD ,OBRA2_ORIG_COD ,OBRA2_DEST_COD ,FLUXO_ORIG_COD ,FLUXO_DEST_COD ,OBRA2_ORIG_OBRA ,OBRA2_DEST_OBRA ,FLUXO_ORIG_OBRA ,FLUXO_DEST_OBRA ,TRAN2_RESP ,TRAN2_DATA ,TRAN2_SITUA ,TRAN2_ACAO 
+dbo.TV2_TXCO,TXCO2_cod ,Cota2_cod ,itco2_loc_ent ,TXCO2_frete ,TXCO2_taxas ,TXCO2_desconto ,pedi2_cod ,Pess2_cod ,canf2_cod ,txco2_icms ,txco2_seguro ,cdpg2_cod 
+dbo.TV2_VENF,Venf2_cod ,Canf2_cod ,Venf2_data ,Venf2_val ,obra2_cod 
+dbo.TV2_VEPE,vepe2_cod ,Pedi2_cod ,Obra2_cod ,VEPE2_DATA ,VEPE2_VAL 
+dbo.TV9_GLOB,GLOB9_COD ,GLOB9_MAQ ,USUA1_COD ,USUA1_REDE ,GLOB9_DATA ,OBRA2_COD ,ORCA1_COD 
+dbo.TV9_HIST,OBRA2_COD ,ORCA1_COD ,ITOR1_COD ,HIST9_VLR 
+dbo.TV9_ITGL,GLOB9_COD ,ITGL9_CURVA_VLR ,ITGL9_HIST_VLR ,COMP1_COD ,ITOR1_COD ,ITOR1_COD0 ,COMP1_COEF ,COMP1_COEF_CALC 
+dbo.XLSBASE,coeficiente ,ordem ,nive1_cod ,nivel ,id ,classe ,unidade ,descricao ,codigo ,preco 
+dbo.XLSORCA,quantidade ,coeficiente ,ordem ,nive1_cod ,nivel ,id ,classe ,unidade ,descricao ,codigo ,preco 
+PiniWeb.chave,chave ,ordem ,base1cod 
+PiniWeb.ConstruCompras,Categoria ,Grupo ,IdConstru ,Tipo 
+PiniWeb.modulos,modulo 
+PiniWeb.perfil,PERF0_tip ,perfil 
+PiniWeb.Tb1_obim,obim1_cod ,figura ,itor1_cod ,itba1_cod ,tipo ,base ,ordem 
+PiniWeb.Ti2_orca,tipo ,itemizacao ,coditem ,pai ,descricao ,unidade ,nivel ,classificacao ,itemiza ,quantidade ,preco ,coeficiente ,ORCA1COD ,ordem ,clas1_cod ,OBRA2COD 
+PiniWeb.TV0_PERF,PERF0_COD ,ACAO0_COD ,PERF0_TIP 
+PiniWeb.TV1_APRO,apro1_cod ,ITOR1_COD ,plmd1_COD ,denf1_COD ,orca1_cod ,apro1_QTD 
+PiniWeb.TV1_BATX,BATX1_cod ,BASE1_COD ,ITBA1_COD ,clas1_COD ,TAXA1_COD ,TAXA1_ABR ,VALOR 
+PiniWeb.TV1_CLTX,CLTX1_cod ,ORCA1_COD ,BASE1_COD ,CLAS1_COD ,TAXA1_COD ,TAXA1_ABR ,VALOR ,obra2_cod 
+PiniWeb.TV1_CMDD,cmdd1_cod ,cmdd1_coe ,itmd1_cod ,itmd1_cod0 ,cmdd1_tip ,orca1_cod 
+PiniWeb.TV1_CONV,conv1_cod ,unim1_codo ,unim1_codd ,acom2_origem ,formula ,ITERA 
+PiniWeb.TV1_CROD,CROD1_COD ,CRON1_COD ,CROD1_INI ,CROD1_FIN ,CROD1_ORD ,CROD1_QTD ,plor1_cod ,orca1_cod 
+PiniWeb.TV1_DIPE,DIPE1_COD ,CRON1_COD ,DIPE1_QTD ,DIPE1_Data ,DIPE1_ORD ,plor1_cod ,orca1_cod ,crod1_cod 
+PiniWeb.tv1_dipe_original,CRON1_COD ,DIPE1_ORD ,plor1_cod ,dipe1_cod ,orca1_cod ,DIPE1_INI ,DIPE1_FIN ,DIPE1_QTD 
+PiniWeb.TV1_EMLI,ORCA1_COD ,ORCA1_NOM ,OBRA2_COD ,OBRA2_COD_OBRA ,PLOR1_COD ,PLOR1_COD0 ,ITOR1_COD ,ITOR1_COD0 ,PESS2_COD ,ITOR1_COD_ITEM ,ITOR1_COD_ITEM0 ,ITOR1_DES ,CLAS1_COD ,ITOR1_OBS ,UNIM1_COD ,PLOR1_QTD ,ITOR1_COEF ,ITOR1_PRC ,EMLI1_COD_ORI ,EMLI1_COD_SUB ,EMLI1_TIP ,EMLI1_PRC_UNIT ,EMLI1_PRC_UNIT_MO ,EMLI1_PRC_UNIT_MAT ,EMLI1_PRC_TOT_UNIT ,EMLI1_PRC_UNIT_TX ,EMLI1_PRC_ITEM_TX ,EMLI1_PRC_UNIT_TX_MO ,EMLI1_PRC_UNIT_TX_MAT ,EMLI1_PRC_UNIT_TX_TOT ,EMLI1_PRC_TX ,EMLI1_PRC_TX_MO ,EMLI1_PRC_TX_MAT ,EMLI1_PRC_LS ,EMLI1_PRC_BDI ,EMLI1_PRC_ADM ,EMLI1_PRC_TX_TOT ,EMLI1_PRC_UNIT_TOT_TX ,EMLI1_QTD_CURVA ,EMLI1_PRC_ORC ,EMLI1_ORD 
+PiniWeb.TV1_FERI,FERI1_COD ,FERI1_NOM ,MESNUM ,DIASNUM ,DIASOCORRE ,DIASDASEMA ,DIASTIPO ,orca1_cod ,NOAPLICA ,anonum 
+PiniWeb.TV1_inda,inda1_cod ,indA1_data ,indi1_COD ,indA1_val 
+PiniWeb.TV1_indi,indi1_cod ,indi1_tit ,indi1_fon ,indi1_pro ,indi1_nom 
+PiniWeb.TV1_INVE,inve1_cod ,inve1_qtd ,inve1_prc ,inve1_prc_comtaxa ,itor1_cod ,inve1_des ,unim1_cod ,clas1_cod ,inve1_cod_item ,orca1_cod 
+PiniWeb.TV1_LICI,orca1_cod ,plor1_cod ,itor1_cod ,itor1_cod0 ,lici1_ord ,LICI1_PRC_UNIT ,LICI1_PRC_UNIT_MO ,LICI1_PRC_UNIT_MAT ,LICI1_PRC_TOT_UNIT ,LICI1_PRC_UNIT_TX ,LICI1_PRC_ITEM_TX ,LICI1_PRC_UNIT_TX_MO ,LICI1_PRC_UNIT_TX_MAT ,LICI1_PRC_UNIT_TX_TOT ,LICI1_PRC_TX ,LICI1_PRC_TX_MO ,LICI1_PRC_TX_MAT ,LICI1_PRC_LS ,LICI1_PRC_BDI ,LICI1_PRC_ADM ,LICI1_PRC_TX_TOT ,LICI1_PRC_UNIT_TOT_TX ,LICI1_QTD_CURVA ,LICI1_PRC_ORC 
+PiniWeb.TV1_MEDI,medi1_cod ,medi1_qtd ,medi1_prc ,itor1_cod ,itor1_des ,medi1_data ,plor1_qtd ,itor1_prc ,unim1_cod ,clas1_cod ,nive1_cod ,aux1 ,aux2 ,aux3 ,plor1_ord ,plor1_cod ,plor1_cod0 ,plan1_cod ,medi1_ord ,itor1_cod_item ,plor1_itpl ,orca1_cod ,medi1_prc_comtaxa 
+PiniWeb.TV1_ORTX,ORTX1_cod ,ORCA1_COD ,ITOR1_COD ,clas1_COD ,TAXA1_COD ,TAXA1_ABR ,VALOR ,obra2_cod 
+PiniWeb.TV2_ACOM,ACOM2_cod ,acom2_idre ,acom2_origem ,obra2_cod ,obra2_cod_obra ,recitreq2_cod 
+PiniWeb.TV2_APRO,apro2_cod ,ITOR1_COD ,plor1_COD ,itreq2_COD ,orca1_cod ,apro2_QTD 
+PiniWeb.TV2_AUMO,obra2_dest_cod ,motr2_cod 
+PiniWeb.TV2_CANF,Canf2_chave ,Pess2_cod ,Canf2_cod ,Obra2_cod ,OBRA2_COD_OBRA ,Canf2_DATA ,Canf2_OBS ,Canf2_resp_rec ,Canf2_fone_rec ,Canf2_email_rec ,Canf2_val ,Canf2_SITUA ,Canf2_nunf ,Canf2_cnpj ,Canf2_cpf ,Canf2_forn ,Canf2_data_rec ,Canf2_idnf ,Canf2_loc_rec 
+PiniWeb.TV2_cdpg,cdpg2_cod ,parcela ,dias ,perfil ,valor 
+PiniWeb.TV2_CONSTRU,codcliente ,usupadrao ,ccusto ,regiao ,regentrega ,contato ,fone ,obra ,aviso ,liberar ,tipo ,perfil 
+PiniWeb.TV2_COTA,cota2_cod ,Obra2_cod ,OBRA2_COD_OBRA ,Cota2_DATA ,Cota2_hora ,cota2_resp ,Pedi2_FONE_ent ,cota2_email_resp ,cota2_loc_ent ,cota2_fone_resp ,cota2_data_dev ,cota2_obs ,cota2_situa ,COTA2_CONT 
+PiniWeb.TV2_denf,Denf2_cod ,Obra2_cod ,clas1_cod ,recitreq2_cod ,OBRA2_COD_OBRA ,Denf2_data_val ,Itor1_obs ,Itor1_cod_item ,Itor1_des ,denf2_obs ,Denf2_Unim_abr ,Denf2_prc ,Denf2_qtd ,Denf2_situa ,denf2_aux ,Canf2_cod 
+PiniWeb.TV2_DEST,dest2_cod ,dest2_fluxo ,dest2_local ,dest2_id ,dest2_data ,obra2_cod_obra ,obra2_cod ,esto2_cod ,dest2_qtd ,dest2_situa 
+PiniWeb.TV2_ESIT,itor1_cod_item ,estoque ,OBRA2_COD 
+PiniWeb.TV2_ESTO,esto2_cod ,itor1_cod_item ,itor1_des ,itor1_obs ,unim1_cod ,obra2_cod ,obra2_cod_obra ,esto2_qtd ,esto2_min ,esto2_max ,esto2_rep ,esto2_situa 
+PiniWeb.TV2_FOCO,Foco2_cod ,Cota2_cod ,Foco2_data ,itor1_cod_Item ,itco2_data_ent ,itor1_obs ,FOCO2_prc ,foco2_situa ,Pess2_cod ,foco2_qtd ,foco2_unim_abr 
+PiniWeb.TV2_HISCANF,canf2_cod ,OBRA2_COD ,Hiscanf2_data ,Hiscanf2_Hora ,canf2_usu ,canf2_Status ,HIScanf2_DEOR 
+PiniWeb.TV2_HISCOTA,Cota2_cod ,OBRA2_COD ,Hiscota2_data ,Hiscota2_Hora ,cota2_usu ,cota2_Status ,cota2_DEOR 
+PiniWeb.TV2_HISITREQ,Req2_cod ,OBRA2_COD ,itreq2_cod ,OBRA2_COD_OBRA ,HISREQ2_DATA ,HISREQ2_HORA ,HISREQ2_USU ,HISREQ2_STATUS ,HISREQ2_DEOR 
+PiniWeb.TV2_HISPEDI,Pedi2_cod ,OBRA2_COD ,HisPedi2_data ,HisPedi2_Hora ,Pedi2_usu ,Pedi2_Status ,HISREQ2_DEOR 
+PiniWeb.TV2_HISREQ,Req2_cod ,OBRA2_COD ,OBRA2_COD_OBRA ,HISREQ2_DATA ,HISREQ2_HORA ,REQ2_USU ,REQ2_STATUS ,HISREQ2_DEOR 
+PiniWeb.TV2_itco,itco2_cod ,Obra2_cod ,cota2_cod ,recitreq2_cod ,OBRA2_COD_OBRA ,itco2_data_ent ,itor1_cod_item ,itor1_des ,itreq2_unim_abr ,itreq2_qtd ,itco2_qtd ,itco2_unim1_abr ,itco2_situa ,itco2_loc_ent ,itor1_obs ,itco2_obs 
+PiniWeb.TV2_ITFO,itfo2_cod ,itor1_cod_item ,itor1_des ,itfo2_unim1_abr ,itfo2_data ,pess2_cod ,itfo2_situa ,itfo2_obs ,item1_cod 
+PiniWeb.TV2_ITPE,ITPe2_cod ,Pedi2_cod ,Obra2_cod ,OBRA2_COD_OBRA ,itor1_cod_item ,itor1_des ,itor1_obs ,itpe2_unim1_abr ,itpe2_qtd ,itpe2_val ,itpe2_data_ent ,itpe2_obs ,req2_cod ,ITreq2_cod ,recITreq2_cod ,cota2_cod ,itco2_cod ,itpe2_situa ,itpe2_aux 
+PiniWeb.TV2_ITREQ,ItReq2_cod ,OBRA2_COD ,OBRA2_COD_OBRA ,ITREQ2_DATA ,ITREQ2_HORA ,REQ2_COD ,ITOR1_COD_ITEM ,ITOR1_DES ,UNIM1_COD ,ITOR1_OBS ,PLOR1_COD ,PLOR1_QTD ,cota2_cod ,pedi2_cod ,canf2_cod ,ITREQ2_unim1_abr ,ITREQ2_QTD ,ITREQ2_obs_sol ,ITREQ2_DATA_SOL ,ITREQ2_SITUA ,ITREQ2_STATUS ,ITREQ2_RESP_APRO ,ITREQ2_FONE_APRO ,RECITREQ2_DATA ,RECITREQ2_HORA ,ITREQ2_QTD_APRO ,ITREQ2_OBS_APRO ,ITREQ2_EMAIL_APRO ,motr2_cod ,recitreq2_qtd_atua ,itor1_cod 
+PiniWeb.TV2_lisa,lisa2_cod ,itco2_cod ,itor1_cod_item ,itreq2_cod ,recitreq2_cod ,itpe2_cod ,denf2_cod ,data_entrega ,cota2_cod ,descricao ,unidade ,itco2_obs ,quantidade ,preco ,Foco2_cod ,pess2_cod ,fornecedor ,taxafin ,data_fechamento ,vencedor ,cdpg2_cod ,txco2_seguro ,txco2_icms ,TXCO2_desconto ,pedi2_cod ,TXCO2_frete ,TXCO2_taxas ,OBRA2_COD 
+PiniWeb.TV2_MOTR,MOTR2_COD ,ITOR1_COD_ITEM ,ITOR1_DES ,ITOR1_OBS ,UNIM1_ABR ,MOTR2_QTD_SOL ,MOTR2_QTD_TRA ,OBRA2_DEST_OBRA ,OBRA2_ORIG_OBRA ,OBRA2_ORIG_COD ,OBRA2_DEST_COD ,TRAN2_COD ,MOTR2_DATA_ENT ,TRAN2_COD2 ,MOTR2_SITUA ,MOTR2_COD_ORI ,MOTR2_QTD_REC ,RECITREQ2_COD 
+PiniWeb.TV2_OBEM,OBEM2_COD ,PESS2_COD ,OBRA2_COD 
+PiniWeb.TV2_PEDI,Pedi2_chave ,Pedi2_cod ,Pess2_cod ,Obra2_cod ,OBRA2_COD_OBRA ,Pedi2_DATA ,Pedi2_HORA ,Pedi2_end ,Pedi2_resp_ent ,Pedi2_FONE_ent ,Pedi2_EMAIL_ent ,Pedi2_resp_env ,Pedi2_FONE_env ,Pedi2_EMAIL_env ,Pedi2_OBS ,Pedi2_total ,Pedi2_SITUA ,Pedi2_STATUS ,Pedi2_pagto ,Pedi2_data_prev ,Pedi2_CONT ,Pedi2_LOC_ENT 
+PiniWeb.TV2_PEEM,PEEM2_COD ,PEDI2_COD ,OBRA2_COD 
+PiniWeb.TV2_PENF,Penf2_cod ,Pedi2_cod ,Obra2_cod ,OBRA2_COD_OBRA ,itpe2_cod ,canf2_cod ,denf2_cod ,Penf2_data_sol ,Penf2_data_rec ,PENF2_LOC_SOL ,PENF2_LOC_REC ,Penf2_qtd_sol ,Penf2_qtd_rec 
+PiniWeb.TV2_proma,itor1_cod_item ,itco2_cod ,itreq2_cod ,recitreq2_cod ,itpe2_cod ,denf2_cod ,data_entrega ,OBRA2_COD 
+PiniWeb.TV2_RECDOC,Recitreq2_doc 
+PiniWeb.TV2_RECITREQ,RecItReq2_cod ,ItReq2_cod ,REQ2_COD ,OBRA2_COD ,OBRA2_COD_OBRA ,ITREQ2_DATA ,ITREQ2_HORA ,ITOR1_COD_ITEM ,ITOR1_DES ,UNIM1_COD ,ITOR1_OBS ,PLOR1_COD ,PLOR1_QTD ,ITREQ2_unim1_abr ,ITREQ2_QTD ,ITREQ2_obs_sol ,ITREQ2_DATA_SOL ,RECITREQ2_DOC ,cota2_cod ,pedi2_cod ,canf2_cod ,RECITREQ2_SITUA ,RECITREQ2_STATUS ,RECITREQ2_RESP_APRO ,RECITREQ2_FONE_APRO ,RECITREQ2_DATA ,RECITREQ2_HORA ,RECITREQ2_QTD_APRO ,RECITREQ2_OBS_APRO ,RECITREQ2_EMAIL_APRO ,recitreq2_qtd_atua ,itor1_cod
+PiniWeb.TV2_RECREQ,RecReq2_cod ,Req2_cod ,OBRA2_COD ,OBRA2_COD_OBRA ,REQ2_DATA ,RECREQ2_HORA ,RECREQ2_DATA ,REQ2_HORA ,REQ2_USU ,REQ2_FONE ,REQ2_EMAIL ,RECREQ2_SITUA ,RECREQ2_STATUS ,REQ2_OBS ,REQ2_MONTA ,REQ2_CONT ,REQ2_LOC_ENT 
+PiniWeb.TV2_REQ,Req2_cod ,OBRA2_COD ,REQ2_CONT ,OBRA2_COD_OBRA ,REQ2_DATA ,REQ2_HORA ,REQ2_USU ,REQ2_FONE ,REQ2_EMAIL ,REQ2_SITUA ,REQ2_STATUS ,REQ2_OBS ,REQ2_MONTA ,REQ2_LOC_ENT 
+PiniWeb.TV2_TAB1,tab2_cod ,tab2_nom ,grupo 
+PiniWeb.TV2_TRAN,TRAN2_COD ,OBRA2_ORIG_COD ,OBRA2_DEST_COD ,FLUXO_ORIG_COD ,FLUXO_DEST_COD ,OBRA2_ORIG_OBRA ,OBRA2_DEST_OBRA ,FLUXO_ORIG_OBRA ,FLUXO_DEST_OBRA ,TRAN2_RESP ,TRAN2_DATA ,TRAN2_SITUA ,TRAN2_ACAO 
+PiniWeb.TV2_TXCO,TXCO2_cod ,Cota2_cod ,itco2_loc_ent ,TXCO2_frete ,TXCO2_taxas ,TXCO2_desconto ,pedi2_cod ,Pess2_cod ,canf2_cod ,txco2_icms ,txco2_seguro ,cdpg2_cod 
+PiniWeb.TV2_VENF,Venf2_cod ,Canf2_cod ,Venf2_data ,obra2_cod ,Venf2_val 
+PiniWeb.TV2_VEPE,vepe2_cod ,Pedi2_cod ,Obra2_cod ,VEPE2_DATA ,VEPE2_VAL 
+PiniWeb.TV9_GLOB,GLOB9_COD ,GLOB9_MAQ ,USUA1_COD ,USUA1_REDE ,GLOB9_DATA ,OBRA2_COD ,ORCA1_COD 
+PiniWeb.TV9_HIST,OBRA2_COD ,ORCA1_COD ,ITOR1_COD ,HIST9_VLR 
+PiniWeb.TV9_ITGL,GLOB9_COD ,ITGL9_CURVA_VLR ,ITGL9_HIST_VLR ,COMP1_COD ,ITOR1_COD ,ITOR1_COD0 ,COMP1_COEF ,COMP1_COEF_CALC 
+PiniWeb.XLSBASE,coeficiente ,ordem ,nive1_cod ,nivel ,id ,classe ,unidade ,descricao ,codigo ,preco 
+PiniWeb.XLSORCA,quantidade ,coeficiente ,ordem ,nive1_cod ,nivel ,id ,classe ,unidade ,descricao ,codigo ,preco 
