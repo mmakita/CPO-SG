@@ -1,61 +1,70 @@
 <?php
 	/**
-	 * @version 0.1 18/2/2011 
+	 * @version 1.0 25/5/2011 
 	 * @package geral
 	 * @author Mario Akita
 	 * @desc contem os modulos que lidam com a impressao dos modulos na tela 
 	 */
 	
+	include_once 'sgd_queries.php';
+
 	/**
 	 * @desc mostra os documentos pendentes para um determinado usuario
 	 * @param int $userID
 	 * @param connection $bd
 	 */
-	function showDocsPend($userID, $bd){
-		$res = $bd->query("SELECT id,labelID,tipoID FROM doc WHERE ownerID = ".$_SESSION["id"]);
-		
+	function showDocsPend($userID){
+		//le varial global contendo conexao com BD
+		global $bd;
+		//seleciona todos os documentos que estao com determinado usuario
+		$res = getPendentDocs($userID);
+		//comeca a construcao da tabela de documentos pendentes
 		$table = '<span class="header">Documentos Pendentes</span>
 		<table width="100%" cellspacing="0" cellpadding="0">';
-		
+		//se nao houver nenhum documento, mostra mensagem indicando isso
 		if (!count($res)) {
 			$table .= '<tr><td colspan="5"><center><br /><b>N&atilde;o h&aacute; documentos pendentes.</b></center></td></tr>';
+		//se houver, cria a primeira linha da tabela
 		} else {
 			$table .= '<tr><td class="c" width="5%"><center><b>N° CPO</b></center></td><td  class="c" width="20%"><b>Tipo/Número</b></td><td class="c" width="30%"><b><center>Emitente</center></b></td><td  class="c" width="35%"><b><center>Assunto</center></b></td><td  class="c" width="10%"><b>Ações</b></td></tr>';
 		}
-		
+		//pra cada documento pendente encontrado, cria uma linha na tabela a ser mostrada
 		foreach ($res as $r) {
+			//inicializa um novo documento generico
 			$doc = new Documento($r['id']);
-			$doc->loadCampos($bd);
-			
+			//carrega os dados especificos do tipo de documento
+			$doc->loadCampos();
+			//le as acoes possiveis para o tipo de documento para mostrar
 			$acoes = explode(",",$doc->dadosTipo['acoes']);
-			
+			//cria uma linha
 			$table .= '<tr class="c">';
 			$table .= '<td class="c"><center>'.$doc->id.'</center></td>';
 			$table .= "<td class=\"c\"><a href=\"#\" onclick=\"window.open('sgd.php?acao=ver&docID=".$doc->id."','detalhe".$doc->id."','width=900,height=650,scrollbars=yes,resizable=yes')\">".$doc->dadosTipo['nome']." ".$doc->numeroComp.'</a></td>';
-			
+			//prennche o emitente
 			$emitente = explode(" - ",$doc->emitente);
 			$emitenteF = $emitente[0];
 			if(isset($emitente[1])) {
 				$emitente = explode("/",$emitente[1]);
 				$emitenteF .= ' - '.$emitente[count($emitente)-1];
 			}
-			
 			$table .= '<td class="c"><center>'.$emitenteF.'</center></td>';
+			//preenche o assunto
 			if (isset($doc->campos['assunto']))
 				$table .= '<td class="c"><center>'.$doc->campos['assunto'].'</center></td>';
 			else
 				$table .= '<td class="c"><center> - </center></td>';
 			$table .= '<td class="c">';
-			
+			//preenche as acoes possiveis
 			foreach ($acoes as $acao) {
 				if ($acao){
-					$r = $bd->query("SELECT nome,abrv FROM label_acao WHERE id = $acao");
+					$r = getAcao($id);
 					$table .= "<a href=\"#\" onclick=\"window.open('sgd.php?acao=".$r[0]['abrv']."&docID=".$doc->id."','detalhe".$doc->id."','width=950,height=650,scrollbars=yes,resizable=yes')\">".$r[0]['nome'].'</a><br />';
 				}
 			}
-			
+			//fecha tags da linha
 			$table .= '</td></tr>';
 		}
+		//fecha as tags da tabela e retorna o codigo html da tabela
 		return $table.'</table><br />';
 	}
 	
@@ -71,33 +80,35 @@
 		 
 		//le os nomes dos campos desse tipo de documento
 		$campos = explode(",", $doc->dadosTipo['campos']);
-
+		//se o documento nao tiver campos, retorna mensagem
 		if (!$campos[0])
 			return $html."<br /><center><b>Não há dados dispon&iacute;veis</b></center><br />";		
-		
+		//senao, comeca a montar a tabela
 		$html .= '<table border="0" width="100%"><tr><td width=20%></td><td width=80%></td></tr>';
 		$html .= '<tr class="c"><td><b>N&uacute;mero do Doc (CPO):</b> </td><td>'.$doc->id.'</td></tr>';
 		
 		//mostra tabela com os dados deste tipo de documento
 		foreach ($campos as $c) {
 			if(strpos($doc->dadosTipo['emitente'],$c) === false){
-				$c = montaCampo($c, $doc->bd,'mostra',$doc->campos);
+				$c = montaCampo($c,'mostra',$doc->campos);
 				$html .= '<tr class="c"><td><b>'.$c['label'].':</b> </td><td>'.$c['valor'].'</td></tr>';
 			}
 		}
 		//mostra campos extras de documentos, obras e arquivos anexos
 		if (isset($doc->campos["documento"]) && $doc->campos["documento"] != '')
 			$html .= '<tr class="c"><td><b>Documentos Anexos: </b></td><td> '.showDocAnexo($doc->getDocAnexoDet()).'</td></tr>';
+		//se esse documento foi anexado a algum outro documento, mostra o documento pai
 		if ($doc->anexado){
 			$dp = new Documento($doc->docPaiID);
-			$dp->loadTipoData($doc->bd);
+			$dp->loadTipoData();
 			$html .= '<tr class="c"><td><b>Documento Pai:</b> </td><td>'.showDocAnexo(array(array("id" => $dp->id, "nome" => $dp->dadosTipo['nome']." ".$dp->numeroComp))).'</td></tr>';
-		}	
+		}
+		//se ha obra anexada, monta o campo pertinente
 		if (isset($doc->campos["obra"]) && $doc->campos['obra'] != 0)
 			$html .= '<tr class="c"><td><b>Obra Ref:</b> </td><td>'.$doc->campos[$doc->campos["obra"]].'</td></tr>';
-		
+		//mostra os arquivos anexos
 		$html .= '<tr class="c"><td><b>Arquivos Anexos:</b> </td><td>'.showArqAnexo($doc->anexo).'</td></tr>';
-		
+		//retorna o cod html da tabela
 		return $html."</table>";
 	}
 	
@@ -106,25 +117,33 @@
 	 * @param Documento $doc
 	 */
 	function showEmissor($doc){
+		//monta o cabecalho
 		$html = '<span class="headerLeft">Dados do Emissor</span>';
-		
+		//inicializacao de variaveis
 		$campo = array();
 		$data = false;
-		
-		if($doc->dadosTipo['emitente'])
+		//se ha emitente para o documento
+		if($doc->dadosTipo['emitente']) {
+			//mostra os canpos relativos ao emitente
 			$html .= '<table border="0" width="100%"><tr><td width=20%></td><td width=80%></td></tr>';
-		else
+		} else {
+			//senao mostra mensagem pertinente
 			return $html."<br /><center><b>Não há dados dispon&iacute;veis</b></center><br />";
-			
+		}
+		//separa os nomes dos campos
 		$campos = explode(",", $doc->dadosTipo['campos']);
+		//para cada campo
 		foreach ($campos as $c) {
-			$c = montaCampo($c, $doc->bd, 'mostrar', $doc->campos);
+			//pega os dados do campo
+			$c = montaCampo($c, 'mostrar', $doc->campos);
+			//verifica se o campo eh de emitente
 			if (strpos($doc->dadosTipo['emitente'],$c['nome']) !== false){
+				//se for, gera o codigo HTML
 				$html .= '<tr class="c"><td><b>'.$c['label'].'</b>: </td><td>'.$c['valor'].'</td></tr>';
 				$data = true;
 			}
 		}
-		
+		//retorna codigo HTML
 		return $html.'</table>';
 	}
 	
@@ -133,16 +152,21 @@
 	 * @param Documento $doc
 	 */
 	function showHist($doc){
+		//cria o cabecalho
 		$html = '<span class="headerLeft">Histórico do Documento</span>';
-		
+		//le o hitorico do documento
 		$res = $doc->getHist();
-		
+		//se nao houver entrada de historico, avisa nao ha historico
 		if (count($res) == 0) {
 			return $html."<center><b>Nenhum dado dispon&iacute;vel.</b></center><br />";
+		//se nao, cria a tabela de historico
 		}else{
+			//tags de inicio da tabela
 			$html .= '<table border="0" width="100%" cellpadding="0" cellspacing="0">
 			<tr><td width="100" class="cc"><b>data</b></td><td width="100" class="cc"><b>usu&aacute;rio</b></td><td class="cc"><b>a&ccedil;&atilde;o</b></td></tr>'; 
+			//para cada entrada no historico
 			foreach ($res as $r) {
+				//cria uma linha para este documento
 				if($r['despacho']){
 					$html .= '<tr class="c"><td class="cc" style="border: 0;">'.$r['data'].'</td><td class="cc" style="border: 0;">'.$r['username'].'</td><td class="c" style="border: 0;">'.$r['acao'].'</td></tr>';
 					$html .= '<tr class="c"><td class="c" colspan="3"><b>Despacho: </b>'.$r['despacho'].'</td></tr>'; 
@@ -425,7 +449,7 @@
 	/**
 	 * Monta a formulario de busca simples
 	 * @var string $onclick acao a ser realizada quando um item de resultado for clicado (ex: ver)
-	 * @var mysql link $bd
+	 * @var mysql_link $bd
 	 */
 	function showBuscaForm($onclick,$bd){
 		$html = '
@@ -490,7 +514,7 @@
 			$doc->loadTipoData($bd);
 			
 			if($dados['action'] == 'cad'){
-				//verifica se o documento ja esta cadastrado TODO
+				//verifica se o documento ja esta cadastrado
 				$query = "SELECT * FROM ".$doc->dadosTipo['tabBD']." WHERE ";
 				foreach (explode(",", $dados['camposBusca']) as $d) {
 					$campoDados = montaCampo($d, $bd,'cad',$dados,true);

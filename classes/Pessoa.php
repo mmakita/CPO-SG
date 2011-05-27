@@ -291,7 +291,6 @@ class Pessoa{
 	/**
 	 * @desc retorna array de permissoes para o usuario
 	 * @param int $gid
-	 * @todo pegar permissoes no BD
 	 */
 	private function getPermission($gid,$bd) {
 		//seleciona as permissoes do grupo ao qual o usuario pertence

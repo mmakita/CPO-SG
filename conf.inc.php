@@ -34,6 +34,7 @@
   * texto (HTML) padrao do rodape
   * @var string
   */
+ $conf["title"] = "SiGPOD - CPO/Unicamp - ";
  $conf["footer"] = "&copy;2011. CPO/Inform&aacute;tica";
  $conf["head"] = '';
 
@@ -43,7 +44,7 @@
   */
  
  $conf["DBLogin"] = "sgcpo";
- $conf["DBPassword"] = "VChSAUPap7CRFA83";
+ $conf["DBPassword"] = "";
  $conf["DBhost"] = "127.0.0.1";
  $conf["DBTable"] = "sg";
  

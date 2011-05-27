@@ -261,9 +261,9 @@
 	 * @param array $valor
 	 * @return array $campo com [cod], [nome], [label], [valor]
 	 */
-	function montaCampo($c,$bd,$tipo = 'cad',$valor = null,$busca = false){
-		//le o nome do documento no BD
-		$cp = $bd->query("SELECT * FROM label_campo WHERE nome = '".$c."'");
+	function montaCampo($c,$tipo = 'cad',$valor = null,$busca = false){
+		//le os dados do campo
+		$cp = getCampo($c);
 		
 		if(isset($cp[0]))
 			$cp = $cp[0];//seleciona o primeiro campo retornado
@@ -276,9 +276,9 @@
 			$c = '_'.$c;
 		}
 		
-		$campo['nome'] = $cp['nome']; //nome eh o proprio nome passado por parametro (e o mesmo no BD)
+		$campo['nome']  = $cp['nome']; //nome eh o proprio nome passado por parametro (e o mesmo no BD)
 		$campo['label'] = $cp['label']; //o label eh aquele lido do BD sem tratamento algum
-		$campo['cod'] = '';
+		$campo['cod']   = '';
 		$campo['valor'] = '';
 		$campo['parte'] = false;
 		
@@ -395,7 +395,6 @@
 			$campo['cod'] = '<input type="hidden" name="'.$c.'" id="'.$c.'" value= "'.$cp['nome'].'" />';
 			//para cada parte, obtem o codigo da parte e concatena com os dados ja obtidos 
 			foreach ($partes as $p) {
-//echo "montaCampo($p,bd,$tipo,$valor,$busca);";
 				$dados = montaCampo($p,$bd,$tipo,$valor,$busca);//busca nome, cod e valor da parte
 				if($dados != null){//se a parte for campo
 					$campo['nome'] .= ','.$dados['nome'];//concatena o nome da parte

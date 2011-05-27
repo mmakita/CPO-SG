@@ -113,6 +113,7 @@ class html{
 		} else {
 			$this->campos['admLink'] = '';
 		}
+		$this->title = $defaults['title'];
 		$this->head = $defaults['head'];
 		$this->footer = $defaults['footer'];
 		$this->login_page = $defaults['login_page'];

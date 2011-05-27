@@ -24,6 +24,7 @@
 		}
 	}
 	
+	$html->title .= "login";
 	$html->campos['codPag'] = showCodTela();
 	$html->showPage();
 ?>

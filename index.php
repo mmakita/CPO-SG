@@ -12,7 +12,7 @@
 	$html = new html($conf);	
 	$bd = new BD($conf["DBLogin"], $conf["DBPassword"], $conf["DBhost"], $conf["DBTable"]);
 	
-	$html->title = "Portal de Acesso";
+	$html->title .= "Portal de Acesso";
 	$html->header = "Portal de Acesso";
 	
 	//verifica se o usuario esta logado, caso nao esteja redireciona para tela de login
@@ -25,7 +25,7 @@
 	
 	$html->path = showNavBar(array());
 	if (!isset($_GET['alert'])) {
-		$html->content[1] = showDocsPend($_SESSION['id'], $bd);
+		$html->content[1] = showDocsPend($_SESSION['id']);
 	} else {
 		$html->content[1] = $_GET['alert'];
 	}

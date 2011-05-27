@@ -42,7 +42,7 @@
 			//rotina para completar o template, caminho do arquivo e titulo 
 			$html->setTemplate($conf['template_mini']);
 			$html->path = showNavBar(array(array("url" => "","name" => "Detalhes")),'mini');
-			$html->title .= "Detalhes: ".$doc->dadosTipo['nome']." ".$doc->numeroComp;
+			$html->title .= "SGD : Detalhes: ".$doc->dadosTipo['nome']." ".$doc->numeroComp;
 			//completa o espaco de menu com as acoes possiveis para o documento
 			$html->menu = showAcoes($doc,$bd);
 			//area 1 - contem os detalhes do documento
@@ -82,7 +82,7 @@
 			//rotina para definir template, caminho, titulo, nome de usuario.
 			$html->setTemplate($conf['template']);
 			$html->path = showNavBar(array(array("url" => "","name" => "Cadastrar Documento")));
-			$html->title .= "Cadastrar Documento";
+			$html->title .= "SGD : Cadastrar Documento";
 			//menu principal
 			$html->menu = showMenu($conf['template_menu'],$_SESSION["perm"],30,$bd);
 			//gera formulario para cadastro de documento
@@ -104,7 +104,7 @@
 			//rotina para definir template, caminho, titulo, nome de usuario.
 			$html->setTemplate($conf["template"]);
 			$html->path = showNavBar(array(array("url" => "","name" => "Novo Documento")));
-			$html->title .= "Novo Documento";
+			$html->title .= "SGD : Novo Documento";
 			//menu principal
 			$html->menu = showMenu($conf['template_menu'],$_SESSION["perm"],30,$bd);
 			//gera formulario de novo documento
@@ -115,7 +115,7 @@
 			//rotina para definir template, caminho, titulo, nome de usuario
 			$html->setTemplate($conf["template"]);
 			$html->path = showNavBar(array(array("url" => "","name" => "Salvar documento")));
-			$html->title .= "Salvar Documento";
+			$html->title .= "SGD : Salvar Documento";
 			//menu principal
 			$html->menu = showMenu($conf['template_menu'],$_SESSION["perm"],30,$bd);
 			//funcao que salva os dados e gera visualizacao dos resultados
@@ -131,7 +131,7 @@
 			//rotina para definir template, caminho, titulo, nome de usuario.
 			$html->setTemplate($conf["template_mini"]);
 			$html->path = showNavBar(array(array("url" => "","name" => "Adicionar Documento")));
-			$html->title .= "Adicionar Documento";
+			$html->title .= "SGD : Adicionar Documento";
 			//gera javascript para ocultar os divs nao utilizados
 			$html->content[1] = '<script type="text/javascript">$(document).ready(function(){$("#c2").hide();$("#c3").hide();$("#c4").hide();$("#c5").hide();$(".boxLeft").css("width","0");$(".boxRight").css("width","100%");});</script>';
 			//gera formulario de busca de documentos na area 1
@@ -150,7 +150,7 @@
 			//rotina para definir template, caminho, titulo, nome de usuario
 			$html->setTemplate($conf["template"]);
 			$html->path = showNavBar(array(array("url" => "","name" => "Buscar Documento")));
-			$html->title .= "Buscar Documento";
+			$html->title .= "SGD : Buscar Documento";
 			$html->menu = showMenu($conf['template_menu'],$_SESSION["perm"],30,$bd);
 			//gera formulario de busca na area 1
 			$html->content[1] = showBuscaForm($_GET['onclick'],$bd);
@@ -173,7 +173,7 @@
 			//rotina para efetuar despacho de um arquivo
 			if(!isset($_POST['funcID'])) $_POST['funcID'] = false;
 			//rotina para definir template, caminho, titulo, nome de usuario	
-			$html->title .= "Despachar Documento";
+			$html->title .= "SGD : Despachar Documento";
 			$html->setTemplate($conf["template_mini"]);
 			$html->menu .= '<script type="text/javascript">$(document).ready(function(){$("#c4").hide();$("#c2").hide();$("#c3").hide();$("#c5").hide();});</script>';
 			$html->path = showNavBar(array(array("url" => "","name" => "Despachar Documento")),'mini');
@@ -192,7 +192,7 @@
 			$doc->bd = $bd;
 			$doc->loadDados($bd);
 			//rotina para definir template, caminho, titulo, nome de usuario	
-			$html->title .= "Anexar Arquivo ao Documento";
+			$html->title .= "SGD : Anexar Arquivo ao Documento";
 			$html->setTemplate($conf["template_mini"]);
 			$html->menu .= '<script type="text/javascript">$(document).ready(function(){$("#c4").hide();$("#c2").hide();$("#c3").hide();$("#c5").hide();});</script>';
 			$html->path = showNavBar(array(array("url" => "","name" => "Anexar Arquivo ao Documento")),'mini');
@@ -225,7 +225,7 @@
 			//define template, barra de navegacao, titulo e menu
 			$html->setTemplate($conf["template_mini"]);
 			$html->path = showNavBar(array(array("url" => "","name" => "Salvar documento")));
-			$html->title .= "Salvar Documento";
+			$html->title .= "SGD : Salvar Documento";
 			$html->menu = '<script type="text/javascript">$(document).ready(function(){$("#c2").hide();$("#c3").hide();$("#c4").hide();$("#c5").hide();$(".boxLeft").css("width","0");$(".boxRight").css("width","100%");});</script>';
 			//salva o documento no BD
 			$html->content[1] = salvaDados($dados,$bd);

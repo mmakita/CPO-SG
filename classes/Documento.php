@@ -91,6 +91,8 @@ class Documento {
 	 * @param int $id
 	 */
 	function __construct($id){
+		global $bd;
+		$this->bd = $bd;
 		$this->id = $id;
 	}
 	
@@ -98,10 +100,13 @@ class Documento {
 	 * carrega dados do documento comuns a todos os documentos (DOC)
 	 * @param conectionn $bd
 	 */
-	function loadDados($bd) {
-		$this->bd = $bd;
+	function loadDados() {
+		if(!$this->bd){
+			global $bd;
+			$this->bd = $bd;
+		}
 		
-		$res = $bd->query("SELECT * FROM doc WHERE id = ".$this->id);
+		$res = $this->bd->query("SELECT * FROM doc WHERE id = ".$this->id);
 		if(count($res) != 1) showError(5);
 		else $res = $res[0];
 		
@@ -124,15 +129,19 @@ class Documento {
 	 * carrega os dados relativo ao tipo de documento (LABEL_DOC)
 	 * @param connection $bd
 	 */
-	function loadTipoData($bd){
+	function loadTipoData(){
+		if(!$this->bd){
+			global $bd;
+			$this->bd = $bd;
+		}
 		
 		if($this->labelID != null){
-			$res = $bd->query("SELECT * FROM label_doc WHERE id = ".$this->labelID);
+			$res = $this->bd->query("SELECT * FROM label_doc WHERE id = ".$this->labelID);
 		}elseif(isset($this->dadosTipo['nomeAbrv'])){
-			$res = $bd->query("SELECT * FROM label_doc WHERE nomeAbrv = '".$this->dadosTipo['nomeAbrv']."'");
+			$res = $this->bd->query("SELECT * FROM label_doc WHERE nomeAbrv = '".$this->dadosTipo['nomeAbrv']."'");
 		}else{
-			$this->loadDados($bd);
-			$res = $bd->query("SELECT * FROM label_doc WHERE id = ".$this->labelID);
+			$this->loadDados();
+			$res = $this->bd->query("SELECT * FROM label_doc WHERE id = ".$this->labelID);
 		}
 		
 		if (!count($res))
@@ -145,17 +154,22 @@ class Documento {
 	 * carrega os dados relativo aos campos do documento (DOC_TIPO)
 	 * @param connection $bd
 	 */
-	function loadCampos($bd){
-		if ($this->dadosTipo == null)
-			$this->loadTipoData($bd);
+	function loadCampos(){
+		if(!$this->bd){
+			global $bd;
+			$this->bd = $bd;
+		}
 		
-		$res = $bd->query("SELECT * FROM ".$this->dadosTipo['tabBD']." WHERE id = ".$this->tipoID);
+		if ($this->dadosTipo == null)
+			$this->loadTipoData();
+		
+		$res = $this->bd->query("SELECT * FROM ".$this->dadosTipo['tabBD']." WHERE id = ".$this->tipoID);
 		
 		if (!count($res))
 			showError(5);
 				
 		foreach ($res[0] as $name => $valor) {
-			$tipo = $bd->query("SELECT tipo,attr FROM label_campo WHERE nome = '$name'");
+			$tipo = $this->bd->query("SELECT tipo,attr FROM label_campo WHERE nome = '$name'");
 			
 			if(isset($tipo[0]) && $tipo[0]['tipo'] ==  'composto'){
 				$partes = explode("+", $tipo[0]['attr']);
