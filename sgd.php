@@ -31,7 +31,7 @@
 			if(isset($_GET['docID'])){
 				//se o ID do documento estiver especificado, cria variavel e carrega os dados do doc
 				$doc = new Documento($_GET['docID']);
-				$doc->loadCampos($bd);
+				$doc->loadCampos();
 			}else{
 				//senao, mostra erro: vc quer ver um documento sem numero
 				showError(7);
@@ -44,7 +44,7 @@
 			$html->path = showNavBar(array(array("url" => "","name" => "Detalhes")),'mini');
 			$html->title .= "SGD : Detalhes: ".$doc->dadosTipo['nome']." ".$doc->numeroComp;
 			//completa o espaco de menu com as acoes possiveis para o documento
-			$html->menu = showAcoes($doc,$bd);
+			$html->menu = showAcoes($doc);
 			//area 1 - contem os detalhes do documento
 			$html->content[1] = showDetalhes($doc);
 			//area 2 - detalhes do emissor
@@ -52,7 +52,7 @@
 			//area 3 - historico do documento
 			$html->content[3] = showHist($doc);
 			//area 4 - area para despachar
-			$html->content[4] = showDesp('f',getDeptos($bd),$doc);
+			$html->content[4] = showDesp('f',getDeptos(),$doc);
 			//area 5 - area para anexar arquivo
 			$html->content[5] = showAnexar('f',$doc);
 			//dependendo da acao, gera JS para esconder/mostrar as areas pertinentes
@@ -76,7 +76,7 @@
 			//cria novo doc para ler acaoID
 			$doc = new Documento(0);
 			$doc->dadosTipo['nomeAbrv'] = $_GET['tipoDoc'];
-			$doc->loadTipoData($bd);
+			$doc->loadTipoData();
 			//verifica permissão
 			checkPermission($doc->dadosTipo['cadAcaoID']);			
 			//rotina para definir template, caminho, titulo, nome de usuario.
@@ -135,7 +135,7 @@
 			//gera javascript para ocultar os divs nao utilizados
 			$html->content[1] = '<script type="text/javascript">$(document).ready(function(){$("#c2").hide();$("#c3").hide();$("#c4").hide();$("#c5").hide();$(".boxLeft").css("width","0");$(".boxRight").css("width","100%");});</script>';
 			//gera formulario de busca de documentos na area 1
-			$html->content[1] .= showBuscaForm($_GET['onclick'],$bd);
+			$html->content[1] .= showBuscaForm($_GET['onclick']);
 			//gera botao de buscar novamente na area 2
 			$html->content[2] = '<center><input type="button" onclick="novaBusca()" value="Buscar novamente" /></center>';
 			//gera div de resposta na area 3
@@ -153,7 +153,7 @@
 			$html->title .= "SGD : Buscar Documento";
 			$html->menu = showMenu($conf['template_menu'],$_SESSION["perm"],30,$bd);
 			//gera formulario de busca na area 1
-			$html->content[1] = showBuscaForm($_GET['onclick'],$bd);
+			$html->content[1] = showBuscaForm($_GET['onclick']);
 			//gera novas areas no layour principal
 			$contVisible = array(true,false,false);
 			$html->content[1] .= addContentBox(2,$contVisible);

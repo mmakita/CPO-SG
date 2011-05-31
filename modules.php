@@ -75,16 +75,6 @@
 	}
 	
 	/**
-	 * loga a acao no BD
-	 * @param string $user
-	 * @param string $action
-	 * @param connection $bd
-	 */
-	function doLog($user,$action,$bd) {
-		return $bd->query("INSERT INTO data_log (data,username,acao) VALUES (".time().",'$user','".htmlentities($action,ENT_QUOTES)."')");
-	}
-	
-	/**
 	 * Monta o caminho de 'diretorios'
 	 * @param array $dir
 	 * @param string $tipo
@@ -376,7 +366,7 @@
 			}
 			//tendo o ID do usuario, procura no BD o nome do usuario, que eh o valor do campo
 			if (isset($valor[$campo['nome']]) && $valor[$campo['nome']] > 0){
-				$res = $bd->query("SELECT nomeCompl FROM usuarios WHERE id = ".$valor[$campo['nome']]);
+				$res = getNamesFromUsers($valor[$campo['nome']]);
 				if (count($res))
 					$campo['valor'] = $res[0]['nomeCompl'];
 				else
@@ -395,7 +385,7 @@
 			$campo['cod'] = '<input type="hidden" name="'.$c.'" id="'.$c.'" value= "'.$cp['nome'].'" />';
 			//para cada parte, obtem o codigo da parte e concatena com os dados ja obtidos 
 			foreach ($partes as $p) {
-				$dados = montaCampo($p,$bd,$tipo,$valor,$busca);//busca nome, cod e valor da parte
+				$dados = montaCampo($p,$tipo,$valor,$busca);//busca nome, cod e valor da parte
 				if($dados != null){//se a parte for campo
 					$campo['nome'] .= ','.$dados['nome'];//concatena o nome da parte
 					$campo['cod'] .= $dados['cod'];//concatena o codigo da parte
@@ -475,9 +465,9 @@
 	 * Consulta todas as areas no BD
 	 * @param Connection $bd
 	 */
-	function getDeptos($bd){
+	function getDeptos(){
 		//consulta todas as areas dos usuarios distintas
-		$r = $bd->query("SELECT area FROM usuarios GROUP BY area");
+		$r = getAreasFromUsers();
 		//coloca as areas em um array
 		foreach ($r as $dep) {
 			$deptos[] = $dep['area'];

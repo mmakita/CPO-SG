@@ -98,7 +98,6 @@ class Documento {
 	
 	/**
 	 * carrega dados do documento comuns a todos os documentos (DOC)
-	 * @param conectionn $bd
 	 */
 	function loadDados() {
 		if(!$this->bd){
@@ -127,7 +126,6 @@ class Documento {
 
 	/**
 	 * carrega os dados relativo ao tipo de documento (LABEL_DOC)
-	 * @param connection $bd
 	 */
 	function loadTipoData(){
 		if(!$this->bd){
@@ -152,7 +150,6 @@ class Documento {
 	
 	/**
 	 * carrega os dados relativo aos campos do documento (DOC_TIPO)
-	 * @param connection $bd
 	 */
 	function loadCampos(){
 		if(!$this->bd){

@@ -5,8 +5,6 @@
 	 * @author Mario Akita
 	 * @desc contem os modulos que lidam com a impressao dos modulos na tela 
 	 */
-	
-	include_once 'sgd_queries.php';
 
 	/**
 	 * @desc mostra os documentos pendentes para um determinado usuario
@@ -168,15 +166,18 @@
 			foreach ($res as $r) {
 				//cria uma linha para este documento
 				if($r['despacho']){
+					//se ha despacho, cria a linha de despacho
 					$html .= '<tr class="c"><td class="cc" style="border: 0;">'.$r['data'].'</td><td class="cc" style="border: 0;">'.$r['username'].'</td><td class="c" style="border: 0;">'.$r['acao'].'</td></tr>';
 					$html .= '<tr class="c"><td class="c" colspan="3"><b>Despacho: </b>'.$r['despacho'].'</td></tr>'; 
 				} else {
+					//senao, apenas cria a linha de acao
 					$html .= '<tr class="c"><td class="cc">'.$r['data'].'</td><td class="cc">'.$r['username'].'</td><td class="c">'.$r['acao'].'</td></tr>';
 				}
 			}
+			//fecha tag para tabela
 			$html .= '</table>';
 		}
-		
+		//retorna o codigo HTMl da tabela gerada
 		return $html;
 	}
 	
@@ -186,14 +187,17 @@
 	 * @param connection $bd
 	 */
 	function showDocAnexo($anexos){
+		//inicializacao de variaveis
 		$html = "";
+		//se nao houver anexos, nao retorna nada.
 		if($anexos == '')
 			return '';
-		
+		//para cada anexode um documento
 		foreach ($anexos as $a) {
+			//cria um link para visualizar esse doc anexo.
 			$html .= "<a href=\"#\" onclick=\"window.open('sgd.php?acao=ver&docID=".$a['id']."','detalhe".$a['id']."','width=900,height=650,scrollbars=yes,resizable=yes')\">Documento ".$a['id'].": ".$a['nome']."</a><br />";
 		}
-		
+		//retorna o cod HTML a tabela gerada
 		return $html;
 	}
 	
@@ -202,19 +206,26 @@
 	 * @param Documento $doc
 	 * @param BD $bd
 	 */
-	function showAcoes($doc,$bd){
+	function showAcoes($doc){
+		//inicializacao de variaveis.
 		$html = '<script type="text/javascript" src="scripts/menu_mini.js"></script>
 		<span class="menuHeader" onclick="showDet(1)">Ver Detalhes</span><br />';
-		
+		//se o usuario eh dono do documento e ele tem permissao para despachar
 		if ($doc->owner == $_SESSION['id'])
+			//mostra o link para depsachar
 			$html .= '<span class="menuHeader" onclick="showDet(2)">Despachar</span><br />';
-		
+		//demais acoes
 		$acoes = explode(",", $doc->dadosTipo['acoes']);
+		//para cada acao
 		foreach ($acoes as $acao){
-			$res = $bd->query("SELECT * FROM label_acao WHERE id = ".$acao);
+			//le os dados da acao do BD
+			$res = getAcao($acao);
+			//verifica se tem permissao para faze-la
 			if($_SESSION['perm'][$acao])
+				//adiciona link para a acao no menu
 				$html .= '<span class="menuHeader" onclick="showDet(3)">'.$res[0]['nome'].'</span><br />';
 		}
+		//retorna o codigo HTML das acoes para o documento
 		return $html;
 	}
 	
@@ -222,15 +233,19 @@
 	 * mostra os campos para anexar arquivo
 	 */
 	function showAnexar($tipo = "f", $doc = null){
+		//inicializacao de variavele
 		$html = '';
-		if($tipo == "f") $html .= '<span class="headerLeft">Anexar Arquivo</span><form action="sgd.php?acao=anexar" method="post" enctype="multipart/form-data">';
+		//se nao for cadastro de documento, coloca campo oculto com o id pra prox pagina
 		if($doc != null && $doc->id != 0) $html .= '<input type="hidden" name="id" value="'.$doc->id.'" />';
+		//inclui HTML do formulario para upload\
 		$html .= '<div id="fileUpCell">
 		<div id="arqs"></div>
 		<input type="file" id="arq1" name="arq1" onclick="showInputFile(2)" />
 		</div>';
+		//se o tipo de exibicao for o formulario completo, coloca o botao enviar
 		if($tipo == "f") $html .= '<input type="submit" value="Enviar" />
 		</form>';
+		//retorna HRML do form
 		return $html;
 	}
 	
@@ -249,10 +264,13 @@
 		<link rel="stylesheet" type="text/css" href="css/jquery.autocomplete.css" />
 		<script type="text/javascript" src="scripts/despacho.js">		
 		</script>';
+		//se for tipo formulario completo, cria as tags de form
 		if($tipo == "f") $html.= '<span class="headerLeft">Despachar Documento</span>
 		<form action="sgd.php?acao=despachar" method="post">';
+		//cria input para levar o id par aa prox pagina
 		if($doc != null && $doc->id != 0) $html .= '<input type="hidden" name="id" value="'.$doc->id.'" />';
 		if($tipo == "f" || $tipo == "sf") $html .= '<textarea id="despacho" name="despacho" rows="4" style="width:98%;">Digite o despacho aqui.</textarea><br />';
+		//cria select box para despacho
 		$html.= '<b>Despachar para:</b> <br />
 		<select id="para" name="para">
 		<option selected> --Selecione-- </option>
@@ -273,6 +291,7 @@
 		<input type="text" size=100 id="despExt" name="despExt" autocomplete="off" /><br />';
 		if($tipo == "f") $html.= '<input type="submit" value="Despachar" />
 		</form>';
+		//retorna o codigo htmldo form
 		return $html;
 	}
 	
@@ -282,7 +301,7 @@
 	 * @param string $tipo
 	 * @param connection $bd
 	 */
-	function showForm($acao,$tipo,$bd){
+	function showForm($acao,$tipo){
 		//define arquivo de template
 		$template = "templates/template_".$acao.".php";
 
@@ -290,7 +309,7 @@
 		$html = file_get_contents($template);
 				
 		//monta os campos de busca
-		$dados = $bd->query("SELECT * FROM label_doc WHERE nomeAbrv = '".$tipo."'");
+		$dados = getDocTipo($tipo);
 		
 		//variaveis que vao guardar os campos gerais e de busca e emitente
 		$cGeral = '';
@@ -304,9 +323,11 @@
 			//separa os campos
 			$campos = explode(",", $dados[0]['campos']);
 			
-			//separa os campos e cria os inputs
+			//para cada campo do documento
 			foreach ($campos as $c) {
-				$c = montaCampo($c, $bd, 'cad',$dados);
+				//monta o HTML do campo
+				$c = montaCampo($c, 'cad',$dados);
+				//
 				$c['nomeCampo'] = explode(",",$c['nome']);
 				if(strpos($dados[0]['campoBusca'], $c['nomeCampo'][0]) === false){
 					//nao eh campo de busca, cria o input na parte de campos
@@ -324,6 +345,7 @@
 					}
 				}
 			}
+			//tira a virgula do final
 			$cBuscaNomes = rtrim($cBuscaNomes,",");
 			
 			//adicao dos campos ocultos
@@ -338,9 +360,11 @@
 			<input type="hidden" name="id" id="id" value="0" />
 			<input type="hidden" name="action" id="action" value="'.$acao.'" />
 			<input type="hidden" name="camposGerais" id="camposGerais" value="'.$cGeralNome.'" />';
+			//coloca osinputs dentro da tabela
 			$cGeral = '<table width="100%" border=0>'.$cGeral.'</table>';
-			
+		//cria os inpouts para novo documento
 		}elseif ($acao = "novo"){
+			//carrega o template
 			$html = file_get_contents($template);
 			
 			//separa os campos
@@ -348,7 +372,7 @@
 
 			//separa os campos e cria os inputs
 			foreach ($campos as $c) {
-				$c = montaCampo($c, $bd, 'cad');
+				$c = montaCampo($c, 'cad');
 				if(strpos($dados[0]['emitente'], $c['nome']) === false){
 					//nao eh campo de emitente, cria o input na parte de campos
 					if($c['nome'] == 'conteudo')
@@ -362,38 +386,42 @@
 				}
 			}
 			$cGeral .= $conteudo;
-			
+			//cria campos ocultos adicionais
 			$cGeral = '
 			<input type="hidden" name="tipoDocCad" id="tipoDocCad" value="'.$tipo.'" />
 			<input type="hidden" name="id" id="id" value="0" />
 			<input type="hidden" name="action" id="action" value="'.$acao.'" />
 			<table width="100%" border=0>'.$cGeral.'</table>';
 		}
+		//cria o campo para  historico
 		$historico = '<div id="hist" class="cadDisp"></div>';
-		
+		//cria campo para anexar documentos
 		$documentos = '
 		<b>Documentos Anexos:</b><br />
 		<div id="docsAnexosNomes" class="cadDisp"></div><input type="hidden" name="docsAnexos" id="docsAnexos" />
 		<a id="addDocLink" href="#" onclick="window.open(\'sgd.php?acao=busca_mini&onclick=adicionar&target=docsAnexos\',\'addDoc\',\'width=750,height=550,scrollbars=yes,resizable=yes\')">';
+		//coloca os campos no documento caso seja possivel adicionar documentos
 		if($dados[0]['docAnexo']) $documentos .= 'Adicionar Documento';
 		$documentos .= '</a><br /><br />';
-		
+		//ccria campos para adicionar obras
 		$obra = '
 		<b>Obra Ref:</b><br />
 		<div id="obra" class="cadDisp"></div><input type="hidden" name="obrasAnexas" id="obrasAnexas" />
 		<a id="addObraLink" href="#" onclick="window.open(\'\',\'addDoc\',\'width=750,height=550,scrollbars=yes,resizable=yes\')">';
+		//coloca os campos no documento caso seja possivel adicionar obras
 		if($dados[0]['obra']) $obra .= 'Adicionar Obra';
 		$obra .= '</a><br /><br />';
-		
+		//cria campos para adicionar empresa
 		$empresa = '
 		<b>Empresa Ref:</b><br />
 		<div id="empresa" class="cadDisp"></div><input type="hidden" name="emprAnexas" id="emprAnexas" />
 		<a id="addEmpresaLink" href="#" onclick="window.open(\'empresa.php?acao=buscar&onclick=adicionar\',\'addEmpr\',\'width=750,height=550,scrollbars=yes,resizable=yes\')">';
+		//coloca os campos dos documentos para adicionar empresa
 		if($dados[0]['empresa']) $empresa .= 'Adicionar Empresa';
 		$empresa .= '</a><br /><br />';
-		
+		//coloca codigo de recebimento
 		$recebimento = showReceb();
-		
+		//coloca os elementos no template nas posicoes corretas
 		$html = str_replace('{$campos_busca}', $cBusca, $html);
 		$html = str_replace('{$campos}', $cGeral, $html);
 		$html = str_replace('{$emitente}', $cEmitente, $html);
@@ -403,19 +431,21 @@
 		$html = str_replace('{$anexarArq}', showAnexar('sf'), $html);
 		$html = str_replace('{$historico}', $historico, $html);
 		$html = str_replace('{$recebimento}', $recebimento, $html);
-		$html = str_replace('{$despacho}', showDesp('sf',getDeptos($bd),null), $html);
-			
+		$html = str_replace('{$despacho}', showDesp('sf',getDeptos(),null), $html);
+		//retorna o cod HTML do formulario
 		return $html;
 	}
 	/**
 	 * Monta os campos de recebimento
 	 */
 	function showReceb() {
+		//adiciona campo para numero da RR de entrada e unidade de origem
 		$html = '<b>n&deg; Rela&ccedil;&atilde;o de Remessa:</b> <input type="text" id="rrNumReceb" name="rrNumReceb" size="2" maxlength="4" />/<input type="text" id="rrAnoReceb" name="rrAnoReceb" size="2" maxlength="4" value="'.date("Y").'" /> <b>Un/Org de Origem:</b> <input type="text" id="unOrgReceb" name="unOrgReceb" size="60" />
 		<script type="text/javascript">
 		$(document).ready(function(){
 			$("#unOrgReceb").autocomplete("unSearch.php",{minChars:2,matchSubset:1,matchContains:true,maxCacheLength:20,extraParams:{\'show\':\'un\'},selectFirst:true,onItemSelect: function(){$("#unOrgReceb").focus();}});	
 		});</script>';
+		//retorna HTML dos campos
 		return $html;
 	}
 	
@@ -424,16 +454,21 @@
 	 * @param array $anexos
 	 */
 	function showArqAnexo($anexos){
+		//inicializacao de variaveis
 		$html = '';
-		
+		//se houver anexos
 		if (strlen($anexos[0]) > 0) {
+			//para cada anexo
 			foreach ($anexos as $a){
+				//cria um link para o arquivo
 				$html .= "<a href=\"#\" onclick=\"window.open('files/$a','ArqAnexo','width=900,height=650,scrollbars=yes,resizable=yes')\">".$a.'</a><br />';
 			}
+		//se nao houver anexos
 		}else{
+			//produz mensagem avisando
 			$html .= '<b>N&atilde;o h&aacute; arquivos anexos.</b>';
 		}
-		
+		//retorna o codigo HTML dos anexos
 		return $html;
 	}
 	
@@ -451,7 +486,8 @@
 	 * @var string $onclick acao a ser realizada quando um item de resultado for clicado (ex: ver)
 	 * @var mysql_link $bd
 	 */
-	function showBuscaForm($onclick,$bd){
+	function showBuscaForm($onclick){
+		//inicializacao dos scripts e inicializacao da tabela
 		$html = '
 		<script type="text/javascript" src="scripts/busca_doc.js"></script>
 		<script type="text/javascript" src="scripts/jquery.autocomplete.js"></script>
@@ -461,41 +497,58 @@
 		<table width="100%" border="0">
 		<tr><td width=35%><b>Selecione o tipo de documento:</b><br />
 		';
-		$res = $bd->query("SELECT * FROM label_doc");
-		
+		//le todos os tipos de documento
+		$res = getAllDocTypes();
+		//para cada tipo de documento
 		foreach ($res as $r){
+			//cria um radio para selecionar esse tipo de documento
 			$html .= '<input type="radio" class="tipoDoc" id="'.$r['nomeAbrv'].'" value="'.$r['nomeAbrv'].'" name="tipoDoc" /> <span id="nome_'.$r['nomeAbrv'].'">'.$r['nome']."</span><br />\n";
+			//inicializa a var.
 			$nomesTotal = '';
+			//separa os campos desse tipo de documento
 			$campos = explode(",", $r['campos']);
+			//inicializa a tabela do tipo de documento
 			$div[$r['nomeAbrv']] = '<table width="100%" border="0">';
+			//para cada campo desse tipo de documento
 			foreach ($campos as $c) {
-				$dadosCampo = montaCampo($c, $bd, "bus");
+				//monta o inout de busca correspondente
+				$dadosCampo = montaCampo($c, "bus");
+				//monta a linha da tabela usando o input
 				$div[$r['nomeAbrv']] .= '<tr class="c"><td class="c" width="30%">'.$dadosCampo['label'].': </td><td width="70%">'.str_ireplace(array('name="','id="','("#'), array('name="' . $r['nomeAbrv'] . '_', 'id="' . $r['nomeAbrv'] . '_', '("#' . $r['nomeAbrv'] . '_'), $dadosCampo['cod']).'</td></tr>'; 
+				//gurada o nome do campo adicionado
 				$nomesTotal .= $dadosCampo['nome'].',';
 			}
+			//retira a virgula do final dos nomes
 			$nomesTotal = rtrim($nomesTotal,",");
+			//cria campo oculto com o nome dos campos do formulario desse tipo de documento
 			$html .= '<input type="hidden" id="camposEsp_'.$r['nomeAbrv'].'" value="'.$r['nomeAbrv']."_".str_ireplace(",", ",".$r['nomeAbrv']."_", $nomesTotal).'" />';
+			//fecha tag tabela
 			$div[$r['nomeAbrv']] .= '</table>';
 		}
+		//cria radio com para selecao de 'outros' (todos) os documentos
 		$html .= '<input type="radio" class="tipoDoc" id="_outro_" value="_outro_" name="tipoDoc" /> Buscar todos os tipos'."<br /></td>";
+		//cria campos comuns a todos os documentos
 		$html .= '<td><span class="campoDoc"><b>Campos de busca:</b><br /><br /><b>Dica:</b> Para buscar todos os documentos desse tipo, deixe todos os campos em branco.<br /><br /></span>
 		<table width="100%" border="0" class="campoDoc">
 		<tr class="c"><td class="c" style="width:30%">N&uacute;mero do documento (CPO):         </td><td style="width:70%"><input id="numCPO"      type="text" size=20 name="s_cpo"      /></td></tr>
 		<tr class="c"><td class="c" style="width:30%">Data de Cria&ccedil;&atilde;o:            </td><td style="width:70%"><input id="dataCr"  type="text" size=20 name="s_criacao"  /></td></tr>
 		</table>';
+		//gera, no template, o lugar onde deverao ser inseridos os campos correspondentes aos tipos de doc
 		foreach ($div as $tipoDoc => $cod) {
+			//cria HTML da divisao
 			$html .= '<div id="campos_'.$tipoDoc.'" class="campoDocEsp" style="width: 100%;" class="campoDoc">
 			'.$cod.'</div>';
 		}
+		//cria campo de historico comum a todos os documentos
 		$html .= '<table width="100%" border="0" class="campoDoc">
 		<tr id="td_desp" class="c"><td style="width:30%" class="c">Hist&oacute;rico: </td><td style="width:70%;"><input id="desp" type="text" size=20 name="s_desp"     /></td></tr>
 		<input type="hidden" id="s_tipoDoc" />
 		<input type="hidden" id="s_selectedDocCampos" />
-		</table>
-		
+		</table>		
 		<center><input type="submit" id="btnBuscar" value="Buscar" class="campoDoc" /></center>
 		</form>
 		</td></tr></table>';
+		//retorna o cod HTML do formulario
 		return $html;
 	}
 	
@@ -505,49 +558,74 @@
 	 * @param mysql link $bd
 	 */
 	function salvaDados($dados,$bd) {
+		//variavel debug deve ficar desativada em producao. Eh utilizada apenas para debugar a insercao de doc
+		//quando =1, gera o relatorio completo da insercao do documento e mostra onde ocorreu um possivel erro
 		$DEBUG = 0;
+		//gera o cabecalho
 		$html = '<span class="header">Relat&oacute;rio de Cadastro</span>';
 		if($dados['id'] == 0){//verifica se eh novo documento (nao ha ID)
+			//se for cadastro ou geracao de novo documento
+			//inicializacao das variaveis
 			$doc = new Documento($dados['id']);
 			$doc->bd = $bd;
 			$doc->dadosTipo['nomeAbrv'] = $dados['tipoDocCad'];
-			$doc->loadTipoData($bd);
-			
+			$doc->loadTipoData();
+			// se for cadastro de um documento
 			if($dados['action'] == 'cad'){
 				//verifica se o documento ja esta cadastrado
 				$query = "SELECT * FROM ".$doc->dadosTipo['tabBD']." WHERE ";
+				//para cada campo de busca
 				foreach (explode(",", $dados['camposBusca']) as $d) {
-					$campoDados = montaCampo($d, $bd,'cad',$dados,true);
+					//monta o campo com os dados enviados
+					$campoDados = montaCampo($d, 'cad',$dados,true);
+					//se esse campo nao faz parte de outro, concatena para realizar a consulta
 					if(!$campoDados['parte']) $query .= $d."='".$campoDados['valor']."' AND ";
 				}
+				//adiciona AND para adicao dos dados
 				$query = rtrim($query, "AND ");
+				//consulta para ver se o documento ja esta cadastrado
 				$r = $bd->query($query);
+				//feedback
 				if(count($r))
 					return 'Documento j&aacute; cadastrado.<br /><a href="sgd.php?acao=cad&tipoDoc='.$doc->dadosTipo['nomeAbrv'].'">Cadastrar outro(a) '.$doc->dadosTipo['nome'].'</a> <br /> <a href=""></a>';
 				
 				//array para armazenar os campos do formulario
-				//campos de busca
+				//concatena todos os campos para trata-los
 				$camposGerais = explode(",", $dados['camposGerais'].','.$dados['camposBusca']);
+				//para cada campo geral
 				foreach ($camposGerais as $cb) {
-					$r = $bd->query("SELECT tipo,attr,extra FROM label_campo WHERE nome ='".$cb."'");
+					//le os dados do campo
+					$r = getCampo($cb);
+					//copia variavel cb pois ela sera modificada
 					$cbo = $cb;
+					//verifica se o dado em questao era de busca (com '_' no  comeco)
 					if(!isset($dados[$cb]) && isset($dados['_'.$cb])){
+						//se tiver, modifica a variavel para fazer essa referencia 
 						$cb = '_'.$cb;
 					}
+					//se nao achou o campo no BD (verif de seguranca)
 					if(!isset($r[0])){
+						//apaga as variaveis
 						unset($dados[$cb]);
 						unset($camposGerais[$cb]);
+						//passa para o proximo campo
 						continue;
 					}
 					//tratamento de campos para salvamento
 					if(!isset($dados[$cb]) || $dados[$cb] == ''){
+						//se o campo for checkbox e nao tiver variavel com esse nome
 						if($r[0]['tipo'] == "checkbox")
+							//eh porque ela nao foi checada
 							$campos[$cbo] = 0;
+						//se for campo autoincrement
 						if($r[0]['tipo'] == "autoincrement"){
-							$r2 = $bd->query("SELECT ".$cb." FROM ".$doc->dadosTipo['tabBD']." ORDER BY ".$cb." DESC LIMIT 1");
+							//seleciona o attr da tabela
+							$r2 = attrFromGenericTable($cb, $doc->dadosTipo['tabBD'], '1', $cb, 'DESC', '1');
+							//incrementa o valor do attr e guarda no valor do campo
 							$campos[$cbo] = $r2[0][$cb] + 1;
 						}
 					}
+					//tratamento para o campo composto
 					if($r[0]['tipo'] == 'composto'){
 						$partes = explode("+",$r[0]['attr']);
 						$campos[$cbo] = '';
@@ -561,66 +639,91 @@
 								$campos[$cbo] .= str_replace('"','',$p);
 							}
 						}
+					//partes podem ser ignoradas pois sao tratadas na recursao
 					} elseif($r[0]['tipo'] == 'parte'){
 						continue;
+					//de resto, se o campo foi preenchido, atribui o dado a variaveld
 					} else {
 						if(isset($dados[$cb]))
 							$campos[$cbo] = $dados[$cb];
-					} 
-						if(isset($dados[$cb])){
-							$campos[$cbo] =  htmlentities ($campos[$cbo],ENT_QUOTES);
-							$campos[$cbo] =  str_replace("\n", "<br />", $campos[$cbo]);
-						}
+					}
+					//tratamento de acentos e quebra de linha para HTML/HTML entities
+					if(isset($dados[$cb])){
+						//converte caracteres especiais/acentuados para HTML entities
+						$campos[$cbo] =  htmlentities ($campos[$cbo],ENT_QUOTES);
+						$campos[$cbo] =  str_replace("\n", "<br />", $campos[$cbo]);
+					}
 				}
-				
+			//tratamento de campos para geracao de novo documento
 			}elseif($dados['action'] == 'novo'){
+				//nao ha cambos de busca na criacao de um novo documento
+				//separa os campos do documento
 				$camposForm = explode(",", $doc->dadosTipo['campos']);
-				foreach ($camposForm as $cb) {//tratamento de campos
+				//para campo, trata de acordo com o tipo de campo
+				foreach ($camposForm as $cb) {
+					//se a variavel nao for passada, pode ser check box nao marcado
 					if(!isset($dados[$cb]) || $dados[$cb] == ''){
-						$r = $bd->query("SELECT tipo,attr,extra FROM label_campo WHERE nome ='".$cb."'");
+						//le os dados do campo para 
+						$r = getCampo($cb);
+						//se o campo for checkbox, entao ele nao foi checkado
 						if($r[0]['tipo'] == "checkbox") {
+							//coloca zero no valor do campo
 							$dados[$cb] = 0;
+						//se o campo for autoincrement, deve-se verificar o ultimo valor para incrementa-lo
 						} elseif($r[0]['tipo'] == "autoincrement"){
+							//se campo reseta a cada ano
 							if(strpos($r[0]['extra'], "current_year") !== false){
+								//Seleciona o documento mais velho *deste ano* com o maior numero do attr autoincrement
 								$r2 = $bd->query("SELECT t.".$cb." FROM ".$doc->dadosTipo['tabBD']." AS t LEFT JOIN doc AS d ON t.id=d.tipoID WHERE d.data>".mktime(0,0,0,1,1,date("Y"))." AND d.labelID=".$doc->dadosTipo['id']." ORDER BY d.id DESC LIMIT 1");
-								//print($r2[0][$cb]."SELECT t.".$cb." FROM ".$doc->dadosTipo['tabBD']." AS t LEFT JOIN doc AS d ON t.id=d.tipoID WHERE d.data>".mktime(0,0,0,1,1,date("Y"))." AND d.labelID=".$doc->dadosTipo['id']." ORDER BY t.".$cb." DESC LIMIT 1");
+								//TODO print($r2[0][$cb]."SELECT t.".$cb." FROM ".$doc->dadosTipo['tabBD']." AS t LEFT JOIN doc AS d ON t.id=d.tipoID WHERE d.data>".mktime(0,0,0,1,1,date("Y"))." AND d.labelID=".$doc->dadosTipo['id']." ORDER BY t.".$cb." DESC LIMIT 1");
+								//se achar alguma entrada, incrementa o valor do ultimo doc
 								if (isset($r2[0])){
 									$dados[$cb] = (($r2[0][$cb]) + 1) . '/' . date("Y");
+								//senao, nenhum doc foi criado nesse ano, ainda. Cria o id 1/aaaa
 								} else {
 									$dados[$cb] = 1 . '/' . date("Y");
 								}
+							//se o campo nao reseta a cada ano
 							} else {
-								$r2 = $bd->query("SELECT ".$cb." FROM ".$doc->dadosTipo['tabBD']." ORDER BY ".$cb." DESC LIMIT 1");
+								//consulta o maior numero ja cadastrado
+								$r2 = attrFromGenericTable($cb, $doc->dadosTipo['tabBD'], '1', $cb, 'DESC', '1');
+								//e incrementa em uma unidade
 								if (isset($r2[0])){
 									$dados[$cb] = $r2[0][$cb] + 1;
+								//se nao houver linhas, apenas cria a primeira
 								} else {
 									$dados[$cb] = 1;
 								}
 							}
-							//print ">>>".$dados[$cb];
+						//trata campo de usuario atual
 						}elseif(strpos($r[0]['extra'], "current_user") !== false){
+							//coloca o id do usuario como valor
 							$dados[$cb] = $_SESSION['id'];
+						//trata campo composto
 						}elseif($r[0]['tipo'] == 'composto'){
+							//separa as partes do campo composto
 							$partes = explode("+",$r[0]['attr']);
+							//para cada parte do campo composto
 							foreach ($partes as $p) {
+								//verifica se o sub-campo tem algum valor
 								if (isset($dados[$p])){
+									//se tiver, concatena com o campo
 									$dados[$cb] .= $dados[$p];
 									unset($dados[$p]);
+								//senao, eh uma string e nao nome de variavel
 								} else {
+									//entao, retira as aspas e concatena com o valor do campo
 									$dados[$cb] .= str_replace('"','',$p);
 								}
-								
 							}
+						//se for parte de um campo, ignora pois ja foi tratado acima
 						}elseif($r[0]['tipo'] == 'parte'){
 							continue;
-						}
-						
+						}	
 					}
-					//print_r($dados);
-					//exit();
-					//print $cb . "=" .   htmlentities ($dados[$cb],ENT_QUOTES)."<br>";
+					//trata o valor do campo convertendo acentos em entidades HTML
 					$campos[$cb] = htmlspecialchars_decode( htmlentities ($dados[$cb],ENT_QUOTES), ENT_QUOTES);
-					
+					//se for conteudo, converte as quebras de linha em cod HTML e aspas
 					if($cb == "conteudo"){
 						$campos[$cb] = str_replace(array("'","\n"),array("\'",""), $campos[$cb]);
 					} else {
@@ -628,19 +731,21 @@
 					}
 				}
 			}
-			
+			//atribui a array temporaria ao documento
 			$doc->campos = $campos;
 			
 			if($DEBUG) $html .= "Dados lidos com sucesso.<br />";	
-			//adicao dos anexos ao documento
+			//adicao dos documentos anexos e feedback se debug setado
 			if(strlen($dados['docsAnexos'])){
 				$doc->campos['documento'] = rtrim($dados['docsAnexos'],",");
 				if($DEBUG) $html .= "Documento(s) adicionado(s) com sucesso.<br />";
 			}
+			//adicao das obras anexas
 			if(strlen($dados['obrasAnexas'])){
 				$doc->campos['obra'] = rtrim($dados['obrasAnexas'],",");
 				if($DEBUG) $html .= "Obra(s) adicionada(s) com sucesso.<br />";
 			}
+			//adicao das empresas anexas
 			if(strlen($dados['emprAnexas'])){
 				$doc->campos['empresa'] = rtrim($dados['emprAnexas'],",");
 				if($DEBUG) $html .= "Empresa(s) adicionada(s) com sucesso.<br />";
@@ -662,7 +767,7 @@
 				return $html;
 			}
 			
-			//logar historico de recebimento
+			//logar historico de recebimento se os campos forempreenchidos
 			if($dados['action'] == 'cad' && $dados['unOrgReceb'] && $dados['rrNumReceb'] && $dados['rrAnoReceb']){
 				if ($doc->doLogHist($_SESSION['id'],"Recebido de ".$dados['unOrgReceb']." via Rel. Remessa n&deg;".$dados['rrNumReceb']."/".$dados['rrAnoReceb'],"")) {
 					if($DEBUG) $html .= "Hist&oacute;rico criado com sucesso.<br />";
@@ -670,8 +775,7 @@
 					if($DEBUG) $html .= '<b>Falha ao criar hist&oacute;rico de Recebimento</b><br />';
 				}
 			}
-			
-			
+						
 			//logar historico
 			if ($doc->doLogHist($_SESSION['id'],"Criou o documento.","")){
 				if($DEBUG) $html .= "Hist&oacute;rico criado com sucesso.<br />";
@@ -679,13 +783,13 @@
 				if($DEBUG) $html .= '<b>Falha ao criar hist&oacute;rico</b><br />';
 			}
 			
-			//upload de arquivos
+			//faz upload de arquivos, salva no documento e loga no hostorico
 			if($DEBUG) $html .= "<br /><b>Arquivos</b><br />";			
 			$relArq = $doc->doUploadFiles();
-			
-			if($DEBUG) $html .= montaRelArq($relArq,$bd);
+			if($DEBUG) $html .= montaRelArq($relArq);
 			$anexoSalvo = $doc->salvaAnexos();
 			
+			//se estiver no modo debug, mostra o estado de cada arquivo anexado
 			if($DEBUG) 
 				if ($anexoSalvo === true) {
 					$html .= "<br />Arquivos anexados com sucesso.<br />";
@@ -695,30 +799,30 @@
 					$html .= "N&atilde;o h&aacute; arquivo anexado.<br /><br />";
 				}
 			
+			//marca que os documentos filho foram anexados.
 			if(!$doc->doFlagAnexado())
 				if($DEBUG) $html .= "<b>Erro ao salvar dados nos documentos filhos</b><br />";
 			
 			if(!isset($dados['funcID'])) $dados['funcID'] = false;
 
-			//gravar despacho
-			//$html .= showDespStatus($doc, array('para' => $dados['para'] ,"outro" => $dados['outro'], 'funcID' => $dados['funcID'], 'despExt' => $dados['despExt'], 'despacho' => htmlentities($dados['despacho'])));
-						
 			//CLAUSULA ESPECIAL PARA RR - caso seja RR, logar que os documentos foram enviados por ela
 			if($doc->dadosTipo['nomeAbrv'] == 'rr'){
+				//separar os documentos enviados pela RR gerada
 				foreach (explode(",", $dados['docsDesp']) as $ddid) {
-						if($ddid > 0){
+					//verif de seguranca para nao incluir documentos invalidos
+					if($ddid > 0){
+						//carrega os dados do documento 
 						$docDesp = new Documento($ddid);
-						$docDesp->bd = $bd;
 						$docDesp->doLogHist($_SESSION['id'], "Despachou o documento para ".$doc->campos['unOrgDest']." via Rel. Remessa CPO n&deg:".$doc->campos['numeroRR'],'');
 					}
 				}
 			}
-			
+			//grava despacho
 			$despStatus = showDespStatus($doc, array('para' => $dados['para'] ,"outro" => $dados['outro'], 'funcID' => $dados['funcID'], 'despExt' => $dados['despExt'], 'despacho' => htmlentities($dados['despacho'])),'hideFB');
 			
 			//gerar PDF
 			if($dados['action'] == 'novo'){
-				$pdfFile = geraPDF($doc->id,$bd);
+				$pdfFile = geraPDF($doc->id);
 				if($pdfFile)
 					if($DEBUG) $html .= '<b>Arquivo PDF gerado com sucesso. Clique para <a href="files/'.$pdfFile.'">visualizar/baixar o documento PDF </a>.</b>';
 				else
@@ -738,15 +842,15 @@
 			//Imprimir RR?
 			//@todo
 			
+			//atalho para a pagina inicial
 			$html .= '<br /> <a href="index.php">Voltar para p&aacute;gina inicial.</a>';
 				
 			//LOG dos usuarios
-			doLog($_SESSION['username'],'Criou o documento '.$doc->id,$bd);
+			doLog($_SESSION['username'],'Criou o documento '.$doc->id);
 			
 		}else{//se doc ja existe, faz o despacho
 			$doc = new Documento($dados['id']);
 			$doc->dadosTipo['nomeAbrv'] = $dados['tipoDocCad'];
-			$doc->bd = $bd;
 			
 			if(!isset($dados['funcID'])) $dados['funcID'] = false;
 			
@@ -758,114 +862,140 @@
 					if($DEBUG) $html .= '<b>Falha ao criar hist&oacute;rico de Recebimento</b><br />';
 				}
 			}
-			
 			//gravar despacho
 			$html .= showDespStatus($doc,array('para' => $dados['para'] ,"outro" => $dados['outro'], 'funcID' => $dados['funcID'], 'despExt' => $dados['despExt'], 'despacho' => htmlentities($dados['despacho'])));
-			
 			$html .= '<br /> <a href="index.php">Voltar para p&aacute;gina inicial.</a>';
-			
-			
-			//$html .= '<br /> O documento j&aacute; est&aacute; cadastrado sob o n&uacute;mero CPO <b><font color="red">'.$doc->id.'</font></b>. Apenas o despacho foi gravado.<br />
-			//<a href="#" onclick="window.open('."'sgd.php?acao=ver&amp;docID=".$doc->id."','detalhe".$doc->id."','width=900,height=650,scrollbars=yes,resizable=yes'".')">Clique aqui para ver os detalhes do documento.</a>';
 		}
-	return $html;
+		return $html;
 	}
 	
 	/**
 	 * Monta o relatorio de upload dos arquivos (DEBUG)
 	 * @param Array $files
 	 */
-	function montaRelArq($files,$bd){
+	function montaRelArq($files){
+		//inicializacao de variaveis
 		$html = '';
-		
+		//para cada arquivo bem sucedido
 		foreach ($files['success'] as $file) {
+			//se o arquivo foi enviado corretamente. Gera a mensagem
 			$html .= '<i>'.$file.'</i>: Arquivo foi anexado com sucesso.<br />';
-			doLog($_SESSION['username'], "Anexou o arquivo $file.", $bd);
+			//loga a acao
+			doLog($_SESSION['username'], "Anexou o arquivo $file.");
 		}
-		
+		//para cada arquivo mau sucedido
 		foreach ($files['failure'] as $file) {
+			//se o arquivo obteve falha
 			$html .= '<i>'.$file['name'].'</i>: Erro ao anexar arquivo (Erro '.$files['errorID'].').<br />';
-			doLog($_SESSION['username'], "Obteve erro ao adicionar $file.", $bd);
+			//loga a acao
+			doLog($_SESSION['username'], "Obteve erro ao adicionar $file.");
 		}
+		//retorna o cod html da mensagem
 		return $html;
 	}
 	
 	/**
 	 * Retorna string de feedback correspondente para dado return da funcao de salvamento. (DEBUG)
-	 * @param string $desp
+	 * @param Documento $doc
+	 * @param string $dados
+	 * @param string $mode
 	 **/
 	function showDespStatus($doc,$dados,$mode = 'showFB') {
+		//inicializacao da variavel
 		$html = "";
+		//realiza o despacho
 		$desp = $doc->doDespacha($_SESSION['id'],$dados);
+		//se o modo de operacao eh diferente de hideFeedBack
 		if($mode != "hideFB"){
+			//se houve falha ao realizar o despacho
 			if($desp === false){
+				//gera feedback
 				$html = "<b>Falha ao gravar despacho.</b><br />";
+			//se nao foi digitado nenhum despacho.
 			}elseif($desp === 0){
+				//avisa que nao houve dispacho digitado
 				$html = "<b>N&atilde;o h&aacute; despacho. Documento est&aacute; pendente para o usu&aacute;rio atual.</b><br />";
+			//senao - sucesso ao salvar despacho
 			}else{
+				//gera msg de sucesso
 				$html = "Despacho para $desp gravado com sucesso.<br />";
 			}
 		}
-		
+		//se o despacho foi para fora, e nao foi uma RR
 		if($dados['para'] == 'ext' && $dados['despExt'] && $doc->dadosTipo['nomeAbrv'] != 'rr')
-				$html .= '<br /><a href="#" onclick="window.open('."'sgd.php?acao=novoDocVar&action=novo&tipoDoc=rr&docsDesp=".$doc->id."&unOrgDest=".$dados['despExt']."&para=ext&despExt=".$dados['despExt']."&despacho=".$dados['despacho']."','novaRR','width=900,height=650,scrollbars=yes,resizable=yes'".')">Gerar Rela&ccedil;&atilde;o de Remessa</a>.<br />';
-		
+			//gerar atalho para RR 
+			$html .= '<br /><a href="#" onclick="window.open('."'sgd.php?acao=novoDocVar&action=novo&tipoDoc=rr&docsDesp=".$doc->id."&unOrgDest=".$dados['despExt']."&para=ext&despExt=".$dados['despExt']."&despacho=".$dados['despacho']."','novaRR','width=900,height=650,scrollbars=yes,resizable=yes'".')">Gerar Rela&ccedil;&atilde;o de Remessa</a>.<br />';
+		//retorna o cod html
 		return $html;
 	}
 	
 	/**
-	 * 
+	 * trata as variaveis passadas via $_GET para via $_POST (criacao de documento via URL)
 	 * @param array $GET
 	 */
-	function trataGetVars($GET,$bd){
+	function trataGetVars($GET){
+		//inicia o novo documento a ser criado
 		$doc = new Documento(0);
 		$doc->dadosTipo['nomeAbrv'] = $GET['tipoDoc'];
-		$doc->loadTipoData($bd);
-		
+		$doc->loadTipoData();
+		//para cada campo do documento
 		foreach (explode(",",$doc->dadosTipo['campos']) as $campo) {
-			$nome = montaCampo($campo,$bd);
+			//monta o campo a ser lido
+			$nome = montaCampo($campo);
+			//coloca o nome em um array
 			$camposNomes[] = $nome['nome'];
 		}
-		
+		//para cada campo do documento
 		foreach ($camposNomes as $campo) {
+			//verifica se ele foi passado para a pagina
 			if (isset($GET[$campo])) {
+				//se sim, coloca seu valor na variavel
 				$dados[$campo] = $GET[$campo];
 			} else {
+				//senao, deixa o valo da variavel vazio
 				$dados[$campo] = '';
 			}
 		}
-		
+		//se a acao for de cadastro de novo documento, seta as variaveis pertinentes
 		if($GET['action'] == 'cad'){
+			//sinaliza que a acao deve ser de cadastro
 			$dados['action'] = 'cad';
+			//seta os campos gerais
 			$dados['camposGerais'] = $doc->dadosTipo['campos'];
+			//seta os campos de busca
 			$dados['camposBusca'] = '';
 		}elseif ($GET['action'] == 'novo'){
+			//se for novo documento, apenas eh necessario setar a acao
 			$dados['action'] = 'novo';
 		}
-		
+		//indica qual o tipo de documento sera salvo
 		$dados['tipoDocCad'] = $GET['tipoDoc'];
+		//id=0 pois eh um novo documento
 		$dados['id'] = 0;
+		//cria os dados para despacho se houver. senao deixa os campos de despacho em branco
 		if(isset($GET['para']))    $dados['para'] = $GET['para'];         else   $dados['para'] = '';
 		if(isset($GET['despExt'])) $dados['despExt'] = $GET['despExt'];   else   $dados['despExt'] = '';
 		if(isset($GET['outro']))   $dados['outro'] = $GET['outro'];       else   $dados['outro'] = '';
 		if(isset($GET['despacho']))$dados['despacho'] = $GET['despacho']; else   $dados['despacho'] = '';
-		
+		//cria a 'lista' de documentos anexos, se houver
 		if (isset($GET['docsAnexos'])) {
 			$dados['docsAnexos'] = $GET['docsAnexos'];
 		} else {
 			$dados['docsAnexos'] = '';
 		}
+		//cria a 'lista' de obras anexas se passada via URL
 		if (isset($GET['obrasAnexas'])) {
 			$dados['obrasAnexas'] = $GET['obrasAnexas'];
 		} else {
 			$dados['obrasAnexas'] = '';
 		}
+		//cria a 'lista' de empresas anexas, se passada via URL
 		if (isset($GET['emprAnexas'])) {
 			$dados['emprAnexas'] = $GET['emprAnexas'];
 		} else {
 			$dados['emprAnexas'] = '';
 		}
-		
+		//retorna array com todas as variaveis necessarias para a acriacao do documento
 		return $dados;
 	}
 ?>
