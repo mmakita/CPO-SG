@@ -198,7 +198,7 @@ class Documento {
 			foreach ($ids as $id){
 				if ($id){
 					$doc = new Documento($id);
-					$doc->loadTipoData($this->bd);
+					$doc->loadTipoData();
 					$data[] = array("id" => $doc->id, "nome" => $doc->dadosTipo['nome']." ".$doc->numeroComp);
 				}
 			}
@@ -283,10 +283,24 @@ class Documento {
 	
 	function salvaCampos(){
 		if ($this->id == 0){//adicao de novo registro no BD
+			$campos = $this->campos;
+			//cria campo de documento vazio
+			if($this->dadosTipo['docAnexo']){
+				$campos['documento'] = '0';
+			}
+			//cria campo de obra vazio
+			if($this->dadosTipo['obra']){
+				$campos['obra'] = '0';
+			}
+			//cria campo de empresa
+			if($this->dadosTipo['empresa']){
+				$campos['empresa'] = '0';
+			}
+			
 			$sql = "INSERT INTO ".$this->dadosTipo['tabBD'];
 			$colunas = '';
 			$valores = '';
-			foreach ($this->campos as $nome => $valor) {
+			foreach ($campos as $nome => $valor) {
 				if($colunas)
 					$colunas .= ",";
 					

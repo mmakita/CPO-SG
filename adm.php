@@ -897,6 +897,7 @@
 				//senao deve-se atualizar a base de dados
 				} else {
 					//realiza a atualizacao da unidade
+					$un[2] = rtrim($un[2],"\n");
 					$ok = $bd->query("UPDATE unidades SET sigla='".$un[1]."', nome='".$un[2]."' WHERE id = '".$un[0]."'");
 					//marca que mais uma unidade foi modificada
 					$alterados += 1;
@@ -904,6 +905,8 @@
 			//senao achar um documento com aquele codigo no BD
 			} else {
 				//insere umanova tupla no BD com o codigo lido
+				$un[2] = rtrim($un[2],"\n");
+				print "INSERT INTO unidades (id,sigla,nome) VALUES ('".$un[0]."','".$un[1]."','".$un[2]."')";
 				$ok = $bd->query("INSERT INTO unidades (id,sigla,nome) VALUES ('".$un[0]."','".$un[1]."','".$un[2]."')");
 				//marca que mais uma unidade foi marcada
 				$novos += 1;

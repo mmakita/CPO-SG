@@ -146,7 +146,7 @@
 	 */
 	function enviarBugReport($dados,$bd){
 		//monta mensagem original
-		$descr = '<i>Mensagem Original em '.date('d/m/Y H:i').' por '.$_SESSION['username'].':</i><br />'.htmlentities($dados['descricao']);
+		$descr = '<i>Mensagem Original em '.date('d/m/Y H:i').' por '.$_SESSION['username'].':</i><br />'.htmlentities($dados['descricao'],ENT_QUOTES);
 		
 		//monta a string para consulta sql a ser executada (insercao)
 		$sql = "INSERT INTO bug (dataReceb,username,secao,descricao,estado,dataConserto)

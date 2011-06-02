@@ -35,7 +35,7 @@
   * @var string
   */
  $conf["title"] = "SiGPOD - CPO/Unicamp - ";
- $conf["footer"] = "&copy;2011. CPO/Inform&aacute;tica";
+ $conf["footer"] = "2011. CPO/Inform&aacute;tica (v. 1.0.2)";
  $conf["head"] = '';
 
  /**

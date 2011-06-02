@@ -185,7 +185,7 @@ foreach ($res as $r) {
 	
 	//carregamento dos dados da obra associada
 	//TODO carregamento de obras
-	$d['obra'] = array(array("id" => "??????", "nome" => "nome da obra (PEND)"));
+	$d['obra'] = array(array("id" => "", "nome" => ""));
 	
 	//carregamento dos dados do historico do documento
 	$d['hist'] = $doc->getHist();

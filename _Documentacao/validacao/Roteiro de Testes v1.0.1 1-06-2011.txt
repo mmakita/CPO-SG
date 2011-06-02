@@ -1,0 +1,72 @@
+Roteiro de Testes - SiGPOD v1.0.1 01-06-2011
+
+Rotinas administrativas testadas:
+
+No Acao testada                            hora-nCPO
+-- INDEX --
+1. Pagina Inicial com documentos pendentes 1438
+2. Pagina Inicial sem documentos pendentes 1422
+
+-- PROCESSO --
+3. Cadastro de Processo sem campos obr.    
+4. Cadastro de Processo com o minimo obr   
+5. Cadastro de Processo com todos os cpos  1438
+6. Recebimento de Processo Cadastrado      
+7. Envio de Processo via tela de cadastro  
+8. Envio de Processo Anexado               
+9. Envio de Processo de outra pessoa       
+10.Despacho de Processo via Janela         
+11.Observação de detalhes via janela       
+12.Anexação de arquivos via janela         
+13.Geração de RR a partir de despacho      
+
+-- OFICIO OUTRA UN --
+14.Cadastro de OFE sem campos obr.         
+15.Cadastro de OFE com o minimo obr        
+16.Cadastro de OFE com todos os cpos       
+17.Recebimento de OFE Cadastrado           
+18.Envio de OFE via tela de cadastro       
+19.Envio de OFE Anexado                    
+20.Envio de OFE de outra pessoa            
+21.Despacho de OFE via Janela              
+22.Observação de detalhes via janela       
+23.Anexação de arquivos via janela         
+24.Geração de RR a partir de despacho      
+
+-- OFICIO CPO --
+25.Criação de novo OFI vazio               1423
+25.Criacao de novo OFI minimo              
+26.Criação de novo OFI completo            
+27.Despacho através de janela              
+28.Anexação de Arquivo através de janela   
+29.Despacho de OFI anexado via janela      
+30.Observação de detalhes via janela       
+31.Geração de RR via janela                
+
+-- SAA --
+32.Criação de novo SAA vazio               
+33.Criação de novo SAA mínimo              
+34.Criação de novo SAA completo            
+35.Despacho através de janela              
+36.Anexação de Arquivo através de janela   
+37.Despacho de SAA anexado via janela      
+38.Observação de detalhes via janela       
+39.Geração de RR via janela                
+
+-- RR --
+40.Criação de novo RR vazio                
+41.Criação de novo RR mínimo               
+42.Criação de novo OFI completo            
+43.Despacho através de janela              
+44.Anexação de Arquivo através de janela   
+45.Despacho de RR anexado via janela       
+46.Observação de detalhes via janela       
+
+-- MEMO --
+47.Criação de novo MEMO vazio              
+48.Criação de novo MEMO completo           
+49.Despacho através de janela              
+50.Anexação de Arquivo através de janela   
+51.Despacho de MEMO anexado via janela     
+52.Observação de detalhes via janela       
+53.Geração de RR via janela                

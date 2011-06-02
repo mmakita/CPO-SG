@@ -71,6 +71,11 @@ class BD {
 		$selectedDB = mysql_select_db($table,$this->conn) or showError(3);
 		$r = mysql_query($sql);
 		if ($r === true) return TRUE;
+		if ($r === false){
+			print 'Erro na consulta: '.$sql.' Erro obtido: '.mysql_error().' <br>
+			<span style="color: red;">Esse &eacute; um erro grave.<b>Copie o erro acima</b> e informe o Administrador do sistema o quanto antes</span> <a href="report_bug.php">clicando aqui.</a>';			
+			exit();
+		}
 		$ret = array();
 		while ($res = mysql_fetch_assoc($r)){
 			$ret[] = $res;

@@ -105,7 +105,7 @@ function limpaCampos(){// 'reseta o formulario para repreenchimento
 	var campos = $("#camposGerais").val();
 	var campoID = campos.split(",");
 	$.each(campoID,function(i){
-		if($("#"+campoID[i]).attr('type') == 'checkbox')
+		if($("#"+campoID[i]).attr('type') == 'checkbox' || $("#"+campoID[i]).attr('type') == 'radio')
 			$("#"+campoID[i]).attr('checked','');
 		else if($("#"+campoID[i]).attr('type') == 'text')
 			$("#"+campoID[i]).val('');

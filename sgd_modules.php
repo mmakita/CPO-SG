@@ -38,7 +38,7 @@
 			$table .= '<tr class="c">';
 			$table .= '<td class="c"><center>'.$doc->id.'</center></td>';
 			$table .= "<td class=\"c\"><a href=\"#\" onclick=\"window.open('sgd.php?acao=ver&docID=".$doc->id."','detalhe".$doc->id."','width=900,height=650,scrollbars=yes,resizable=yes')\">".$doc->dadosTipo['nome']." ".$doc->numeroComp.'</a></td>';
-			//prennche o emitente
+			//preenche o emitente
 			$emitente = explode(" - ",$doc->emitente);
 			$emitenteF = $emitente[0];
 			if(isset($emitente[1])) {
@@ -55,7 +55,7 @@
 			//preenche as acoes possiveis
 			foreach ($acoes as $acao) {
 				if ($acao){
-					$r = getAcao($id);
+					$r = getAcao($acao);
 					$table .= "<a href=\"#\" onclick=\"window.open('sgd.php?acao=".$r[0]['abrv']."&docID=".$doc->id."','detalhe".$doc->id."','width=950,height=650,scrollbars=yes,resizable=yes')\">".$r[0]['nome'].'</a><br />';
 				}
 			}

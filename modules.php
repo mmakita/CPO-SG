@@ -290,14 +290,16 @@
 			
 		} elseif ($cp['tipo'] == 'select') {
 			//monta a estrutura basica de campo select (com 1a opcao --selecione--)
-			$campo['cod'] = '<select name="'.$cp['nome'].'" id="'.$cp['nome'].'"><option selected value="nenhum"> -- Selecione -- </option>';
+			$campo['cod'] = '<select name="'.$cp['nome'].'" id="'.$cp['nome'].'">
+			<option selected value="nenhum"> -- Selecione -- </option>';
 			//separa todas as opcoes da selecao
 			$attr = explode(",",$cp['attr']);
 			//para cada selecao, monta o HTML correspondente
 			foreach ($attr as $c) {
 				$c = explode("=", $c);
+				$c[0] = trim($c[0]);
 				//se for separador, cria a opcao desabilitada
-				if($c[0] == '_separador_')
+				if(strpos($c[0], '_separador_') !== false)
 					$campo['cod'] .= '<option value="" disabled="" style="background-color: #404040; color:white">-&gt; '.$c[1].'</option>';
 				else
 					//senao cria campo normal
@@ -354,6 +356,7 @@
 				$attr = explode(",",$cp['attr']);
 				foreach ($attr as $c) {
 					$c = explode("=", $c);
+					$c[0] = trim($c[0],"\n\\\/<>");
 					if($c[0] == '_separador_')
 						//se o campo for separador, coloca opcao desabilitada
 						$campo['cod'] .= '<option value="" disabled="" style="background-color: #404040; color:white">-&gt; '.$c[1].'</option>';
@@ -377,7 +380,15 @@
 			//campos de documetos. cria div que mostrara os nomes de documentos e um campo oculto que guardas os IDs a serem colocados no campo do BD 
 			$campo['cod'] = '<div id="'.$cp['nome'].'Nomes" class="cadDisp"></div><input type="hidden" name="'.$cp['nome'].'" id="'.$cp['nome'].'" />
 				<a id="addDocLink" href="#" onclick="window.open(\'sgd.php?acao=busca_mini&amp;onclick=adicionarCampo&amp;target='.$cp['nome'].'\',\'addDoc\',\'width=750,height=550,scrollbars=yes,resizable=yes\')">Adicionar Documento </a>';
-		
+			//retorna nome do documento
+			foreach(explode(",",$valor[$c]) as $id) {
+				if($id) {
+					$docAnex = new Documento($id);
+					$docAnex->loadDados();
+					$campo['valor'] = showDocAnexo(array(array("id" => $docAnex->id, "nome" => $docAnex->dadosTipo['nome']." ".$docAnex->numeroComp)));
+				}
+			}
+			
 		} elseif ($cp['tipo'] == 'composto') {
 			//tipo composto de varios outros campos
 			//algoritmo: le as partes, procura, recursivamente, o codigo de cada parte
@@ -513,10 +524,9 @@
 	 * @param int $id id do documento a ser convertido.
 	 * @param mysql link $bd conexao com o bd
 	 */
-	function geraPDF($id,$bd){
+	function geraPDF($id){
 		$doc = new Documento($id);
-		$doc->bd = $bd;
-		$doc->loadCampos($bd);
+		$doc->loadCampos();
 		
 		require_once("classes/mpdf51/mpdf.php");
 		//le os arquivos HTML para determinar o cabecalho, rodape e conteudo
@@ -532,12 +542,12 @@
 		
 		//tratamento de campos especiais (que nao apenas imprimir os dados do BD)
 		foreach ($doc->campos as $ch => $dado) {
-			$res = $bd->query("SELECT * FROM label_campo WHERE nome='".$ch."'");
+			$res = getCampo($ch);
 			$res = $res[0];
 			
 			if($res['tipo'] == 'userID'){
 				//tratamento de usuario
-				$resuser = $bd->query("SELECT * FROM usuarios WHERE id = $dado");
+				$resuser = getUsers($dado);
 				foreach ($resuser[0] as $atr => $val) {
 					//pra cada atributo (nome, sobrenome, matr, etc) coloca o valor correspondente
 					$html = str_replace('{$'.$ch.'_'.$atr."}", $val, $html);
@@ -565,7 +575,7 @@
 					if($did != ''){
 						//carrega os dados do documento
 						$doci = new Documento($did);
-						$doci->loadTipoData($bd);
+						$doci->loadTipoData();
 						$docs['total']['nome'] .= $doci->dadosTipo['nome'].' '.$doci->numeroComp.'<br />';
 						$docs['total']['tam']++;
 						//se houver mais de 5 documentos, divide em 2 colunas
@@ -596,7 +606,7 @@
 				$html = str_replace('{$'.$ch."_2}", $docs[2]['nome'], $html);
 				$html = str_replace('{$'.$ch."}", $docs['total']['nome'], $html);
 			}else{
-				$dado = montaCampo($ch, $bd, 'mostra', array($ch => $dado));
+				$dado = montaCampo($ch, 'mostra', array($ch => $dado));
 				$html = str_replace('{$'.$ch."}", $dado['valor'], $html);
 			}
 		}
