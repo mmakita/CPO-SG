@@ -15,7 +15,7 @@
 		//le varial global contendo conexao com BD
 		global $bd;
 		//seleciona todos os documentos que estao com determinado usuario
-		$res = getPendentDocs($userID);
+		$res = getPendentDocs($userID,$_SESSION['area']);
 		//comeca a construcao da tabela de documentos pendentes
 		$table = '<span class="header">Documentos Pendentes</span>
 		<table width="100%" cellspacing="0" cellpadding="0">';
@@ -209,22 +209,31 @@
 	function showAcoes($doc){
 		//inicializacao de variaveis.
 		$html = '<script type="text/javascript" src="scripts/menu_mini.js"></script>
-		<span class="menuHeader" onclick="showDet(1)">Ver Detalhes</span><br />';
+		<a href="sgd.php?acao=ver&docID='.$doc->id.'"><span class="menuHeader">Ver Detalhes</span></a><br />';
 		//se o usuario eh dono do documento e ele tem permissao para despachar
-		if ($doc->owner == $_SESSION['id'])
+		if ($doc->owner == $_SESSION['id'] || ($doc->owner == -1 && $doc->areaOwner == $_SESSION['area']))
 			//mostra o link para depsachar
-			$html .= '<span class="menuHeader" onclick="showDet(2)">Despachar</span><br />';
+			$html .= '<a href="sgd.php?acao=desp&docID='.$doc->id.'"><span class="menuHeader">Despachar</span></a><br />';
 		//demais acoes
 		$acoes = explode(",", $doc->dadosTipo['acoes']);
 		//para cada acao
+		
 		foreach ($acoes as $acao){
 			//le os dados da acao do BD
-			$res = getAcao($acao);
-			//verifica se tem permissao para faze-la
-			if($_SESSION['perm'][$acao])
-				//adiciona link para a acao no menu
-				$html .= '<span class="menuHeader" onclick="showDet(3)">'.$res[0]['nome'].'</span><br />';
+			if($acao){
+				$res = getAcao($acao);
+				//verifica se tem permissao para faze-la
+				if($_SESSION['perm'][$acao])
+					//adiciona link para a acao no menu
+					$html .= '<a href="sgd.php?acao='.$res[0]['abrv'].'&docID='.$doc->id.'"><span class="menuHeader">'.$res[0]['nome'].'</span></a><br />';
+			}
 		}
+		
+		if ($doc->owner == 0) {
+			$html .= '<a href="sgd.php?acao=entrada&docID='.$doc->id.'"><span class="menuHeader">Registrar Entrada deste doc.</span></a><br />';
+		}
+		
+		
 		//retorna o codigo HTML das acoes para o documento
 		return $html;
 	}
@@ -291,10 +300,21 @@
 		<input type="text" size=100 id="despExt" name="despExt" autocomplete="off" /><br />';
 		if($tipo == "f") $html.= '<input type="submit" value="Despachar" />
 		</form>';
-		//retorna o codigo htmldo form
+		//retorna o codigo html do form
 		return $html;
 	}
 	
+	function showEntradaForm($deptos,$doc){
+		$html = '<span class="headerLeft">Despachar Documento</span>
+		<form action="sgd.php?acao=despachar&entrada=1" method="post">';
+		$html .= showDesp("sf",$deptos, $doc);
+		$html .= '<span style="color: #BE1010; font-weight: bold;">Rela&ccedil;&atilde;o de Remessa de Entrada</span><br />';
+		$html .= showReceb();
+		$html .= '<br />
+		<center><input type="submit" value="Enviar" /></center> 
+		</form>';
+		return $html;
+	}
 	/**
 	 * Mostra formulario de Cadastramento/Criacao de documento
 	 * @param string $acao
@@ -440,7 +460,10 @@
 	 */
 	function showReceb() {
 		//adiciona campo para numero da RR de entrada e unidade de origem
-		$html = '<b>n&deg; Rela&ccedil;&atilde;o de Remessa:</b> <input type="text" id="rrNumReceb" name="rrNumReceb" size="2" maxlength="4" />/<input type="text" id="rrAnoReceb" name="rrAnoReceb" size="2" maxlength="4" value="'.date("Y").'" /> <b>Un/Org de Origem:</b> <input type="text" id="unOrgReceb" name="unOrgReceb" size="60" />
+		$html = '<b>n&deg; Rela&ccedil;&atilde;o de Remessa:</b>
+		<input type="text" id="rrNumReceb" name="rrNumReceb" size="3" maxlength="5" />/<input type="text" id="rrAnoReceb" name="rrAnoReceb" size="2" maxlength="4" value="'.date("Y").'" />
+		<br />
+		<b>Un/Org Expedidor:</b> <input type="text" id="unOrgReceb" name="unOrgReceb" size="60" />
 		<script type="text/javascript">
 		$(document).ready(function(){
 			$("#unOrgReceb").autocomplete("unSearch.php",{minChars:2,matchSubset:1,matchContains:true,maxCacheLength:20,extraParams:{\'show\':\'un\'},selectFirst:true,onItemSelect: function(){$("#unOrgReceb").focus();}});	
@@ -567,7 +590,6 @@
 			//se for cadastro ou geracao de novo documento
 			//inicializacao das variaveis
 			$doc = new Documento($dados['id']);
-			$doc->bd = $bd;
 			$doc->dadosTipo['nomeAbrv'] = $dados['tipoDocCad'];
 			$doc->loadTipoData();
 			// se for cadastro de um documento
@@ -900,9 +922,17 @@
 	 * @param string $dados
 	 * @param string $mode
 	 **/
-	function showDespStatus($doc,$dados,$mode = 'showFB') {
+	function showDespStatus($doc,$dados,$mode = 'showFB',$entrada = false) {
 		//inicializacao da variavel
 		$html = "";
+		//print $entrada.'/'.$dados['rrNumReceb'].'/'.$dados['unOrgReceb'].'/'.$dados['rrAnoReceb'];exit();
+		if($entrada && isset($dados['unOrgReceb']) && isset($dados['rrNumReceb']) && isset($dados['rrAnoReceb']) && $dados['unOrgReceb'] && $dados['rrNumReceb'] && $dados['rrAnoReceb']){	if ($doc->doLogHist($_SESSION['id'],"Recebido de ".$dados['unOrgReceb']." via Rel. Remessa n&deg;".$dados['rrNumReceb']."/".$dados['rrAnoReceb'],'')) {
+				if($mode == 'showFB') $html .= "Hist&oacute;rico criado com sucesso.<br />";
+			} else {
+				if($mode == 'showFB') $html .= '<b>Falha ao criar hist&oacute;rico de Recebimento</b><br />';
+			}
+		}
+		
 		//realiza o despacho
 		$desp = $doc->doDespacha($_SESSION['id'],$dados);
 		//se o modo de operacao eh diferente de hideFeedBack
@@ -918,13 +948,14 @@
 			//senao - sucesso ao salvar despacho
 			}else{
 				//gera msg de sucesso
-				$html = "Despacho para $desp gravado com sucesso.<br />";
+				$html = 'Despacho para '.$desp.' gravado com sucesso.<br />
+				<a href="javascript:void(0)" onclick="window.open(\'sgd.php?acao=geraCI&id='.$doc->id.'\')">Gerar CI</a>';
 			}
 		}
 		//se o despacho foi para fora, e nao foi uma RR
 		if($dados['para'] == 'ext' && $dados['despExt'] && $doc->dadosTipo['nomeAbrv'] != 'rr')
 			//gerar atalho para RR 
-			$html .= '<br /><a href="#" onclick="window.open('."'sgd.php?acao=novoDocVar&action=novo&tipoDoc=rr&docsDesp=".$doc->id."&unOrgDest=".$dados['despExt']."&para=ext&despExt=".$dados['despExt']."&despacho=".$dados['despacho']."','novaRR','width=900,height=650,scrollbars=yes,resizable=yes'".')">Gerar Rela&ccedil;&atilde;o de Remessa</a>.<br />';
+			$html .= '<br /><a href="#" onclick="window.open('."'sgd.php?acao=novoDocVar&action=novo&tipoDoc=rr&docsDesp=".$doc->id."&unOrgDest=".$dados['despExt']."&para=ext&despExt=".$dados['despExt']."&despacho=".urlencode(html_entity_decode($dados['despacho']))."','novaRR','width=900,height=650,scrollbars=yes,resizable=yes'".')">Gerar Rela&ccedil;&atilde;o de Remessa</a>.<br />';
 		//retorna o cod html
 		return $html;
 	}
@@ -973,9 +1004,9 @@
 		//id=0 pois eh um novo documento
 		$dados['id'] = 0;
 		//cria os dados para despacho se houver. senao deixa os campos de despacho em branco
-		if(isset($GET['para']))    $dados['para'] = $GET['para'];         else   $dados['para'] = '';
-		if(isset($GET['despExt'])) $dados['despExt'] = $GET['despExt'];   else   $dados['despExt'] = '';
-		if(isset($GET['outro']))   $dados['outro'] = $GET['outro'];       else   $dados['outro'] = '';
+		if(isset($GET['para']))    $dados['para']     = $GET['para'];     else   $dados['para'] = '';
+		if(isset($GET['despExt'])) $dados['despExt']  = $GET['despExt'];  else   $dados['despExt'] = '';
+		if(isset($GET['outro']))   $dados['outro']    = $GET['outro'];    else   $dados['outro'] = '';
 		if(isset($GET['despacho']))$dados['despacho'] = $GET['despacho']; else   $dados['despacho'] = '';
 		//cria a 'lista' de documentos anexos, se houver
 		if (isset($GET['docsAnexos'])) {

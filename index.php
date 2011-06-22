@@ -17,7 +17,8 @@
 	
 	//verifica se o usuario esta logado, caso nao esteja redireciona para tela de login
 	
-	checkLogin(0);
+	if(!checkLogin(0) || !isset($_SESSION['nomeCompl']) || !isset($_SESSION['area']) || !isset($_SESSION['id']) || !isset($_SESSION['perm']))
+		exit();
 	
 	$html->user = $_SESSION["nomeCompl"];
 		

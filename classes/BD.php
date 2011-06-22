@@ -51,7 +51,7 @@ class BD {
 		$this->password = $password;
 		$this->table = $table;
 		
-		$this->conn = mysql_connect($host, $login, $password) or showError(2);
+		$this->conn = mysql_connect($host, $login, $password) or die(showError(2));
 	}
 	
 	/**

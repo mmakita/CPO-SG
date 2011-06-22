@@ -589,15 +589,15 @@
 						$i++;
 					}
 				}
-				//completa as colunas para que a tabela tenha pelo menos 5 linhas de altura
-				while ($docs[1]['tam'] < 5 && $docs[2]['tam'] < 5){
+				//completa as colunas para que a tabela tenha pelo menos 6 linhas de altura
+				while ($docs[1]['tam'] < 6 && $docs[2]['tam'] < 6){
 					$docs[1]['nome'] .= '<br />';
 					$docs[2]['nome'] .= '<br />';
 					$docs[1]['tam']++;
 					$docs[2]['tam']++;
 				}
-				//completa a coluna total para que tenha pelo menos 5 linhas de altura
-				while($docs['total']['tam'] < 5){
+				//completa a coluna total para que tenha pelo menos 6 linhas de altura
+				while($docs['total']['tam'] < 6){
 					$docs['total']['nome'] .= '<br />';
 					$docs['total']['tam']++;
 				}
@@ -613,8 +613,12 @@
 		
 		//coloca despacho no documento
 		$despacho = $doc->getHist();
-		$despacho = $despacho[count($despacho) - 1]['despacho'];
-		$html = str_replace('{$despacho}',$despacho,$html);
+		$desp = '';
+		for($i=count($despacho);$desp == '';$i--){
+			$desp = $despacho[$i]['despacho'];
+		}
+		
+		$html = str_replace('{$despacho}',$desp,$html);
 		
 		//completando as datas
 		$data['dia1'] = date("j",$doc->data);
@@ -650,5 +654,55 @@
 		$doc->salvaAnexos();
 		//retorna o nome do arquivo
 		return $fileName;
+	}
+	
+		function geraCI($id){
+		require_once("classes/mpdf51/mpdf.php");
+		
+		$html = file_get_contents("templates/modelo_ci.html");
+		
+		/*$CI = new Documento($id);
+		$CI->loadCampos();
+		print_r($CI);*/
+		$doc = new Documento($id);
+		$doc->loadCampos();
+		$hist = $doc->getHist();
+		
+		$html = str_ireplace('{$ano2}', date("Y",$doc->data), $html);
+		
+		//TODO ler dados
+		
+		//TODO completar dados
+	
+	
+		for ($i = 0; $i < 9; $i++) {
+			if(!isset($hist[count($hist)-$i])){
+				$data = '&nbsp;';
+				$para = '&nbsp;';
+				$desp = '&nbsp;';
+			}elseif(strpos($hist[count($hist)-$i]['acao'],"Despachou para") !== false){
+				$para = str_ireplace("Despachou para", "", $hist[count($hist)-$i]['acao']);
+				$desp = "Despachou documento";
+				$data = $hist[count($hist)-$i]['data'];
+			} else {
+				$desp = $hist[count($hist)-$i]['acao'];
+				$para = '&nbsp;';
+				$data = $hist[count($hist)-$i]['data'];
+			}
+			$html = str_ireplace('{$despacho'.$i.'}', $desp, $html);
+			$html = str_ireplace('{$para'.$i.'}', $para, $html);
+			$html = str_ireplace('{$data'.$i.'}', $data, $html);
+		}
+		
+		$pdf = new mPDF('c','A4',12,'Arial',15,15,15,10,0,0,'P');
+		$pdf->allow_charset_conversion=true;
+		$pdf->charset_in='UTF-8';
+		$pdf->WriteHTML(utf8_encode($html));
+		$fileName = '['.$doc->id.']_CI_'.$doc->campos['numeroCI'].'_(PDF_DOC_ORIGINAL).pdf';
+		
+		$pdf->Output('files/'.$fileName,'I');
+		//anexa ao documento
+		$doc->anexo[] = $fileName;
+		$doc->salvaAnexos();
 	}
 ?>

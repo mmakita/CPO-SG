@@ -1,4 +1,4 @@
-Roteiro de Testes - SiGPOD 19-04-2011
+Roteiro de Testes - SiGPOD
 
 Rotinas administrativas testadas:
 

@@ -9,10 +9,10 @@
 	 * @uses $bd
 	 * @return array
 	 */
-	function getPendentDocs($id_usuario){
+	function getPendentDocs($id_usuario,$area_usuario){
 		global $bd;
 		
-		return $bd->query("SELECT id,labelID,tipoID FROM doc WHERE ownerID = $id_usuario");
+		return $bd->query("SELECT id,labelID,tipoID FROM doc WHERE ownerID = $id_usuario OR (ownerID = -1 AND ownerArea = '$area_usuario')");
 	}
 	
 	/**
@@ -118,4 +118,10 @@
 		
 		return $bd->query("SELECT area FROM usuarios GROUP BY area");
 	} 
+	
+	function getAreaFromUser($id){
+		global $bd;
+		
+		return $bd->query("SELECT area FROM usuarios WHERE id=$id LIMIT 1");
+	}
 ?>

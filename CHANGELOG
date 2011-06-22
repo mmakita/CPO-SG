@@ -9,12 +9,45 @@ Versao em desenvolvimento: 1.1
 
 Data_Ini   Data_Fim     (sub)versão  Comentario
 -----------------------------------------------------------------------------------------
-27/05/2011 3/05/2011   1.0.1 (I)    Inicio da separacao entre Regras de Negocio e regras
+27/05/2011 02/06/2011   1.0.1 (I)    Implantacao do Modulo de Administracao
+									 Inicio da separacao entre Regras de Negocio e regras
                                      de consultas ao banco de dados (sgd_modules)
+									 
+01/06/2011 03/06/2011   1.0.2 (E)    Separacao de Regras de Negocio e Banco de Dados
+									 Corrigido bug de report error
+									 Corrigido bug de aspas
+									 Corrigido bug de select com enter
+									 Corrigido bug com documentos anexos
+									 Corrigido layout SAP
+									 
+16/06/2011              1.0.4 (E)    Redistribuição das colunas no modelo da RR
+									 Consertado despacho errado na RR
+									 Consertada string errada na RR (/2011/2011)
+									 Solucionados problemas de privilégio
+									 Adicionado tipo de documento genérico
+									 Troca de label "Enviar" para "Consultar"
+									 Troca de label "Un/Org de Origem" para "Un/org Expedidor"
+									 Consetrada a busca de ofício
+									 Adicionada facilidade de despacho para grupos
+									 Adicionado botão "Criar CI"
+									 
+17/06/2011				1.0.5 (E)    Consertado erro no envio de RR
+									 Adicionada possibilidade de cadastro de processos tipo 00 E 00000-0000
+									 Consertada {$desp}na RR
+									 Consertado bug de busca
+									 Despacho para "Todos do Departamento"
+									 Nova facilidade: "Registrar Entrada do doc" dentro do menu de ações
+									 Despacho aparece como obs na RR
+									 Campo tipo Doc/Num Proc aumentado de 1 digito
+									 Inserido Campo Anexo
+									 Melhoria para aceitar acentos no cadastro de documentos
+									 
+23/06/2011				1.0.6 (E)    Colocado campo de RR de Entrada para facilidade "Registar Entrada deste doc"
+									 Liberado despacho para si mesmo.
 
-
-
-
+??/06/2011				1.0.7 (?)    Remodelação da busca de documentos (Documento Generico/ Data de criação vs. Data de Recebimento vs. data de saida)
+									 Conserto da geração de RR em um clique
+									 Remodelação da busca de despacho 
 
 
 (I) Release instavel/interno

@@ -15,7 +15,7 @@ $bd = new BD($conf["DBLogin"], $conf["DBPassword"], $conf["DBhost"], $conf["DBTa
 
 //BUSCA POR CAMPO EXATO
 if (isset($_GET['tipoBusca'])){//tipo de busca
-	if($_GET['tipoBusca'] == "cadSearch"){//seleciona o tipo de musica
+	if($_GET['tipoBusca'] == "cadSearch"){//seleciona o tipo de busca
 		if (isset($_GET['campos']) && isset($_GET['tabela']) && isset($_GET['labelID'])) {
 			$tab = $_GET['tabela'];
 			$labelID = $_GET['labelID'];
@@ -31,7 +31,7 @@ if (isset($_GET['tipoBusca'])){//tipo de busca
 						$query .= ' AND ( '.$c." LIKE '";
 						foreach ($partes as $p) {
 							if(isset($_GET[$p]) != null){
-								$query .= "%".$_GET[$p]."%";
+								$query .= "%".htmlentities($_GET[$p],ENT_QUOTES)."%";
 							}else{
 								$query .= str_replace('"','',$p);
 							}
@@ -40,33 +40,52 @@ if (isset($_GET['tipoBusca'])){//tipo de busca
 					} elseif($tipoCampo[0]['extra'] == 'parte') {
 						continue;							
 					} else {
-						$query .= " AND tab.".$c." = '".$_GET[$c]."'";
+						$query .= " AND tab.".$c." = '".htmlentities($_GET[$c],ENT_QUOTES)."'";
 					}
 				} else {
 					showError(9);
 				}
 			}
 			//efetua a busca retornando os IDs das matches
-			$res = $bd->query("
+			
+			$q = "
+			SELECT doc.id FROM sg.doc AS doc
+			INNER JOIN ".$tab." AS tab ON doc.tipoID = tab.id
+			WHERE doc.labelID = ".$labelID.$query;
+			$res = $bd->query($q);
+			
+			/*print($q.'<br>');
+			print_r($bd->query($q)); print("<BR>");
+			$q = "
+			SELECT doc.id FROM sg.doc AS doc
+			INNER JOIN doc_gen AS tab ON doc.tipoID = tab.id
+			Where doc.labelID = 7 AND tab.tipoDoc = 'CARTA' AND tab.numero_dgen = '1233' AND tab.anoE = '2011' AND tab.unOrg = '22.07.02.00.00.00 - MANUTENCAO (MANUT)'";
+			$res = $bd->query($q);
+			
+			/*$res = $bd->query("
 			SELECT sg.doc.id FROM sg.doc AS doc
 			RIGHT JOIN ".$tab." AS tab ON doc.tipoID = tab.id
-			WHERE doc.labelID = ".$labelID.$query);
-			/*print("
-			SELECT sg.doc.id FROM sg.doc AS doc
-			RIGHT JOIN ".$tab." AS tab ON doc.tipoID = tab.id
-			WHERE doc.labelID = ".$labelID.$query);*/
+			WHERE doc.labelID = ".$labelID.$query);//*/
+			
+			//print_r($q);
+			//print_r($res);exit();
 		}
 	}elseif($_GET['tipoBusca'] == "buscaSearch"){
-		if(isset($_GET['tipoDoc'])){
-			$tipoDoc = $_GET['tipoDoc'];
-			
-			if($tipoDoc == "_outro_"){//seleciona em qual tabela(s) procurar
+		if(isset($_GET['tipoDoc'])) {
+			$tipoDoc = $_GET['tipoDoc'];// print_r($_GET);exit();
+			if($tipoDoc == "_outro_") {//seleciona em qual tabela(s) procurar
 				$sql = "SELECT id FROM doc as d WHERE d.id > 0";
-			}else{
-				$tab = $bd->query("SELECT id,tabBD FROM label_doc WHERE nomeAbrv='".$tipoDoc."'");
+			} else {
+				$doc = new Documento('0');
+				$doc->dadosTipo['nomeAbrv'] = $tipoDoc; //print_r($doc);
+				$doc->loadTipoData();  
+				$tab = $doc->dadosTipo['tabBD'];
+				//print($tab);exit();
+				
+				//$tab = $bd->query("SELECT id,tabBD FROM label_doc WHERE nomeAbrv='".$tipoDoc."'");
 				$sql = "SELECT d.id FROM doc as d
-				LEFT JOIN ".$tab[0]['tabBD']." AS t ON d.tipoID = t.id
-				WHERE d.labelID = ".$tab[0]['id'];
+				LEFT JOIN ".$tab." AS t ON d.tipoID = t.id
+				WHERE d.labelID = ".$doc->dadosTipo['id'];
 			}
 			
 			foreach ($_GET as $cNome => $cValor) {
@@ -74,16 +93,16 @@ if (isset($_GET['tipoBusca'])){//tipo de busca
 					continue;
 				
 				elseif($cNome == 'dataCr'){//algoritmo deve identif intervalo de data ou data especifica
-					if($cValor != ''){
+					if($cValor != '') {
 						$dataCr = montaData($_GET['dataCr']);
 						$sql .= ' AND d.data > '.$dataCr[0].' AND d.data < '.$dataCr[1];
 					}
-				}elseif ($cNome == "numCPO"){//campo numero CPO
-					if($cValor != ''){
+				} elseif ($cNome == "numCPO"){//campo numero CPO
+					if($cValor != '') {
 						$sql .= ' AND d.id='.$cValor;
 					}
-				}elseif ($cNome == 'desp'){//restringe a busca para os ids que tem o despacho igual ao da busca
-					if($cValor != ''){	
+				} elseif ($cNome == 'desp'){//restringe a busca para os ids que tem o despacho igual ao da busca
+					if($cValor != '') {	
 						$resDesp = $bd->query("SELECT docID as id FROM data_historico WHERE acao LIKE '%".htmlentities($cValor)."%' GROUP BY docID");
 						if (count($resDesp)) {
 							$sql .= ' AND (';
@@ -97,30 +116,30 @@ if (isset($_GET['tipoBusca'])){//tipo de busca
 							$sql .= ')';
 						}
 					}
-				}else{
+				} else {
 					$tipoCampo = $bd->query("SELECT tipo,attr,extra FROM label_campo WHERE nome = '$cNome'");
 					if($cValor != '' || $tipoCampo[0]['tipo'] == 'composto'){
 						if($tipoCampo[0]['tipo'] == 'userID' && strpos($tipoCampo[0]['tipo'] == 'userID', "select") === false){
-							$userID = $bd->query("SELECT id FROM usuarios WHERE nome LIKE '%$cValor%'");
+							$userID = $bd->query("SELECT id FROM usuarios WHERE nome LIKE '%".htmlentities($cValor)."%'");
 							if (count($userID)){
 								$sql .= ' AND (';
 								foreach ($userID as $id) {
-									$sql .= "$cNome = ".$id['id']." OR ";
+									$sql .= "$cNome = ".htmlentities($id['id'])." OR ";
 								}
 								$sql = rtrim($sql," OR ");
 								$sql .= ")";
-							}
+							} 
 							
-						} elseif($tipoCampo[0]['tipo'] == 'select' && $cValor == "nenhum"){
+						} elseif($tipoCampo[0]['tipo'] == 'select' && $cValor == "nenhum") {
 							$sql .= ' AND t.'.$cNome." LIKE '%'";
 						} elseif($tipoCampo[0]['tipo'] == 'composto') {
 							$partes = explode("+",$tipoCampo[0]['attr']);
 							$sql .= ' AND ( '.$cNome." LIKE '";
 							foreach ($partes as $p) {
 								if(isset($_GET[$p]) != null){
-									$sql .= "%".$_GET[$p]."%";
+									$sql .= "%".htmlentities($_GET[$p])."%";
 								}else{
-									$sql .= str_replace('"','',$p);
+									$sql .= htmlentities(str_replace('"','',$p));
 								}
 							}
 							$sql .= "') ";				

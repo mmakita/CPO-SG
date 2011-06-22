@@ -16,7 +16,7 @@ $(document).ready(function(){
 				exit = true;
 				return;
 			}
-			q += "&"+campo[i]+"="+cpval;
+			q += "&"+campo[i]+"="+escape(cpval);
 		};//close each
 		if(!exit)
 			doBuscaProc(q);
@@ -49,11 +49,11 @@ $(document).ready(function(){
 	limpaCampos();
 	
 	$.get("sgd_busca.php"+q,function(d){//busca
-		//$(".hid").append("sgd_busca.php"+q+"\n"+d);//
+		//$(document).append("sgd_busca.php"+q+"\n"+d);//
 		var data = eval(d);
 		
 		$("#buscabut").attr("disabled","");
-		$("#buscabut").val("Enviar");
+		$("#buscabut").val("Consultar");
 
 		if(data.length > 0){
 			$("#id").val(data[0].id);

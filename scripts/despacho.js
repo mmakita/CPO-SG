@@ -32,9 +32,8 @@ function clearAll(){//inicializa os campos de despacho (V1)
 
 function loadNames(area){//completa os nomes dos funcionarios de um depto CPO
 	$("#subp").html('<option value=""></option>');
-	//alert(escape(area));
+	$("#subp").append('<option id="_todos" value="_todos">Todos nesse Depto.</option>');
 	$.get("unSearch.php?show=pessoas&area="+escape(area),function(d){
-		//alert(d);
 		var data = eval(d);
 		var i = 0;
 		$.each(data,function(){

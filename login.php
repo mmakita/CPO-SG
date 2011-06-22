@@ -10,13 +10,20 @@
 	$html = new html($conf,$conf['template_login']);
 	$pessoa = new Pessoa();
 	$bd = new BD($conf["DBLogin"], $conf["DBPassword"], $conf["DBhost"], $conf["DBTable"]);
-
-	if(isset($_GET['redir']) && $_GET['redir'] != '/login.php?')
-		$html->content[1] = '<input type="hidden" name="redir" value="'.$_GET['redir'].'" />';
+	//tratamento de pasta
+	$url = explode('/',$_SERVER['PHP_SELF']);
+	$pasta = '/'; 
+	for($i = 1 ; $i < count($url) - 1 ; $i++){
+		$pasta .= $url[$i] . "/";
+	}
+	//monta o enderecador para a proxima pagina
+	if(isset($_GET['redir']) && strpos('login.php',$_GET['redir']) !== false)
+		$html->content[1] = '<input type="hidden" name="redir" value="'.$pasta.$_GET['redir'].'" />';
 	else
-		$html->content[1] = '<input type="hidden" name="redir" value="/index.php" />';
+		$html->content[1] = '<input type="hidden" name="redir" value="'.$pasta.'index.php" />';
 		
 	if(isset($_POST['username']) && isset($_POST['senha']) ){
+		//verifica se o login e senha sao iguais
 		if($pessoa->login($_POST['username'], $_POST['senha'],$bd))
 			header("Location: ".$_POST['redir']);
 		else{

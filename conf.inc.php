@@ -35,7 +35,7 @@
   * @var string
   */
  $conf["title"] = "SiGPOD - CPO/Unicamp - ";
- $conf["footer"] = "2011. CPO/Inform&aacute;tica (v. 1.0.2)";
+ $conf["footer"] = "2011. CPO/Inform&aacute;tica (v. 1.0.7 - 30/06/2011)";
  $conf["head"] = '';
 
  /**
@@ -44,7 +44,7 @@
   */
  
  $conf["DBLogin"] = "sgcpo";
- $conf["DBPassword"] = "";
+ $conf["DBPassword"] = "L53mCsxsPpRFAw7Z";
  $conf["DBhost"] = "127.0.0.1";
  $conf["DBTable"] = "sg";
  

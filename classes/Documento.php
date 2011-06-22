@@ -38,6 +38,7 @@ class Documento {
 	 */
 	public $owner;
 	
+	public $areaOwner;
 	/**
 	 * id do tipo de documento no BD
 	 * @var int
@@ -111,6 +112,7 @@ class Documento {
 		
 		$this->data = $res['data'];
 		$this->criador = $res['criadorID'];
+		$this->areaOwner = $res['OwnerArea'];
 		$this->owner = $res['ownerID'];
 		if($res['anexado']) $this->anexado = true;
 		else $this->anexado = false;
@@ -413,10 +415,16 @@ class Documento {
 	 */
 	function doDespacha($userID,$dados) {
 		$ownerID = 0;
-		if ($dados['funcID']){
+		$ownerArea = '';
+		$para = '';
+		if ($dados['funcID'] && $dados['funcID'] != '_todos'){
 			$ownerID = $dados['funcID'];//doc despachado para funcionario
 			$para = $this->bd->query("SELECT nomeCompl FROM usuarios WHERE id = ".$ownerID);
 			$para = $para[0]['nomeCompl'];
+		}elseif ($dados['funcID'] == '_todos')	{
+			$ownerID = -1;
+			$para = $dados['para'];
+			$ownerArea = $para;
 		}elseif ($dados['despExt']){
 			$para = $dados['despExt'];//despacho para outra unOrg
 		}elseif ($dados['outro']){
@@ -429,17 +437,19 @@ class Documento {
 			$ownerID = $_SESSION['id'];//doc pendente para usuario atual caso nao tenha despachado para lugar nenhum
 		}
 		
-		$r = $this->bd->query("UPDATE doc SET ownerID = $ownerID WHERE id = ".$this->id);
+		$r = $this->bd->query("UPDATE doc SET ownerID = $ownerID, ownerArea ='$ownerArea' WHERE id = ".$this->id);
 		
 		if($r && $ownerID != $_SESSION['id']){
-			if(!$this->doLogHist($userID, "Despachou para ".$para.".",$dados['despacho']))
+			if(!$this->doLogHist($userID, "Despachou para ".$para.".",htmlentities($dados['despacho'])))
 				return false;
 			return $para;
-		}elseif($ownerID == $_SESSION['id']){
-			return 0;
-		}elseif(!$r){
+		} elseif ($r && $ownerID == $_SESSION['id']) {
+			if(!$this->doLogHist($userID, "Adicionou observa&ccedil;&atilde;o a este documento",htmlentities($dados['despacho'])))
+				return false;
+			return "si mesmo";
+		} elseif(!$r) {
 			return false;//erro ao atualizar BD
-		}else{
+		} else {
 			return $ownerID;
 		}
 	}

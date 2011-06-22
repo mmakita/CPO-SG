@@ -12,7 +12,6 @@
 	{$obra}
 	{$empresa}
 </td></tr>
-
 <tr><td colspan="2"><b>Anexar Arquivo:</b></td></tr>
 <tr><td colspan="2">{$anexarArq}</td></tr>
 <tr><td colspan="2"><b>Despacho:</b></td></tr>

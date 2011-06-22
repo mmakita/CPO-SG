@@ -26,7 +26,7 @@
 	$bd = new BD($conf["DBLogin"], $conf["DBPassword"], $conf["DBhost"], $conf["DBTable"]);
 	
 	if (isset($_GET['acao'])) {
-/*VD*/	if(($_GET['acao'] == "ver")||($_GET['acao'] == "desp")||($_GET['acao'] == "anexArq")) {
+/*VD*/	if(($_GET['acao'] == "ver")||($_GET['acao'] == "desp")||($_GET['acao'] == "anexArq")||($_GET['acao'] == "entrada")) {
 		//rotina para  ver documento
 			if(isset($_GET['docID'])){
 				//se o ID do documento estiver especificado, cria variavel e carrega os dados do doc
@@ -46,25 +46,36 @@
 			//completa o espaco de menu com as acoes possiveis para o documento
 			$html->menu = showAcoes($doc);
 			//area 1 - contem os detalhes do documento
-			$html->content[1] = showDetalhes($doc);
+			
 			//area 2 - detalhes do emissor
-			$html->content[2] = showEmissor($doc);
+			$html->content[2] = '';
+			$html->content[3] = '';
+			$html->content[4] = '';
+			$html->content[5] = '';
 			//area 3 - historico do documento
-			$html->content[3] = showHist($doc);
+			//$html->content[3] = showHist($doc);
 			//area 4 - area para despachar
-			$html->content[4] = showDesp('f',getDeptos(),$doc);
+			//$html->content[4] = showDesp('f',getDeptos(),$doc);
 			//area 5 - area para anexar arquivo
-			$html->content[5] = showAnexar('f',$doc);
+			//$html->content[5] = showAnexar('f',$doc);
 			//dependendo da acao, gera JS para esconder/mostrar as areas pertinentes
-			if($_GET['acao'] == "ver") {
+			if ($_GET['acao'] == "ver") {
 				//mostra detalhes do doc/emissor e historico. esconde anexar arquivo e despacho
+				$html->content[1] = showDetalhes($doc);
+				$html->content[2] = showEmissor($doc);
+				$html->content[3] = showHist($doc);
 				$html->menu .= '<script type="text/javascript">$(document).ready(function(){$("#c4").hide();$("#c5").hide();});</script>';
-			}elseif($_GET['acao'] == "desp"){
+			} elseif ($_GET['acao'] == "desp") {
 				//esconde os detalhes/historico e anexar arquivo. mostra despachar
-				$html->menu .= '<script type="text/javascript">$(document).ready(function(){$("#c1").hide();$("#c2").hide();$("#c3").hide();$("#c5").hide();});</script>';
-			}elseif($_GET['acao'] == "anexArq"){
+				$html->content[1] = showDesp('f',getDeptos(),$doc);
+				$html->menu .= '<script type="text/javascript">$(document).ready(function(){$("#c2").hide();$("#c3").hide();$("#c4").hide();$("#c5").hide();});</script>';
+			} elseif ($_GET['acao'] == "anexArq") {
 				//esconde os detalhes/historico e despachar. mostra anexar arquivo
-				$html->menu .= '<script type="text/javascript">$(document).ready(function(){$("#c1").hide();$("#c2").hide();$("#c3").hide();$("#c4").hide();});</script>';
+				$html->content[1] = showAnexar('f',$doc);
+				$html->menu .= '<script type="text/javascript">$(document).ready(function(){$("#c2").hide();$("#c3").hide();$("#c4").hide();$("#c5").hide();});</script>';
+			} elseif ($_GET['acao'] == "entrada") {
+				$html->content[1] = showEntradaForm(getDeptos(),$doc);
+				$html->menu .= '<script type="text/javascript">$(document).ready(function(){$("#c2").hide();$("#c3").hide();$("#c4").hide();$("#c5").hide();});</script>';
 			}
 			//loga a acao do usuario no BD para administracao
 			doLog($_SESSION['username'], "viu detalhes do documento ".$doc->id." (".$doc->dadosTipo['nome']." ".$doc->numeroComp.")", $bd);
@@ -165,8 +176,6 @@
 /*DP*/	}elseif ($_GET['acao'] == 'despachar'){
 			//cria novo documento com o ID especificado
 			$doc = new Documento($_POST['id']);
-			$doc->bd = $bd;
-			$doc->dadosTipo['nomeAbrv'] = $_POST['id'];
 			$doc->loadTipoData($bd);
 			//verifica permissão
 			checkPermission($doc->dadosTipo['despAcaoID']);
@@ -180,7 +189,12 @@
 			//retira acentos do conteudo do despacho
 			$_POST['despacho'] = htmlentities($_POST['despacho']);
 			//efetua o despacho do documento
-			$html->content[1] = showDespStatus($doc, array('para' => $_POST['para'], "outro" => $_POST['outro'], 'funcID' => $_POST['funcID'], 'despExt' => $_POST['despExt'],"despacho" => $_POST['despacho']));
+			$entrada = false;
+			if(!isset($_POST['unOrgReceb'])) $_POST['unOrgReceb'] = '';
+            if(!isset($_POST['rrNumReceb'])) $_POST['rrNumReceb'] = '';
+            if(!isset($_POST['rrAnoReceb'])) $_POST['rrAnoReceb'] = '';
+			if(isset($_GET['entrada']) && $_GET['entrada'] == '1') {$entrada = 1;}
+			$html->content[1] = showDespStatus($doc, array('para' => $_POST['para'], "outro" => $_POST['outro'], 'funcID' => $_POST['funcID'], 'despExt' => $_POST['despExt'],"despacho" => $_POST['despacho'],"unOrgReceb" => $_POST['unOrgReceb'], "rrNumReceb" => $_POST['rrNumReceb'], "rrAnoReceb" => $_POST['rrAnoReceb']),'showFB',$entrada);
 			$html->content[1] .= '<br /><a href="sgd.php?acao=ver&docID='.$_POST['id'].'">Voltar para os detalhes do documento.</a>';
 			
 /*AA*/	}elseif ($_GET['acao'] == 'anexar'){
@@ -229,6 +243,13 @@
 			$html->menu = '<script type="text/javascript">$(document).ready(function(){$("#c2").hide();$("#c3").hide();$("#c4").hide();$("#c5").hide();$(".boxLeft").css("width","0");$(".boxRight").css("width","100%");});</script>';
 			//salva o documento no BD
 			$html->content[1] = salvaDados($dados,$bd);
+			
+		
+			
+		} elseif ($_GET['acao'] == 'geraCI' && isset($_GET['id'])) {
+			//
+			geraCI($_GET['id']);
+			
 		}else {
 			//se acao eh invalida, volta para o inicio
 			header("Location: index.php");
