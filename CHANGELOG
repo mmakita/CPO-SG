@@ -1,0 +1,21 @@
+HISTORICO DE ATUALIZACOES RESUMIDO
+==================================
+
+Para historicos completos: consulte o diretorio _Documentacao/versoes
+
+Ultima versao estavel: 1.0
+Versao em desenvolvimento: 1.1
+
+
+Data_Ini   Data_Fim     (sub)versão  Comentario
+-----------------------------------------------------------------------------------------
+27/05/2011 3/05/2011   1.0.1 (I)    Inicio da separacao entre Regras de Negocio e regras
+                                     de consultas ao banco de dados (sgd_modules)
+
+
+
+
+
+
+(I) Release instavel/interno
+(F) Release estavel

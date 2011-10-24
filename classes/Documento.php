@@ -1,0 +1,559 @@
+<?php
+/**
+ * @version 0.6 21/3/2011 
+ * @package geral
+ * @author Mario Akita
+ * @desc contem os atributos dos documentos e os metodos para trabalho com documentos 
+ */
+
+class Documento {
+	/**
+	 * id do documento
+	 * @var int
+	 */
+	public $id;
+	
+	/**
+	 * indica se o doc ja foi anexado a algum doc. Um doc anexado nao pode ser despachado e nem ter doc anexados a ele
+	 * @var boolean
+	 */
+	public $anexado;
+	public $docPaiID;
+
+	/**
+	 * data de criacao do documento em unix timestamp
+	 * @var int
+	 */
+	public $data;
+	
+	/**
+	 * id do usuario que criou o documento
+	 * @var int
+	 */
+	public $criador;
+	
+	/**
+	 * id do usuario que possui o documento no momento (que tem pendente)
+	 * @var int
+	 */
+	public $owner;
+	
+	/**
+	 * nome da area em que o doc se encontra se foi despachado para area
+	 * @var string
+	 */
+	public $areaOwner;
+	
+	/**
+	 * id do tipo de documento no BD
+	 * @var int
+	 */
+	public $labelID;
+	
+	/**
+	 * id do documento dentro da tabela
+	 * @var int
+	 */
+	public $tipoID;
+	
+	/**
+	 * array com os nomes de arquivos anexos
+	 * @var array
+	 */
+	public $anexo;
+	
+	/**
+	 * array com os nomes e valores dos campos
+	 * @var array
+	 */
+	public $campos;
+	
+	/**
+	 * dados do tipo
+	 * @var array
+	 */
+	public $dadosTipo;
+	
+	/**
+	 * Nome do emitente (tabela pendentes)
+	 * @var string
+	 */
+	public $emitente;
+	
+	/**
+	 * Numero completo do documento
+	 * @var string
+	 */
+	public $numeroComp;
+	
+	/**
+	 * ID da obra a qual esse doc esta assoc
+	 * @var int
+	 */
+	public $obraID;
+	
+	/**
+	 * Instancia de conexao ao BD para uso interno
+	 * @var BD
+	 */
+	public $bd;
+	
+	/**
+	 * construtor da classe. atribui apenas ID do documento
+	 * @param int $id
+	 */
+	function __construct($id){
+		global $bd;
+		$this->bd = $bd;
+		$this->id = $id;
+	}
+	
+	/**
+	 * carrega dados do documento comuns a todos os documentos (DOC)
+	 */
+	function loadDados() {
+		if(!$this->bd){
+			global $bd;
+			$this->bd = $bd;
+		}
+		
+		$res = $this->bd->query("SELECT * FROM doc WHERE id = ".$this->id);
+		if(count($res) != 1) showError(5);
+		else $res = $res[0];
+		
+		$this->data = $res['data'];
+		$this->criador = $res['criadorID'];
+		$this->areaOwner = $res['OwnerArea'];
+		$this->owner = $res['ownerID'];
+		if($res['anexado']) $this->anexado = true;
+		else $this->anexado = false;
+		$anexo = explode(",",$res['anexos']);
+		$this->docPaiID = $res['docPaiID'];
+		if($anexo[0] != '')
+			$this->anexo = $anexo; 
+		$this->labelID = $res['labelID'];
+		$this->tipoID = $res['tipoID'];
+		$this->emitente = $res['emitente'];
+		$this->numeroComp = $res['numeroComp'];
+		$this->obraID = $res['obraID'];
+	}
+
+	/**
+	 * carrega os dados relativo ao tipo de documento (LABEL_DOC)
+	 */
+	function loadTipoData(){
+		if(!$this->bd){
+			global $bd;
+			$this->bd = $bd;
+		}
+		
+		if($this->labelID != null){
+			$res = $this->bd->query("SELECT * FROM label_doc WHERE id = ".$this->labelID);
+		}elseif(isset($this->dadosTipo['nomeAbrv'])){
+			$res = $this->bd->query("SELECT * FROM label_doc WHERE nomeAbrv = '".$this->dadosTipo['nomeAbrv']."'");
+			
+		}else{
+			$this->loadDados();
+			$res = $this->bd->query("SELECT * FROM label_doc WHERE id = ".$this->labelID);
+		}
+		
+		if (!count($res)){
+			showError(5);
+			exit();
+		}
+		
+		$this->dadosTipo = $res[0];
+	}
+	
+	/**
+	 * carrega os dados relativo aos campos do documento (DOC_TIPO)
+	 */
+	function loadCampos(){
+		if(!$this->bd){
+			global $bd;
+			$this->bd = $bd;
+		}
+		
+		if ($this->dadosTipo == null)
+			$this->loadTipoData();
+		
+		$res = $this->bd->query("SELECT * FROM ".$this->dadosTipo['tabBD']." WHERE id = ".$this->tipoID);
+		
+		
+		if (!count($res)){
+			print("ERRO ao carregar campos do documento {$this->id}");
+			//showError(5);
+			exit();
+		}
+				
+		foreach ($res[0] as $name => $valor) {
+			$tipo = $this->bd->query("SELECT tipo,attr FROM label_campo WHERE nome = '$name'");
+			
+			if(isset($tipo[0]) && $tipo[0]['tipo'] ==  'composto'){
+				$partes = explode("+", $tipo[0]['attr']);
+				$valorC = $res[0][$name];
+				for ($i = 0; $i < count($partes); $i++) {
+					if(substr($partes[$i], 0, 1) == '"'){//se comeca com " entao eh separador
+						if($i == 0) continue;
+						$quebra = explode(substr($partes[$i], 1, -1), $valorC);
+						$res[0][$partes[$i-1]] = $quebra[0];
+						if (isset($quebra[1])) $valorC = $quebra[1];
+					}
+				}
+				if (substr($partes[count($partes)-1],0,1) != '"')
+					$res[0][$partes[count($partes)-1]] = $valorC;
+			}
+		}
+		$this->campos = $res[0];
+	}
+	
+	/**
+	 * Le os dados de cada documento anexo e o retorna em forma de array
+	 * @return array com par [id],[nome] do documento anexo ou null
+	 */
+	function getDocAnexoDet(){
+		$data = '';
+		if (isset($this->campos['documento'])) {
+			$ids = explode(",", $this->campos['documento']);
+		
+			foreach ($ids as $id){
+				if ($id){
+					$doc = new Documento($id);
+					$doc->loadTipoData();
+					$data[] = array("id" => $doc->id, "nome" => $doc->dadosTipo['nome']." ".$doc->numeroComp);
+				}
+			}
+			return $data;
+		}else{
+			return null;
+		}
+	}
+	
+	/**
+	 * Le os dados do historico do documento e o retorna em forma de array
+	 * @return array na forma [id][data][username][userID][action]
+	 */
+	function getHist($UNIXTimestamp = false) {
+		$res = $this->bd->query("SELECT dh.id,dh.data,dh.despacho, u.username, u.id as userID, dh.acao, dh.tipo, dh.volumes, dh.unidade, dh.label FROM data_historico AS dh
+		LEFT JOIN usuarios AS u ON dh.usuarioID = u.id WHERE dh.docID =".$this->id." ORDER BY dh.id DESC");
+		
+		if(!$UNIXTimestamp){
+			for ($i = 0; $i < count($res); $i++) {
+				$res[$i]['data'] = date("j/n/Y G:i",$res[$i]['data']);
+			}
+		}
+		
+		return $res;
+	}
+	/**
+	 * Faz upload dos arquivos enviados via form
+	 * @return string Relatorio do upload
+	 */
+	function doUploadFiles(){
+		$success = array();
+		$failure = array();
+		
+		for ($i = 1; isset($_FILES["arq".$i]); $i++) {
+			
+			if ($_FILES["arq".$i]['name'] == '')
+				continue;
+			
+			if($_FILES["arq".$i]['error'] > 0 && $this->id == 0){
+				$failure[] = array("name" => $_FILES["arq".$i]['name'], "errorID" => $_FILES["arq".$i]['error']);
+				continue;
+			}
+			
+			$fileName = "[".$this->id."]".$_FILES["arq".$i]['name'];
+			$fileName = str_replace(array('/','ç','á','ã','â','ê','é','í','ó','õ','ô','ú','&ccedil;','&aacute;','&atilde;','&acirc;','&ecirc;','&eacute;','&iacute;','&oacute;','&otilde;','&ocirc;','&uacute',' ','?','\'','"','!','@',"'"), array('-','c','a','a','a','e','e','i','o','o','o','u','c','a','a','a','e','e','i','o','o','o','u','_','','','','','',''), $fileName);
+		
+			
+			if (file_exists("files/" . $fileName)){
+				//tratamento de nomes duplicados
+				$j = 2;
+				
+		    	do  {//verifica se o nome do documento ja existe, se sim, adiciona (j) estilo windows para nao sobrescrever
+			    	$oldName = explode(".", $fileName);
+					
+					if($oldName[count($oldName)-2])
+						$oldName[count($oldName)-2] .= "(".$j.")";
+					else
+						$oldName[count($oldName)-1] .= "(".$j.")";
+					
+					$newName = implode(".", $oldName);
+		    		$j++;
+		    	} while (file_exists("files/".$newName));
+		    	
+		    	move_uploaded_file($_FILES["arq".$i]["tmp_name"], "files/" . $newName);
+		    	$success[] = $newName;
+		    	$this->anexo[] = $newName;
+		    	$this->doLogHist($_SESSION['id'], "Adicionou o arquivo $newName ao documento",'','','','','');
+		    			    	
+		    } else {
+		    	
+		      move_uploaded_file($_FILES["arq".$i]["tmp_name"], "files/" . $fileName);
+		      $success[] = $fileName;
+		      $this->anexo[] = $fileName;
+		      $this->doLogHist($_SESSION['id'], "Adicionou o arquivo $fileName ao documento",'','','','','');
+		      
+			}
+		}
+		$files['success'] = $success;
+		$files['failure'] = $failure;
+		return $files;
+	}
+	
+	function salvaCampos() {
+		if ($this->id == 0) {//adicao de novo registro no BD
+			$campos = $this->campos;
+			//cria campo de documento vazio
+			if($this->dadosTipo['docAnexo']){
+				$campos['documento'] = '0';
+			}
+			//cria campo de obra vazio
+			if($this->dadosTipo['obra']){
+				$campos['obra'] = '0';
+			}
+			//cria campo de empresa
+			if($this->dadosTipo['empresa']){
+				$campos['empresa'] = '0';
+			}
+			
+			$sql = "INSERT INTO ".$this->dadosTipo['tabBD'];
+			$colunas = '';
+			$valores = '';
+			foreach ($campos as $nome => $valor) {
+				if($colunas)
+					$colunas .= ",";
+					
+				$colunas .= $nome;
+					
+				if($valores)
+					$valores .= ",";
+					
+				$valores .= "'".$valor."'";
+			}
+			
+			$sql .= " (".$colunas.") VALUES (".$valores.")";
+			
+		} else {//atualizacao de registro no BD
+			$sql = "UPDATE ".$this->dadosTipo['tabBD']." SET ";
+			
+			foreach ($this->campos as $nome => $valor) {
+				$sql .= $nome." = '".$valor."' , ";
+			}
+			$sql = rtrim($str,", ");
+			$sql .= " WHERE id = ".$this->id;
+		}
+		//echo str_ireplace("'", '', htmlentities ($sql,ENT_QUOTES));
+		return $this->bd->query($sql);
+		//return 1;
+	}
+	
+	function salvaDoc($ownerID){
+		include_once 'conf.inc.php';
+		
+		$q = "SELECT id FROM ".$this->dadosTipo['tabBD']." WHERE ";
+		
+		$campoBusca = explode("," , $this->dadosTipo['campoBusca']);
+		foreach ($campoBusca as $cp) {
+			$q .= $cp."='".$this->campos[$cp]."' AND " ;
+		}
+		$q = rtrim($q," AND "); 
+		
+		$id = $this->bd->query($q);
+		$id = $id[0]["id"];
+		
+		/**/
+		$numComp = $this->geraNumComp();
+		/**/
+		
+		$campoEmitente = explode(',', $this->dadosTipo['emitente']);
+		foreach ($campoEmitente as $cp) {
+			if (isset($this->campos[$cp])) {
+				$tipo = $this->bd->query("SELECT tipo,extra FROM label_campo WHERE nome = '".$cp."'");
+				if ($tipo[0]['tipo'] == 'userID' || strpos($tipo[0]['extra'],'current_user') !== false){
+					$emitente = $_SESSION['nome']." ".$_SESSION['sobrenome'];
+					$this->campos[$cp] = $_SESSION['id'];
+				} elseif ($tipo[0]['tipo'] == 'userID'){
+					$nome = $this->bd->query("SELECT nome,sobrenome FROM usuarios WHERE id=".$this->campos[$cp]);
+					$emitente = $nome[0]['nome']." ".$nome[0]['sobrenome'];
+				} else {
+					$emitente = $this->campos[$cp];
+				}
+				break;
+			}
+		}
+		
+		if ($this->id == 0){//adicao de novo registro no BD
+			$sql = "INSERT INTO doc (data,criadorID,ownerID,labelID,tipoID,emitente,numeroComp,anexos)
+					VALUES  (".time().",".$_SESSION['id'].",".$ownerID.",".
+					$this->dadosTipo['id'].",".$id.",'".$emitente."','".$numComp."','')";
+			if ($this->bd->query($sql) === false){
+				return false;
+			} else {
+				$idDoc = $this->bd->query("SELECT id FROM doc WHERE labelID = ".$this->dadosTipo['id']." AND tipoID = ".$id);
+				$this->id = $idDoc[0]['id'];
+				$this->numeroComp = $numComp;
+				$this->emitente = $emitente;
+			}
+		} else {
+			//troca de arquivo salvaAnexos(), troca de dono doDespacha()
+		}
+		return true;
+	}
+	
+	function geraNumComp() {
+		$numComp = '';
+		$campoComp = explode("+", $this->dadosTipo['numeroComp']);
+		foreach ($campoComp as $cp) {
+			if(isset($this->campos[$cp])){
+				$cpDados = $this->bd->query("SELECT extra FROM label_campo WHERE nome = '".$cp."'");
+				if(strpos($cpDados[0]['extra'],"unOrg_autocompletar") !== false){//tratamento para unOrg
+					$c = explode("(",$this->campos[$cp]);
+					$c = rtrim($c[count($c)-1],")");
+					$numComp .= $c;
+				}else{
+					$numComp .= $this->campos[$cp];
+				}
+			}else{
+				$numComp .= $cp;
+			}
+		}
+		$numComp = rtrim($numComp," ");
+		return $numComp;
+	}
+	
+	
+	
+	/**
+	 * Atualiza os nomes dos arquivos anexos no BD
+	 */
+	function salvaAnexos(){
+		if(count($this->anexo) < 1)
+			return 0;
+		$anexo = implode(",", $this->anexo);
+		return $this->bd->query("UPDATE doc SET anexos='".$anexo."' WHERE id = ".$this->id); 
+	}
+	
+	/**
+	 * Realiza o despacho de documentos
+	 * @param int $userID ID do usuario atual
+	 * @param int $dados [funcID] [despExt] [outro] campos para decisao de despacho
+	 * @param string $despacho Conteudo do despacho
+	 */
+	function doDespacha($userID,$dados) {
+		$vol = ''; //$vol = $dados['volumes'];
+		$ownerID = 0;
+		$ownerArea = '';
+		$para = '';
+		$tipo = 'despIntern';
+		
+		if ($dados['funcID'] && $dados['funcID'] != '_todos'){
+			$ownerID = $dados['funcID'];//doc despachado para funcionario
+			$para = $this->bd->query("SELECT nomeCompl FROM usuarios WHERE id = ".$ownerID);
+			$para = $para[0]['nomeCompl'];
+		} elseif ($dados['funcID'] == '_todos')	{
+			$ownerID = -1;
+			$para = htmlentities($dados['para']);
+			$ownerArea = $para;
+		} elseif ($dados['para'] == 'ext' || $dados['despExt']) {
+			$para = $dados['despExt'];//despacho para outra unOrg
+			$tipo = 'saida';
+		} elseif ($dados['outro']) {
+			$para = htmlentities($dados['outro']);//despacho para outros
+			$tipo = 'saida';
+		} elseif ($dados['para'] ==  'solic') {
+			$para = " o solicitante"; // despacho para solicitante
+			$tipo = 'saida';
+		} elseif ($dados['para'] == 'cpo_arq') {
+			$para = " o Arquivo";
+		} else {
+			$ownerID = $_SESSION['id'];//doc pendente para usuario atual caso nao tenha despachado para lugar nenhum
+		}
+		
+		$r = $this->bd->query("UPDATE doc SET ownerID = $ownerID, ownerArea ='$ownerArea' WHERE id = ".$this->id);
+		
+		if($r && $ownerID != $_SESSION['id']){
+			if(!$this->doLogHist($userID, '', $dados['despacho'], $para, $tipo, $vol, 'Despacho'))
+				return false;
+			return $para;
+		} elseif ($r && $ownerID == $_SESSION['id']) {
+			if(!$this->doLogHist($userID, '',$dados['despacho'],'','obs','','Observa&ccedil;&atilde;o'))
+				return false;
+			return "si mesmo";
+		} elseif(!$r) {
+			return false;//erro ao atualizar BD
+		} else {
+			return $ownerID;
+		}
+	}
+	
+	/**
+	 * Grava historico do documento
+	 * @param int $id id do usuario logado
+	 * @param string $acao
+	 */
+	function doLogHist($userID,$acao,$despacho,$unidade,$tipo,$volumes,$label){
+		return $this->bd->query("INSERT INTO data_historico (data,docID,usuarioID,acao,despacho,unidade,tipo,volumes,label) 
+		VALUES (".time().",".$this->id.",$userID,'$acao','$despacho','$unidade','$tipo','$volumes','$label')");
+	}
+	
+	/**
+	 * Grava anexado = 1 nos campos dos docs anexados a este documento e o id do pai
+	 */
+	function doFlagAnexado(){
+		if(isset($this->campos['documento']) && $this->campos['documento'] != ''){
+			$docsAnexados = explode(",", $this->campos['documento']);
+			foreach ($docsAnexados as $doc) {
+				if ($doc){
+					$r = $this->bd->query("UPDATE doc SET anexado = 1, docPaiID = ".$this->id.", ownerID = 0 WHERE id = $doc");
+					if (!$r)
+						return false;
+					$docA = new Documento($doc);
+					$docA->bd = $this->bd;
+					$docA->loadDados($this->bd);
+					$docA->doLogHist($_SESSION['id'], "Anexou este documento ao documento ".$this->id." (".$this->dadosTipo['nome']." ".$this->numeroComp.")",'','','','','');
+					doLog($_SESSION['username'],"Anexou documento ".$docA->id." (".$docA->dadosTipo['nome']." ".$docA->numeroComp.") ao documento ".$this->id." (".$this->dadosTipo['nome']." ".$this->numeroComp.")",$this->bd);
+				}
+			}
+			return true;			
+		}
+		return true;
+	}
+	
+	/**
+	 * Atualiza o valor de um determinado campo.
+	 * @param string $campo
+	 * @param string $newVal
+	 */
+	function updateCampo($campo, $newVal) {
+		$sql = "UPDATE ".$this->dadosTipo['tabBD']." SET $campo = '$newVal' WHERE id=".$this->tipoID;
+		return $this->bd->query($sql);
+	}
+	
+	/**
+	 * Anexa um documento a este documento
+	 * @param int $id
+	 */
+	function anexaDoc($id){
+		$sql1 = "UPDATE doc SET anexado = 1, docPaiID = ".$this->id.", ownerID = 0 WHERE id = $id";
+		if($this->bd->query($sql1)){
+			if($this->campos['documento'] == '0') {
+				$this->updateCampo('documento', $id);
+			} else {
+				$this->updateCampo('documento', $this->campos['documento'].",$id");
+			}
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	function update($nomeVar,$newVal){
+		$sql = "UPDATE doc SET ".$nomeVar."='".$newVal."' WHERE id=".$this->id;
+		$this->$nomeVar = $newVal;
+		return $this->bd->query($sql);
+	}
+}
+
+?>
