@@ -44,7 +44,7 @@
   */
  
  $conf["DBLogin"] = "sgcpo_testes";
- $conf["DBPassword"] = "L53mCsxsPpRFAw7Z";
+ $conf["DBPassword"] = "";
  $conf["DBhost"] = array('master' => 'engenheiro.cpo.unicamp.br', 'slave' => 'arquiteto.cpo.unicamp.br');
  $conf["DBport"] = 3306;
  $conf["DBTable"] = "sg_testes";
