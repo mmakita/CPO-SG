@@ -8,43 +8,24 @@
 		<meta http-equiv="Cache-Directive" content="no-cache" />
 		<meta http-equiv="Expires" content="1" />
 		<link rel="stylesheet" type="text/css" href="css/geral.css" />
-		<link rel="stylesheet" type="text/css" href="css/layout_mini.css" />
+		<link rel="stylesheet" type="text/css" href="css/layout_mini_nomenu.css" />
 		<script type="text/javascript" src="scripts/jquery.js"> </script>
 		<script type="text/javascript" src="scripts/commom.js"> </script>
-<<<<<<< HEAD
 		{$head}
-=======
->>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 		<title>{$title}</title>
 	</head>
 	<body>
 		<img src="img/logocpo.png" height="22" width="102" alt="CPO - Coordenadoria de Projetos e Obras" /> <br />
   		<div class="container">
-    		<div class="boxLeft">
-      			{$menu}
-    		</div>
-	    	<div class="boxRight">
-		    	<div class="boxCont">
-        			<table width="100%">
-          				<tr><td>{$path}</td><td><span class="par"><a href="javascript:window.close()">[fechar janela]</a></span></td></tr>
-        			</table>
-      			</div>
-	    		<div class="boxCont" id="c1">
-        			{$content1}
-	      		</div>
-	      		<div class="boxCont" id="c2">
-        			{$content2}
-	      		</div>
-	      		<div class="boxCont" id="c3">
-        			{$content3}
-	      		</div>
-	      		<div class="boxCont" id="c4">
-        			{$content4}
-	      		</div>
-	      		<div class="boxCont" id="c5">
-        			{$content5}
-	      		</div>
-    		</div>
+		   	<div class="boxCont">
+        		<table width="100%">
+          			<tr><td>{$path}</td><td><span class="par"><a href="javascript:window.close()">[fechar janela]</a></span></td></tr>
+        		</table>
+        	</div>
+      		<div class="boxCont" id="c1">
+        		{$content1}
+	      	</div>
+    		
 		</div>
 		<div class="footer">
 			<hr />

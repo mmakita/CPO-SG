@@ -94,6 +94,7 @@
 	//
 	//  Consulta as tabelas de usuarios
 	//
+<<<<<<< HEAD
 	function getAllUsersName($activeOnly = true){
 		global $bd;
 		
@@ -103,6 +104,8 @@
 		return $bd->query("SELECT id, nomeCompl FROM usuarios $where ORDER BY nomeCompl");
 	}
 	
+=======
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 	function getUsers($user_id){
 		global $bd;
 		
@@ -116,7 +119,11 @@
 	function getNamesFromUsers($user_id){
 		global $bd;
 		
+<<<<<<< HEAD
 		return $bd->query("SELECT nomeCompl FROM usuarios WHERE id = $user_id");
+=======
+		$bd->query("SELECT nomeCompl FROM usuarios WHERE id = $user_id");
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 	}
 	
 	/**
@@ -133,6 +140,7 @@
 		
 		return $bd->query("SELECT area FROM usuarios WHERE id=$id LIMIT 1");
 	}
+<<<<<<< HEAD
 	
 	//
 	//CONSULTAS DE BUSCA DE DOCUMENTOS
@@ -294,4 +302,6 @@
 			return null;
 		}
 	}
+=======
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 ?>

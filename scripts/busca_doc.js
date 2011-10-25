@@ -9,7 +9,18 @@ $(document).ready(function(){
 	
 	$("#buscaForm").submit(function(submit){
 		submit.preventDefault();
+<<<<<<< HEAD
 		doBusca();
+=======
+		/*if($("#s_cpo").val() == '' && $("#s_numero").val() == '' && $("#s_criacao").val() == '' && 
+		$("#s_emitente").val() == '' && $("#s_assunto").val() == '' && $("#s_unOrg").val() == '' &&
+		$("#s_tipoProc").val() == '' && $("#s_situacao").val() == '' && $("#s_rrext").val() == '' && 
+		$("#s_desp").val() == ''){
+			alert("Pelo menos um campo deve ser preenchido.");
+		}else{*/
+			doBusca();
+		//}
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 	});//closes click
 	
 });//closes ready

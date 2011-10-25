@@ -17,6 +17,7 @@ $(document).ready(function(){
 	});
 	
 	$("#despacho").click(function(){
+<<<<<<< HEAD
 		if($("#despacho").val() == 'Digite o despacho aqui.') {
 			$("#despacho").html("");
 		}
@@ -27,6 +28,10 @@ $(document).ready(function(){
 			$("#despacho").html("");
 		}
 	})
+=======
+		$("#despacho").html("");
+	});
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 });
 
 function clearAll(){//inicializa os campos de despacho (V1)
@@ -39,7 +44,12 @@ function clearAll(){//inicializa os campos de despacho (V1)
 }
 
 function loadNames(area){//completa os nomes dos funcionarios de um depto CPO
+<<<<<<< HEAD
 	$("#subp").html('<option id="_todos" value="_todos" selected="selected" >Todos nesse Depto.</option>');
+=======
+	$("#subp").html('<option value=""></option>');
+	$("#subp").append('<option id="_todos" value="_todos">Todos nesse Depto.</option>');
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 	$.get("unSearch.php?show=pessoas&area="+escape(area),function(d){
 		var data = eval(d);
 		var i = 0;

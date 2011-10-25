@@ -14,10 +14,17 @@ html,body {
 	background-repeat: no-repeat;
 	background-position: 10px 10px;
 	border-width: 0;
+<<<<<<< HEAD
 	height: 40px;
 	width: 84%; 
 	text-align: center;
 	padding:10px 10px 0px 15%;
+=======
+	height: 50px;
+	width: 84%; 
+	text-align: center;
+	padding:10px 10px 10px 15%;
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 }
 #conteudo {
 	padding:10px;

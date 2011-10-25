@@ -9,6 +9,12 @@
 	include_once('includeAll.php');
 	include_once('sgd_modules.php');
 	
+<<<<<<< HEAD
+=======
+	//inicia sessao
+	session_start();
+	
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 	//inicia conexao com o banco de dados
 	$bd = new BD($conf["DBLogin"], $conf["DBPassword"], $conf["DBhost"], $conf["DBTable"]);
 	

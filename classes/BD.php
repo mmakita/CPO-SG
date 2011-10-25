@@ -12,8 +12,12 @@ class BD {
 	 * @var string
 	 */
 	private $host;
+<<<<<<< HEAD
 	private $port;
 	
+=======
+
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 	/**
 	 * login do BD
 	 * @var string
@@ -46,6 +50,7 @@ class BD {
 	 * @param string $table
 	 * @return variavel da conexao
 	 */
+<<<<<<< HEAD
 	public function __construct($login = '', $password = '', $host = '', $table = '') {
 		global $conf;
 		//print_r($conf);
@@ -78,6 +83,15 @@ class BD {
 		}
 		
 		
+=======
+	public function __construct($login, $password, $host, $table) {
+		$this->host = $host;
+		$this->login = $login;
+		$this->password = $password;
+		$this->table = $table;
+		
+		$this->conn = mysql_connect($host, $login, $password) or die(showError(2));
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 	}
 	
 	/**
@@ -93,19 +107,28 @@ class BD {
 	 * @param string $table tabela para ser procurada
 	 * @return mixed associativa dos resultados ou true (dependendo da consulta)
 	 */
+<<<<<<< HEAD
 	public function query($sql, $table = null) {
 		if($table == null){
 			global $conf;
 			$table = $conf['DBTable'];
 		}
+=======
+	public function query($sql, $table = "sg") {
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 		$selectedDB = mysql_select_db($table,$this->conn) or showError(3);
 		$r = mysql_query($sql);
 		if ($r === true) return TRUE;
 		if ($r === false){
 			print 'Erro na consulta: '.$sql.' Erro obtido: '.mysql_error().' <br>
+<<<<<<< HEAD
 			<span style="color: red;">Esse &eacute; um erro grave. Informe o Administrador do sistema o quanto antes</span> <a href="report_bug.php">clicando aqui.</a>';			
 			exit();
 			doLog($_SESSION['username'], 'Erro na consulta: '.$sql.' Erro obtido: '.mysql_error());
+=======
+			<span style="color: red;">Esse &eacute; um erro grave.<b>Copie o erro acima</b> e informe o Administrador do sistema o quanto antes</span> <a href="report_bug.php">clicando aqui.</a>';			
+			exit();
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 		}
 		$ret = array();
 		while ($res = mysql_fetch_assoc($r)){

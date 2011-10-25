@@ -8,6 +8,12 @@
 	include_once('includeAll.php');
 	include_once('sgd_modules.php');
 	
+<<<<<<< HEAD
+=======
+	//inicia a sessao
+	session_start();
+	
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 	//verifica se o usuario esta logado
 	checkLogin(6);
 	
@@ -23,7 +29,11 @@
 	$bd = new BD($conf["DBLogin"], $conf["DBPassword"], $conf["DBhost"], $conf["DBTable"]);
 	
 	if (isset($_GET['acao'])) {
+<<<<<<< HEAD
 /*VD*/	if( $_GET['acao'] == "ver" || $_GET['acao'] == "desp" || $_GET['acao'] == "anexArq" || $_GET['acao'] == "entrada" || $_GET['acao'] == "anexDoc" || $_GET['acao'] == 'edit' || $_GET['acao'] == 'saveAnex' || $_GET['acao'] == 'atribObra' || $_GET['acao'] == 'atribObraAjax') {
+=======
+/*VD*/	if(($_GET['acao'] == "ver")||($_GET['acao'] == "desp")||($_GET['acao'] == "anexArq")||($_GET['acao'] == "entrada")) {
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 		//rotina para  ver documento
 			if(isset($_GET['docID'])){
 				//se o ID do documento estiver especificado, cria variavel e carrega os dados do doc
@@ -34,20 +44,28 @@
 				showError(7);
 			}
 			//verifica permissão
+<<<<<<< HEAD
 			//print_r($_SESSION['perm']); print("<BR>".$doc->dadosTipo['verAcaoID']); exit();
 			if(! checkPermission($doc->dadosTipo['verAcaoID'])){
 				showError(12); 
 			}
+=======
+			checkPermission($doc->dadosTipo['verAcaoID']);
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 			
 			//rotina para completar o template, caminho do arquivo e titulo 
 			$html->setTemplate($conf['template_mini']);
 			$html->path = showNavBar(array(array("url" => "","name" => "Detalhes")),'mini');
+<<<<<<< HEAD
 			$html->title .= "SGD > Detalhes > ".$doc->dadosTipo['nome']." ".$doc->numeroComp;
 			$html->head .= '<script type="text/javascript" src="scripts/sgd_mini.js"></script>
 							<script type="text/javascript" src="scripts/busca_doc2.js"></script>
 							<script type="text/javascript" src="scripts/jquery.autocomplete.js"></script>
 							<link rel="stylesheet" type="text/css" href="css/jquery.autocomplete.css" />
 			';
+=======
+			$html->title .= "SGD : Detalhes: ".$doc->dadosTipo['nome']." ".$doc->numeroComp;
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 			//completa o espaco de menu com as acoes possiveis para o documento
 			$html->menu = showAcoes($doc);
 			//area 1 - contem os detalhes do documento
@@ -65,9 +83,12 @@
 			//$html->content[5] = showAnexar('f',$doc);
 			//dependendo da acao, gera JS para esconder/mostrar as areas pertinentes
 			if ($_GET['acao'] == "ver") {
+<<<<<<< HEAD
 				//loga a acao do usuario no BD para administracao
 				doLog($_SESSION['username'], "viu detalhes do documento ".$doc->id." (".$doc->dadosTipo['nome']." ".$doc->numeroComp.")", $bd);
 				
+=======
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 				//mostra detalhes do doc/emissor e historico. esconde anexar arquivo e despacho
 				$html->content[1] = showDetalhes($doc);
 				$html->content[2] = showEmissor($doc);
@@ -78,6 +99,7 @@
 				$html->content[1] = showDesp('f',getDeptos(),$doc);
 				$html->menu .= '<script type="text/javascript">$(document).ready(function(){$("#c2").hide();$("#c3").hide();$("#c4").hide();$("#c5").hide();});</script>';
 			} elseif ($_GET['acao'] == "anexArq") {
+<<<<<<< HEAD
 				if(isset($_GET['feedback'])) {
 					//faz upload de arquivos, salva no documento e loga no historico
 					$html->content[1] = "<b>Arquivos</b><br />";			
@@ -126,6 +148,18 @@
 			}
 			
 			
+=======
+				//esconde os detalhes/historico e despachar. mostra anexar arquivo
+				$html->content[1] = showAnexar('f',$doc);
+				$html->menu .= '<script type="text/javascript">$(document).ready(function(){$("#c2").hide();$("#c3").hide();$("#c4").hide();$("#c5").hide();});</script>';
+			} elseif ($_GET['acao'] == "entrada") {
+				$html->content[1] = showEntradaForm(getDeptos(),$doc);
+				$html->menu .= '<script type="text/javascript">$(document).ready(function(){$("#c2").hide();$("#c3").hide();$("#c4").hide();$("#c5").hide();});</script>';
+			}
+			//loga a acao do usuario no BD para administracao
+			doLog($_SESSION['username'], "viu detalhes do documento ".$doc->id." (".$doc->dadosTipo['nome']." ".$doc->numeroComp.")", $bd);
+
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 /*CD*/	}elseif ($_GET['acao'] == "cad") {
 			//rotina para cadastrar documento
 			//caso nao seja especificado tipo de documento a ser cadastrado, mostra erro
@@ -135,9 +169,13 @@
 			$doc->dadosTipo['nomeAbrv'] = $_GET['tipoDoc'];
 			$doc->loadTipoData();
 			//verifica permissão
+<<<<<<< HEAD
 			if(! checkPermission($doc->dadosTipo['cadAcaoID'])) {
 				showError(12);
 			}			
+=======
+			checkPermission($doc->dadosTipo['cadAcaoID']);			
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 			//rotina para definir template, caminho, titulo, nome de usuario.
 			$html->setTemplate($conf['template']);
 			$html->path = showNavBar(array(array("url" => "","name" => "Cadastrar Documento")));
@@ -147,6 +185,7 @@
 			//gera formulario para cadastro de documento
 			$html->content[1] = showForm("cad",$_GET['tipoDoc'],$bd);
 
+<<<<<<< HEAD
 		} elseif($_GET['acao'] == "cad_mini") {
 			//rotina para cadastrar documento em janela pequena
 			//caso nao seja especificado tipo de documento a ser cadastrado, mostra erro
@@ -167,6 +206,8 @@
 			//gera formulario para cadastro de documento
 			$html->content[1] .= showForm("cad",$_GET['tipoDoc'],$bd);
 			
+=======
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 /*NV*/	}elseif ($_GET['acao'] == "novo") {
 			//rotina para cadastrar documento
 			//caso nao seja especificado tipo de documento a ser cadastrado, mostra erro
@@ -176,9 +217,13 @@
 			$doc->dadosTipo['nomeAbrv'] = $_GET['tipoDoc'];
 			$doc->loadTipoData($bd);
 			//verifica permissão
+<<<<<<< HEAD
 			if(! checkPermission($doc->dadosTipo['novoAcaoID'])){
 				showError(12);
 			} 
+=======
+			checkPermission($doc->dadosTipo['novoAcaoID']);
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 			//inclui no cabecalho os scripts para usar o CKEdit
 			$html->head .= '<script type="text/javascript" src="ckeditor/ckeditor.js"></script>';
 			//rotina para novo documento
@@ -191,6 +236,7 @@
 			//gera formulario de novo documento
 			$html->content[1] = showForm("novo",$_GET['tipoDoc'],$bd);
 			
+<<<<<<< HEAD
 		}elseif ($_GET['acao'] == "novo_mini"){
 			//rotina para cadastrar documento
 			//caso nao seja especificado tipo de documento a ser cadastrado, mostra erro
@@ -220,37 +266,54 @@
 			$html->head .= '<script type="text/javascript" src="scripts/sgd_mini.js"></script>
 							<script type="text/javascript" src="scripts/jquery.autocomplete.js"></script>
 							<link rel="stylesheet" type="text/css" href="css/jquery.autocomplete.css" />';
+=======
+/*SV*/	}elseif ($_GET['acao'] == "salvar"){
+			//rotina para salvar os dados na criacao/cadastro de documento
+			//rotina para definir template, caminho, titulo, nome de usuario
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 			$html->setTemplate($conf["template"]);
 			$html->path = showNavBar(array(array("url" => "","name" => "Salvar documento")));
 			$html->title .= "SGD : Salvar Documento";
 			//menu principal
 			$html->menu = showMenu($conf['template_menu'],$_SESSION["perm"],30,$bd);
 			//funcao que salva os dados e gera visualizacao dos resultados
+<<<<<<< HEAD
 			foreach($_POST as $k=>$v){
 				$_POST[$k] = htmlentities($v);
 			}
+=======
+			//print_r($_POST);
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 			$html->content[1] = salvaDados($_POST,$bd);
 			
 /*BM*/	}elseif ($_GET['acao'] == "busca_mini") {
 			//verifica permissao para realizar acao de buscar
+<<<<<<< HEAD
 			if(! checkPermission(1)){
 				showError(12);
 			}
+=======
+			checkPermission(1);
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 			//rotina para gerar tela de busca de documentos (nova janela)
 			//define a acao a ser tomada quando o usuario clica no link, se nao houver nenhuma explicita, considera que eh para mostrar detalhes do documento
 			if(!isset($_GET['onclick'])) $_GET['onclick'] = 'ver';
 			//rotina para definir template, caminho, titulo, nome de usuario.
 			$html->setTemplate($conf["template_mini"]);
 			$html->path = showNavBar(array(array("url" => "","name" => "Adicionar Documento")));
+<<<<<<< HEAD
 			$html->head .= '<script type="text/javascript" src="scripts/busca_doc2.js"></script>
 							<script type="text/javascript" src="scripts/jquery.autocomplete.js"></script>
 							<link rel="stylesheet" type="text/css" href="css/jquery.autocomplete.css" />';
+=======
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 			$html->title .= "SGD : Adicionar Documento";
 			//gera javascript para ocultar os divs nao utilizados
 			$html->content[1] = '<script type="text/javascript">$(document).ready(function(){$("#c2").hide();$("#c3").hide();$("#c4").hide();$("#c5").hide();$(".boxLeft").css("width","0");$(".boxRight").css("width","100%");});</script>';
 			//gera formulario de busca de documentos na area 1
 			$html->content[1] .= showBuscaForm($_GET['onclick']);
 			//gera botao de buscar novamente na area 2
+<<<<<<< HEAD
 			//$html->content[2] = '<center><input type="button" onclick="novaBusca()" value="Buscar novamente" /></center>';
 			//gera div de resposta na area 3
 			//$html->content[3] = '<div id="resBusca" width="100%"></div>';
@@ -260,6 +323,15 @@
 			if(! checkPermission(1)){
 				showError(15);
 			}
+=======
+			$html->content[2] = '<center><input type="button" onclick="novaBusca()" value="Buscar novamente" /></center>';
+			//gera div de resposta na area 3
+			$html->content[3] = '<div id="resBusca" width="100%"></div>';
+			
+/*BU*/	}elseif ($_GET['acao'] == "buscar") {
+			//verifica permissao para realizar acao de buscar
+			checkPermission(1);
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 			//rotina para gerar tela de busca de documentos
 			//define a acao a ser tomada quando o usuario clica no link, se nao houver nenhuma explicita, considera que eh para mostrar detalhes do documento
 			if(!isset($_GET['onclick'])) $_GET['onclick'] = 'ver';
@@ -267,28 +339,44 @@
 			$html->setTemplate($conf["template"]);
 			$html->path = showNavBar(array(array("url" => "","name" => "Buscar Documento")));
 			$html->title .= "SGD : Buscar Documento";
+<<<<<<< HEAD
 			$html->head .= '<script type="text/javascript" src="scripts/busca_doc2.js"></script>
 							<script type="text/javascript" src="scripts/jquery.autocomplete.js"></script>
 							<link rel="stylesheet" type="text/css" href="css/jquery.autocomplete.css" />';
+=======
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 			$html->menu = showMenu($conf['template_menu'],$_SESSION["perm"],30,$bd);
 			//gera formulario de busca na area 1
 			$html->content[1] = showBuscaForm($_GET['onclick']);
 			//gera novas areas no layour principal
+<<<<<<< HEAD
 			//$contVisible = array(true,false,false);
 			//$html->content[1] .= addContentBox(2,$contVisible);
 			//gera botao de buscar novamente na area 2
 			//$html->content[2] = '<center><input type="button" onclick="novaBusca()" value="Buscar novamente" /></center>';
 			//gera div de resposta na area 3
 			//$html->content[3] = '<div id="resBusca" width="100%"></div>';
+=======
+			$contVisible = array(true,false,false);
+			$html->content[1] .= addContentBox(2,$contVisible);
+			//gera botao de buscar novamente na area 2
+			$html->content[2] = '<center><input type="button" onclick="novaBusca()" value="Buscar novamente" /></center>';
+			//gera div de resposta na area 3
+			$html->content[3] = '<div id="resBusca" width="100%"></div>';
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 		
 /*DP*/	}elseif ($_GET['acao'] == 'despachar'){
 			//cria novo documento com o ID especificado
 			$doc = new Documento($_POST['id']);
 			$doc->loadTipoData($bd);
 			//verifica permissão
+<<<<<<< HEAD
 			if(! checkPermission($doc->dadosTipo['despAcaoID'])){
 				showError(15);
 			}
+=======
+			checkPermission($doc->dadosTipo['despAcaoID']);
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 			//rotina para efetuar despacho de um arquivo
 			if(!isset($_POST['funcID'])) $_POST['funcID'] = false;
 			//rotina para definir template, caminho, titulo, nome de usuario	
@@ -309,9 +397,13 @@
 			
 /*AA*/	}elseif ($_GET['acao'] == 'anexar'){
 			//verifica permissão
+<<<<<<< HEAD
 			if(! checkPermission(13)){
 				showError(15);
 			}
+=======
+			checkPermission(13);
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 			//rotina para efetuar despacho de um arquivo
 			$doc = new Documento($_POST['id']);
 			//inicializacao de variaveis
@@ -345,9 +437,13 @@
 			$doc->dadosTipo['nomeAbrv'] = $_GET['tipoDoc'];
 			$doc->loadTipoData($bd);
 			//verifica permissão
+<<<<<<< HEAD
 			if(! checkPermission($doc->dadosTipo['novoAcaoID'])){
 				showError(15);
 			}
+=======
+			checkPermission($doc->dadosTipo['novoAcaoID']);
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 			//realiza o tratamento das variaveis
 			$dados = trataGetVars($_GET,$bd);
 			//define template, barra de navegacao, titulo e menu
@@ -356,16 +452,25 @@
 			$html->title .= "SGD : Salvar Documento";
 			$html->menu = '<script type="text/javascript">$(document).ready(function(){$("#c2").hide();$("#c3").hide();$("#c4").hide();$("#c5").hide();$(".boxLeft").css("width","0");$(".boxRight").css("width","100%");});</script>';
 			//salva o documento no BD
+<<<<<<< HEAD
 			foreach ($dados as $k => $v) {
 				$dados[$k] = html_entity_decode($v);
 			}
+=======
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 			$html->content[1] = salvaDados($dados,$bd);
 			
 		
 			
+<<<<<<< HEAD
 		//} elseif ($_GET['acao'] == 'geraCI' && isset($_GET['id'])) {
 			//
 		////	geraCI($_GET['id']);
+=======
+		} elseif ($_GET['acao'] == 'geraCI' && isset($_GET['id'])) {
+			//
+			geraCI($_GET['id']);
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 			
 		}else {
 			//se acao eh invalida, volta para o inicio

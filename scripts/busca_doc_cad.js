@@ -3,8 +3,12 @@ $(document).ready(function(){
 	
 	$("#buscaForm").submit(function(submit){
 		submit.preventDefault();
+<<<<<<< HEAD
 		var q = '';
 		//TODO var q = 
+=======
+		var q = "?tipoBusca=cadSearch&tabela="+$("#tabBD").val()+"&campos="+$("#camposBusca").val()+"&labelID="+$("#labelID").val();
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 		var campos = $("#camposBusca").val();
 		var campo = campos.split(",");
 		var i = 0, exit = false;
@@ -17,7 +21,11 @@ $(document).ready(function(){
 				exit = true;
 				return;
 			}
+<<<<<<< HEAD
 			q += campo[i]+"="+cpval+"|";
+=======
+			q += "&"+campo[i]+"="+escape(cpval);
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 		};//close each
 		if(!exit)
 			doBuscaProc(q);
@@ -49,8 +57,13 @@ $(document).ready(function(){
 	
 	limpaCampos();
 	
+<<<<<<< HEAD
 	$.get("sgd_busca.php",{'tipoBusca':'cadSearch', "tabela": $("#tabBD").val(),"campos": $("#camposBusca").val(), "labelID": $("#labelID").val(), 'valores': escape(q) } ,function(d){//busca
 		//alert(d);
+=======
+	$.get("sgd_busca.php"+q,function(d){//busca
+		//$(document).append("sgd_busca.php"+q+"\n"+d);//
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 		var data = eval(d);
 		
 		$("#buscabut").attr("disabled","");
@@ -76,6 +89,7 @@ $(document).ready(function(){
 			completa("arqs",data[0]);
 			
 			//completar documentos
+<<<<<<< HEAD
 			//completa("docs",data[0]);
 			
 			//completar obra
@@ -83,6 +97,15 @@ $(document).ready(function(){
 			
 			//completar empresas
 			//completa("empresa",data[0]);
+=======
+			completa("docs",data[0]);
+			
+			//completar obra
+			completa("obra",data[0]);
+			
+			//completar empresas
+			completa("empresa",data[0]);
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 			
 			//completar os campos
 			completa("hist",data[0]);
@@ -113,9 +136,13 @@ function limpaCampos(){// 'reseta o formulario para repreenchimento
 		else
 			$("#"+campoID[i]).val("nenhum");
 	});
+<<<<<<< HEAD
 	$("input").removeAttr("disabled");
 	$("textarea").removeAttr('disabled');
 	$("textarea").html("");
+=======
+	$("input").attr("disabled","");
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 	$("#para").show();
 	$("#despacho").html("Digite o despacho aqui.");
 	$("#despacho").attr("disabled","");
@@ -176,7 +203,10 @@ function completa(tipo,data){
 	}
 
 	var i = 0;
+<<<<<<< HEAD
 	var acao;
+=======
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 	$.each(dado,function(){
 		if(tipo == "obra"){
 			//linha = "Obra "+dado[i].id+": "+dado[i].nome+'(Ver detalhes Pend) <input type="hidden" name="obra'+i+'" value="'+dado[i].id+'" /><br />';
@@ -190,6 +220,7 @@ function completa(tipo,data){
 			//TODO passando IDs de empresa pra prox pag (vide doc)
 		}
 		if(tipo == "hist"){
+<<<<<<< HEAD
 			if(dado[i].tipo == 'obs') {
 				acao = 'Adicionou observa&ccedil&atilde;o ao documento: '+dado[i].despacho;
 			} else if(dado[i].tipo == 'saida') {
@@ -203,6 +234,9 @@ function completa(tipo,data){
 			}
 			
 			linha = "Em "+dado[i].data+" por "+dado[i].username+": "+acao+"<br />";
+=======
+			linha = "Em "+dado[i].data+" por "+dado[i].username+": "+dado[i].acao+"<br />";
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 		}
 		if(tipo == "arqs"){
 			if(dado.length == 1 && dado[1] == '')

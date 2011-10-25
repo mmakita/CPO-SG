@@ -16,9 +16,14 @@
 	$html->header = "Portal de Acesso";
 	
 	//verifica se o usuario esta logado, caso nao esteja redireciona para tela de login
+<<<<<<< HEAD
 	checkLogin(0);
 	
 	if(!isset($_SESSION['nomeCompl']) || !isset($_SESSION['area']) || !isset($_SESSION['id']) || !isset($_SESSION['perm']))
+=======
+	
+	if(!checkLogin(0) || !isset($_SESSION['nomeCompl']) || !isset($_SESSION['area']) || !isset($_SESSION['id']) || !isset($_SESSION['perm']))
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 		exit();
 	
 	$html->user = $_SESSION["nomeCompl"];

@@ -59,9 +59,12 @@
 					$table .= "<a href=\"#\" onclick=\"window.open('sgd.php?acao=".$r[0]['abrv']."&docID=".$doc->id."','detalhe".$doc->id."','width=950,height=650,scrollbars=yes,resizable=yes')\">".$r[0]['nome'].'</a><br />';
 				}
 			}
+<<<<<<< HEAD
 			//mostra linha para adicionar obra
 			if(isset($doc->campos['solicObra']) && $doc->campos['solicObra'] && checkPermission(11))
 				$table .= '<a href="sgo.php?acao=cadastrar&amp;docOrigemID='.$doc->id.'">Cadastrar Obra</a><br />';
+=======
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 			//fecha tags da linha
 			$table .= '</td></tr>';
 		}
@@ -86,11 +89,16 @@
 			return $html."<br /><center><b>Não há dados dispon&iacute;veis</b></center><br />";		
 		//senao, comeca a montar a tabela
 		$html .= '<table border="0" width="100%"><tr><td width=20%></td><td width=80%></td></tr>';
+<<<<<<< HEAD
 		$html .= '<tr class="c"><td><b>N&uacute;mero do Doc (CPO):</b> </td><td><span id="docID">'.$doc->id.'</span></td></tr>';
+=======
+		$html .= '<tr class="c"><td><b>N&uacute;mero do Doc (CPO):</b> </td><td>'.$doc->id.'</td></tr>';
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 		
 		//mostra tabela com os dados deste tipo de documento
 		foreach ($campos as $c) {
 			if(strpos($doc->dadosTipo['emitente'],$c) === false){
+<<<<<<< HEAD
 				$c = montaCampo($c,'edt',$doc->campos);
 				$html .= '<tr class="c"><td><b>'.$c['label'].':</b> </td><td><span id="'.$c['nome'].'_val">'.$c['valor'].'</span>';
 				if(($doc->owner == $_SESSION['id'] || $doc->criador == $_SESSION['id'] || ($doc->owner == -1 && $doc->areaOwner == $_SESSION['area'])) && checkPermission(2)  && $c['cod'] != ''){
@@ -107,6 +115,15 @@
 		if (isset($doc->campos["documento"]) && $doc->campos["documento"] != '')
 			$html .= '<tr class="c"><td><b>Documentos Anexos: </b></td><td> '.showDocAnexo($doc->getDocAnexoDet()).'</td></tr>';
 		
+=======
+				$c = montaCampo($c,'mostra',$doc->campos);
+				$html .= '<tr class="c"><td><b>'.$c['label'].':</b> </td><td>'.$c['valor'].'</td></tr>';
+			}
+		}
+		//mostra campos extras de documentos, obras e arquivos anexos
+		if (isset($doc->campos["documento"]) && $doc->campos["documento"] != '')
+			$html .= '<tr class="c"><td><b>Documentos Anexos: </b></td><td> '.showDocAnexo($doc->getDocAnexoDet()).'</td></tr>';
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 		//se esse documento foi anexado a algum outro documento, mostra o documento pai
 		if ($doc->anexado){
 			$dp = new Documento($doc->docPaiID);
@@ -114,8 +131,13 @@
 			$html .= '<tr class="c"><td><b>Documento Pai:</b> </td><td>'.showDocAnexo(array(array("id" => $dp->id, "nome" => $dp->dadosTipo['nome']." ".$dp->numeroComp))).'</td></tr>';
 		}
 		//se ha obra anexada, monta o campo pertinente
+<<<<<<< HEAD
 		//if (isset($doc->campos["obra"]) && $doc->campos['obra'] != 0)
 		//	$html .= '<tr class="c"><td><b>Obra Ref:</b> </td><td>'.$doc->campos[$doc->campos["obra"]].'</td></tr>';
+=======
+		if (isset($doc->campos["obra"]) && $doc->campos['obra'] != 0)
+			$html .= '<tr class="c"><td><b>Obra Ref:</b> </td><td>'.$doc->campos[$doc->campos["obra"]].'</td></tr>';
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 		//mostra os arquivos anexos
 		$html .= '<tr class="c"><td><b>Arquivos Anexos:</b> </td><td>'.showArqAnexo($doc->anexo).'</td></tr>';
 		//retorna o cod html da tabela
@@ -145,6 +167,7 @@
 		//para cada campo
 		foreach ($campos as $c) {
 			//pega os dados do campo
+<<<<<<< HEAD
 			$c = montaCampo($c, 'edt', $doc->campos);
 			//verifica se o campo eh de emitente
 			if (strpos($doc->dadosTipo['emitente'],$c['nome']) !== false){
@@ -157,6 +180,13 @@
 					<a id="'.$c['nome'].'_link" href="javascript:editVal(\''.$c['nome'].'\')" style="font-size:8pt;">Editar</a>';
 				}
 				$html .= '</td></tr>';
+=======
+			$c = montaCampo($c, 'mostrar', $doc->campos);
+			//verifica se o campo eh de emitente
+			if (strpos($doc->dadosTipo['emitente'],$c['nome']) !== false){
+				//se for, gera o codigo HTML
+				$html .= '<tr class="c"><td><b>'.$c['label'].'</b>: </td><td>'.$c['valor'].'</td></tr>';
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 				$data = true;
 			}
 		}
@@ -183,6 +213,7 @@
 			<tr><td width="100" class="cc"><b>data</b></td><td width="100" class="cc"><b>usu&aacute;rio</b></td><td class="cc"><b>a&ccedil;&atilde;o</b></td></tr>'; 
 			//para cada entrada no historico
 			foreach ($res as $r) {
+<<<<<<< HEAD
 				//print_r($r);
 				//cria uma linha para este documento
 				if($r['tipo'] == 'criacao') {
@@ -207,13 +238,21 @@
 					$html .= '<tr id="desp'.$r['id'].'" class="c" style="display:none"><td class="c" colspan="3"><b>'.$r['label'].'</b>: '.$r['despacho'].'</td></tr>';
 				}
 				/*if($r['despacho']){
+=======
+				//cria uma linha para este documento
+				if($r['despacho']){
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 					//se ha despacho, cria a linha de despacho
 					$html .= '<tr class="c"><td class="cc" style="border: 0;">'.$r['data'].'</td><td class="cc" style="border: 0;">'.$r['username'].'</td><td class="c" style="border: 0;">'.$r['acao'].'</td></tr>';
 					$html .= '<tr class="c"><td class="c" colspan="3"><b>Despacho: </b>'.$r['despacho'].'</td></tr>'; 
 				} else {
 					//senao, apenas cria a linha de acao
 					$html .= '<tr class="c"><td class="cc">'.$r['data'].'</td><td class="cc">'.$r['username'].'</td><td class="c">'.$r['acao'].'</td></tr>';
+<<<<<<< HEAD
 				}*/
+=======
+				}
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 			}
 			//fecha tag para tabela
 			$html .= '</table>';
@@ -270,6 +309,7 @@
 			}
 		}
 		
+<<<<<<< HEAD
 		if ($doc->owner == 0 && !$doc->anexado && $doc->dadosTipo['nomeAbrv'] != 'rr') {
 			$html .= '<a href="sgd.php?acao=entrada&docID='.$doc->id.'"><span class="menuHeader">Registrar Entrada deste doc.</span></a><br />';
 		}
@@ -277,6 +317,13 @@
 		
 		if($_SESSION['perm'][10])
 			$html .= '<a href="sgd.php?acao=atribObra&docID='.$doc->id.'&onclick=anex"><span class="menuHeader">Atribuir a uma obra</span></a><br />';
+=======
+		if ($doc->owner == 0) {
+			$html .= '<a href="sgd.php?acao=entrada&docID='.$doc->id.'"><span class="menuHeader">Registrar Entrada deste doc.</span></a><br />';
+		}
+		
+		
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 		//retorna o codigo HTML das acoes para o documento
 		return $html;
 	}
@@ -288,16 +335,24 @@
 		//inicializacao de variavele
 		$html = '';
 		//se nao for cadastro de documento, coloca campo oculto com o id pra prox pagina
+<<<<<<< HEAD
 		if($doc != null && $doc->id != 0) $html .= '
 		<form id="fileUpForm" action="sgd.php?acao=anexArq&docID='.$doc->id.'&feedback" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="id" value="'.$doc->id.'" />';
+=======
+		if($doc != null && $doc->id != 0) $html .= '<input type="hidden" name="id" value="'.$doc->id.'" />';
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 		//inclui HTML do formulario para upload\
 		$html .= '<div id="fileUpCell">
 		<div id="arqs"></div>
 		<input type="file" id="arq1" name="arq1" onclick="showInputFile(2)" />
 		</div>';
 		//se o tipo de exibicao for o formulario completo, coloca o botao enviar
+<<<<<<< HEAD
 		if($tipo == "f") $html .= '<input type="submit" value="Enviar" id="sendFiles" />
+=======
+		if($tipo == "f") $html .= '<input type="submit" value="Enviar" />
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 		</form>';
 		//retorna HRML do form
 		return $html;
@@ -320,7 +375,11 @@
 		</script>';
 		//se for tipo formulario completo, cria as tags de form
 		if($tipo == "f") $html.= '<span class="headerLeft">Despachar Documento</span>
+<<<<<<< HEAD
 		<form action="sgd.php?acao=despachar" method="post" id="despachoForm">';
+=======
+		<form action="sgd.php?acao=despachar" method="post">';
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 		//cria input para levar o id par aa prox pagina
 		if($doc != null && $doc->id != 0) $html .= '<input type="hidden" name="id" value="'.$doc->id.'" />';
 		if($tipo == "f" || $tipo == "sf") $html .= '<textarea id="despacho" name="despacho" rows="4" style="width:98%;">Digite o despacho aqui.</textarea><br />';
@@ -384,12 +443,15 @@
 		$conteudo = '';
 		$cBuscaNomes = ''; 
 		
+<<<<<<< HEAD
 		//(integracao OBRAS) gera campo para avisar a proxima pagina que ela deve exportar o docID para pagina pai
 		if(($_GET['acao'] == 'novo_mini' || $_GET['acao'] == 'cad_mini') && isset($_GET['targetInput'])) {
 			$cGeral .= '<input type="hidden" name="targetInput" id="targetInput" value="'.$_GET['targetInput'].'" />';
 		}
 		
 		//gera campos para cadastro
+=======
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 		if($acao == "cad"){
 			//separa os campos
 			$campos = explode(",", $dados[0]['campos']);
@@ -404,7 +466,11 @@
 					//nao eh campo de busca, cria o input na parte de campos
 					if($cGeralNome) $cGeralNome .= ",";
 					$cGeralNome .= $c['nome'];
+<<<<<<< HEAD
 					$cGeral .= '<tr class="c"><td style="width: 50%;"><b>'.$c['label'].':</b></td><td style="width: 50%;">'.$c['cod'].'</td></tr>';
+=======
+					$cGeral .= '<tr class="c"><td><b>'.$c['label'].':</b></td><td width="255">'.$c['cod'].'</td></tr>';
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 					
 				}else{
 					//eh campo de busca, cria o input na area de busca
@@ -432,7 +498,11 @@
 			<input type="hidden" name="action" id="action" value="'.$acao.'" />
 			<input type="hidden" name="camposGerais" id="camposGerais" value="'.$cGeralNome.'" />';
 			//coloca osinputs dentro da tabela
+<<<<<<< HEAD
 			$cGeral = '<table width="80%" border="0">'.$cGeral.'</table>';
+=======
+			$cGeral = '<table width="100%" border=0>'.$cGeral.'</table>';
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 		//cria os inpouts para novo documento
 		}elseif ($acao = "novo"){
 			//carrega o template
@@ -449,7 +519,11 @@
 					if($c['nome'] == 'conteudo')
 						$conteudo = '<tr class="c"><td colspan="2"><b>'.$c['label'].':</b><br />'.$c['cod'].'</td></tr>';
 					else 
+<<<<<<< HEAD
 						$cGeral .= '<tr class="c"><td style="width: 50%;"><b>'.$c['label'].':</b></td><td style="width: 50%;">'.$c['cod'].'</td></tr>';
+=======
+						$cGeral .= '<tr class="c"><td><b>'.$c['label'].':</b></td><td width="251">'.$c['cod'].'</td></tr>';
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 						
 				}else{//eh campo emitente, cria o campo (se houver) na parte lateral
 					//eh campo de busca, cria o input na area de busca
@@ -467,7 +541,11 @@
 		//cria o campo para  historico
 		$historico = '<div id="hist" class="cadDisp"></div>';
 		//cria campo para anexar documentos
+<<<<<<< HEAD
 		/*$documentos = '
+=======
+		$documentos = '
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 		<b>Documentos Anexos:</b><br />
 		<div id="docsAnexosNomes" class="cadDisp"></div><input type="hidden" name="docsAnexos" id="docsAnexos" />
 		<a id="addDocLink" href="#" onclick="window.open(\'sgd.php?acao=busca_mini&onclick=adicionar&target=docsAnexos\',\'addDoc\',\'width=750,height=550,scrollbars=yes,resizable=yes\')">';
@@ -489,16 +567,26 @@
 		<a id="addEmpresaLink" href="#" onclick="window.open(\'empresa.php?acao=buscar&onclick=adicionar\',\'addEmpr\',\'width=750,height=550,scrollbars=yes,resizable=yes\')">';
 		//coloca os campos dos documentos para adicionar empresa
 		if($dados[0]['empresa']) $empresa .= 'Adicionar Empresa';
+<<<<<<< HEAD
 		$empresa .= '</a><br /><br />';*/
+=======
+		$empresa .= '</a><br /><br />';
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 		//coloca codigo de recebimento
 		$recebimento = showReceb();
 		//coloca os elementos no template nas posicoes corretas
 		$html = str_replace('{$campos_busca}', $cBusca, $html);
 		$html = str_replace('{$campos}', $cGeral, $html);
 		$html = str_replace('{$emitente}', $cEmitente, $html);
+<<<<<<< HEAD
 		//$html = str_replace('{$documentos}', $documentos, $html);
 		//$html = str_replace('{$obra}', $obra, $html);
 		//$html = str_replace('{$empresa}', $empresa, $html);
+=======
+		$html = str_replace('{$documentos}', $documentos, $html);
+		$html = str_replace('{$obra}', $obra, $html);
+		$html = str_replace('{$empresa}', $empresa, $html);
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 		$html = str_replace('{$anexarArq}', showAnexar('sf'), $html);
 		$html = str_replace('{$historico}', $historico, $html);
 		$html = str_replace('{$recebimento}', $recebimento, $html);
@@ -563,6 +651,7 @@
 	function showBuscaForm($onclick){
 		//inicializacao dos scripts e inicializacao da tabela
 		$html = '
+<<<<<<< HEAD
 		<input type="hidden" id="onclick" value="'.$onclick.'" />
 		<form id="buscaForm" action="" method="post">
 		<table width="100%" border="0">
@@ -591,6 +680,65 @@
 			
 			</div>
 		</td></tr>
+=======
+		<script type="text/javascript" src="scripts/busca_doc.js"></script>
+		<script type="text/javascript" src="scripts/jquery.autocomplete.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/jquery.autocomplete.css" />
+		<input type="hidden" id="onclick" value="'.$onclick.'" />
+		<form id="buscaForm">
+		<table width="100%" border="0">
+		<tr><td width=35%><b>Selecione o tipo de documento:</b><br />
+		';
+		//le todos os tipos de documento
+		$res = getAllDocTypes();
+		//para cada tipo de documento
+		foreach ($res as $r){
+			//cria um radio para selecionar esse tipo de documento
+			$html .= '<input type="radio" class="tipoDoc" id="'.$r['nomeAbrv'].'" value="'.$r['nomeAbrv'].'" name="tipoDoc" /> <span id="nome_'.$r['nomeAbrv'].'">'.$r['nome']."</span><br />\n";
+			//inicializa a var.
+			$nomesTotal = '';
+			//separa os campos desse tipo de documento
+			$campos = explode(",", $r['campos']);
+			//inicializa a tabela do tipo de documento
+			$div[$r['nomeAbrv']] = '<table width="100%" border="0">';
+			//para cada campo desse tipo de documento
+			foreach ($campos as $c) {
+				//monta o inout de busca correspondente
+				$dadosCampo = montaCampo($c, "bus");
+				//monta a linha da tabela usando o input
+				$div[$r['nomeAbrv']] .= '<tr class="c"><td class="c" width="30%">'.$dadosCampo['label'].': </td><td width="70%">'.str_ireplace(array('name="','id="','("#'), array('name="' . $r['nomeAbrv'] . '_', 'id="' . $r['nomeAbrv'] . '_', '("#' . $r['nomeAbrv'] . '_'), $dadosCampo['cod']).'</td></tr>'; 
+				//gurada o nome do campo adicionado
+				$nomesTotal .= $dadosCampo['nome'].',';
+			}
+			//retira a virgula do final dos nomes
+			$nomesTotal = rtrim($nomesTotal,",");
+			//cria campo oculto com o nome dos campos do formulario desse tipo de documento
+			$html .= '<input type="hidden" id="camposEsp_'.$r['nomeAbrv'].'" value="'.$r['nomeAbrv']."_".str_ireplace(",", ",".$r['nomeAbrv']."_", $nomesTotal).'" />';
+			//fecha tag tabela
+			$div[$r['nomeAbrv']] .= '</table>';
+		}
+		//cria radio com para selecao de 'outros' (todos) os documentos
+		$html .= '<input type="radio" class="tipoDoc" id="_outro_" value="_outro_" name="tipoDoc" /> Buscar todos os tipos'."<br /></td>";
+		//cria campos comuns a todos os documentos
+		$html .= '<td><span class="campoDoc"><b>Campos de busca:</b><br /><br /><b>Dica:</b> Para buscar todos os documentos desse tipo, deixe todos os campos em branco.<br /><br /></span>
+		<table width="100%" border="0" class="campoDoc">
+		<tr class="c"><td class="c" style="width:30%">N&uacute;mero do documento (CPO):         </td><td style="width:70%"><input id="numCPO"      type="text" size=20 name="s_cpo"      /></td></tr>
+		<tr class="c"><td class="c" style="width:30%">Data de Cria&ccedil;&atilde;o:            </td><td style="width:70%"><input id="dataCr"  type="text" size=20 name="s_criacao"  /></td></tr>
+		</table>';
+		//gera, no template, o lugar onde deverao ser inseridos os campos correspondentes aos tipos de doc
+		foreach ($div as $tipoDoc => $cod) {
+			//cria HTML da divisao
+			$html .= '<div id="campos_'.$tipoDoc.'" class="campoDocEsp" style="width: 100%;" class="campoDoc">
+			'.$cod.'</div>';
+		}
+		//cria campo de historico comum a todos os documentos
+		$html .= '<table width="100%" border="0" class="campoDoc">
+		<tr id="td_desp" class="c"><td style="width:30%" class="c">Hist&oacute;rico: </td><td style="width:70%;"><input id="desp" type="text" size=20 name="s_desp"     /></td></tr>
+		<input type="hidden" id="s_tipoDoc" />
+		<input type="hidden" id="s_selectedDocCampos" />
+		</table>		
+		<center><input type="submit" id="btnBuscar" value="Buscar" class="campoDoc" /></center>
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 		</form>
 		</td></tr></table>';
 		//retorna o cod HTML do formulario
@@ -602,7 +750,11 @@
 	 * @param array $dados
 	 * @param mysql link $bd
 	 */
+<<<<<<< HEAD
 	function salvaDados($dados,$bd) { 
+=======
+	function salvaDados($dados,$bd) {
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 		//variavel debug deve ficar desativada em producao. Eh utilizada apenas para debugar a insercao de doc
 		//quando =1, gera o relatorio completo da insercao do documento e mostra onde ocorreu um possivel erro
 		$DEBUG = 0;
@@ -686,7 +838,11 @@
 					//partes podem ser ignoradas pois sao tratadas na recursao
 					} elseif($r[0]['tipo'] == 'parte'){
 						continue;
+<<<<<<< HEAD
 					//de resto, se o campo foi preenchido, atribui o dado a variavel
+=======
+					//de resto, se o campo foi preenchido, atribui o dado a variaveld
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 					} else {
 						if(isset($dados[$cb]))
 							$campos[$cbo] = $dados[$cb];
@@ -694,6 +850,10 @@
 					//tratamento de acentos e quebra de linha para HTML/HTML entities
 					if(isset($dados[$cb])){
 						//converte caracteres especiais/acentuados para HTML entities
+<<<<<<< HEAD
+=======
+						$campos[$cbo] =  htmlentities ($campos[$cbo],ENT_QUOTES);
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 						$campos[$cbo] =  str_replace("\n", "<br />", $campos[$cbo]);
 					}
 				}
@@ -712,15 +872,19 @@
 						if($r[0]['tipo'] == "checkbox") {
 							//coloca zero no valor do campo
 							$dados[$cb] = 0;
+<<<<<<< HEAD
 						//se o campo for selecao de ano, considere o ano atual
 						} elseif($r[0]['tipo'] == "anoSelect") {
 							$dados[$cb] = date("Y");							
+=======
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 						//se o campo for autoincrement, deve-se verificar o ultimo valor para incrementa-lo
 						} elseif($r[0]['tipo'] == "autoincrement"){
 							//se campo reseta a cada ano
 							if(strpos($r[0]['extra'], "current_year") !== false){
 								//Seleciona o documento mais velho *deste ano* com o maior numero do attr autoincrement
 								$r2 = $bd->query("SELECT t.".$cb." FROM ".$doc->dadosTipo['tabBD']." AS t LEFT JOIN doc AS d ON t.id=d.tipoID WHERE d.data>".mktime(0,0,0,1,1,date("Y"))." AND d.labelID=".$doc->dadosTipo['id']." ORDER BY d.id DESC LIMIT 1");
+<<<<<<< HEAD
 								// print($r2[0][$cb]."SELECT t.".$cb." FROM ".$doc->dadosTipo['tabBD']." AS t LEFT JOIN doc AS d ON t.id=d.tipoID WHERE d.data>".mktime(0,0,0,1,1,date("Y"))." AND d.labelID=".$doc->dadosTipo['id']." ORDER BY t.".$cb." DESC LIMIT 1");
 								//se achar alguma entrada, incrementa o valor do ultimo doc
 								if (isset($r2[0][$cb]) && $r2[0][$cb]){
@@ -728,6 +892,15 @@
 								//senao, nenhum doc foi criado nesse ano, ainda. Cria o id 1/aaaa
 								} else {
 									$dados[$cb] = 1;//. '/' . date("Y");
+=======
+								//TODO print($r2[0][$cb]."SELECT t.".$cb." FROM ".$doc->dadosTipo['tabBD']." AS t LEFT JOIN doc AS d ON t.id=d.tipoID WHERE d.data>".mktime(0,0,0,1,1,date("Y"))." AND d.labelID=".$doc->dadosTipo['id']." ORDER BY t.".$cb." DESC LIMIT 1");
+								//se achar alguma entrada, incrementa o valor do ultimo doc
+								if (isset($r2[0])){
+									$dados[$cb] = (($r2[0][$cb]) + 1) . '/' . date("Y");
+								//senao, nenhum doc foi criado nesse ano, ainda. Cria o id 1/aaaa
+								} else {
+									$dados[$cb] = 1 . '/' . date("Y");
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 								}
 							//se o campo nao reseta a cada ano
 							} else {
@@ -768,7 +941,11 @@
 						}	
 					}
 					//trata o valor do campo convertendo acentos em entidades HTML
+<<<<<<< HEAD
 					$campos[$cb] = htmlspecialchars_decode( $dados[$cb], ENT_QUOTES);
+=======
+					$campos[$cb] = htmlspecialchars_decode( htmlentities ($dados[$cb],ENT_QUOTES), ENT_QUOTES);
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 					//se for conteudo, converte as quebras de linha em cod HTML e aspas
 					if($cb == "conteudo"){
 						$campos[$cb] = str_replace(array("'","\n"),array("\'",""), $campos[$cb]);
@@ -782,6 +959,7 @@
 			
 			if($DEBUG) $html .= "Dados lidos com sucesso.<br />";	
 			//adicao dos documentos anexos e feedback se debug setado
+<<<<<<< HEAD
 			if($doc->dadosTipo['docAnexo']){
 				$doc->campos['documento'] = '';
 			}
@@ -794,6 +972,23 @@
 				$doc->campos['empresa'] = '';
 			}
 			// print_r($doc); exit();
+=======
+			if(strlen($dados['docsAnexos'])){
+				$doc->campos['documento'] = rtrim($dados['docsAnexos'],",");
+				if($DEBUG) $html .= "Documento(s) adicionado(s) com sucesso.<br />";
+			}
+			//adicao das obras anexas
+			if(strlen($dados['obrasAnexas'])){
+				$doc->campos['obra'] = rtrim($dados['obrasAnexas'],",");
+				if($DEBUG) $html .= "Obra(s) adicionada(s) com sucesso.<br />";
+			}
+			//adicao das empresas anexas
+			if(strlen($dados['emprAnexas'])){
+				$doc->campos['empresa'] = rtrim($dados['emprAnexas'],",");
+				if($DEBUG) $html .= "Empresa(s) adicionada(s) com sucesso.<br />";
+			}
+			
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 			//salvar campos no BD
 			if ($doc->salvaCampos()){
 				if($DEBUG) $html .= "Campos salvos com sucesso.<br />";
@@ -810,9 +1005,15 @@
 				return $html;
 			}
 			
+<<<<<<< HEAD
 			//logar historico de recebimento se os campos forem preenchidos
 			if($dados['action'] == 'cad' && $dados['unOrgReceb'] && $dados['rrNumReceb'] && $dados['rrAnoReceb']){
 				if ($doc->doLogHist($_SESSION['id'],'',"Via Rel. Remessa n&deg;".$dados['rrNumReceb']."/".$dados['rrAnoReceb'],$dados['unOrgReceb'],'entrada','','Recebido')) {
+=======
+			//logar historico de recebimento se os campos forempreenchidos
+			if($dados['action'] == 'cad' && $dados['unOrgReceb'] && $dados['rrNumReceb'] && $dados['rrAnoReceb']){
+				if ($doc->doLogHist($_SESSION['id'],"Recebido de ".$dados['unOrgReceb']." via Rel. Remessa n&deg;".$dados['rrNumReceb']."/".$dados['rrAnoReceb'],"")) {
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 					if($DEBUG) $html .= "Hist&oacute;rico criado com sucesso.<br />";
 				} else {
 					if($DEBUG) $html .= '<b>Falha ao criar hist&oacute;rico de Recebimento</b><br />';
@@ -820,13 +1021,21 @@
 			}
 						
 			//logar historico
+<<<<<<< HEAD
 			if ($doc->doLogHist($_SESSION['id'],"","",'','criacao','','')){
+=======
+			if ($doc->doLogHist($_SESSION['id'],"Criou o documento.","")){
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 				if($DEBUG) $html .= "Hist&oacute;rico criado com sucesso.<br />";
 			}else{
 				if($DEBUG) $html .= '<b>Falha ao criar hist&oacute;rico</b><br />';
 			}
 			
+<<<<<<< HEAD
 			//faz upload de arquivos, salva no documento e loga no historico
+=======
+			//faz upload de arquivos, salva no documento e loga no hostorico
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 			if($DEBUG) $html .= "<br /><b>Arquivos</b><br />";			
 			$relArq = $doc->doUploadFiles();
 			if($DEBUG) $html .= montaRelArq($relArq);
@@ -856,13 +1065,21 @@
 					if($ddid > 0){
 						//carrega os dados do documento 
 						$docDesp = new Documento($ddid);
+<<<<<<< HEAD
 						showDespStatus($docDesp, array('para' => html_entity_decode($dados['para']) ,"outro" => $dados['outro'], 'funcID' => $dados['funcID'], 'despExt' => $dados['despExt'], 'despacho' => $dados['despacho']),'hideFB');
 						$docDesp->doLogHist($_SESSION['id'], '', "Via Rel. Remessa CPO n&deg:".$doc->campos['numeroRR'],$doc->campos['unOrgDest'],'saida','','Despacho');
+=======
+						$docDesp->doLogHist($_SESSION['id'], "Despachou o documento para ".$doc->campos['unOrgDest']." via Rel. Remessa CPO n&deg:".$doc->campos['numeroRR'],'');
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 					}
 				}
 			}
 			//grava despacho
+<<<<<<< HEAD
 			$despStatus = showDespStatus($doc, array('para' => html_entity_decode($dados['para']) ,"outro" => $dados['outro'], 'funcID' => $dados['funcID'], 'despExt' => $dados['despExt'], 'despacho' => $dados['despacho']),'hideFB');
+=======
+			$despStatus = showDespStatus($doc, array('para' => $dados['para'] ,"outro" => $dados['outro'], 'funcID' => $dados['funcID'], 'despExt' => $dados['despExt'], 'despacho' => htmlentities($dados['despacho'])),'hideFB');
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 			
 			//gerar PDF
 			if($dados['action'] == 'novo'){
@@ -877,6 +1094,7 @@
 			$doc->loadDados($bd);
 			$doc->loadCampos($bd);
 			//impressao dos dados
+<<<<<<< HEAD
 			$html .= 'Documento gerado com o N&uacute;mero CPO: <b><font color="red"><a href="javascript:void(0);" onclick="window.open('."'sgd.php?acao=ver&amp;docID=".$doc->id."','detalhe".$doc->id."','width=900,height=650,scrollbars=yes,resizable=yes'".')">'.$doc->id.'</a></font></b>
 			<br />'.showDetalhes($doc).
 			'<br /><b>Outras A&ccedil;&otilde;es:</b>';
@@ -884,6 +1102,12 @@
 				$html .= '<br /><b><a href="javascript:void(0);" onclick="javascript:window.opener.newDocLink(\''.$doc->id.'\',\''.$doc->dadosTipo['nome'].' '.$doc->numeroComp.'\',\''.$_POST['targetInput'].'\',\'<br>\');self.close();">Adicionar documento ao formul&aacute;rio e fechar janela</a></b>';
 			}
 			$html .= '<br /><a href="sgd.php?acao='.$dados['action'].'&tipoDoc='.$doc->dadosTipo['nomeAbrv'].'"> Cadastrar novo(a) '.$doc->dadosTipo['nome'].'</a>'
+=======
+			$html .= 'Documento gerado com o N&uacute;mero CPO: <b><font color="red"><a href="#" onclick="window.open('."'sgd.php?acao=ver&amp;docID=".$doc->id."','detalhe".$doc->id."','width=900,height=650,scrollbars=yes,resizable=yes'".')">'.$doc->id.'</a></font></b>
+			<br />'.showDetalhes($doc).
+			'<br /><b>Outras A&ccedil;&otilde;es:</b>
+			<br /><a href="sgd.php?acao='.$dados['action'].'&tipoDoc='.$doc->dadosTipo['nomeAbrv'].'"> Cadastrar novo(a) '.$doc->dadosTipo['nome'].'</a>'
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 			.$despStatus;
 			
 			//Imprimir RR?
@@ -903,7 +1127,11 @@
 			
 			//logar historico de recebimento
 			if($dados['action'] == 'cad' && $dados['unOrgReceb'] && $dados['rrNumReceb'] && $dados['rrAnoReceb']){
+<<<<<<< HEAD
 				if ($doc->doLogHist($_SESSION['id'],'',"Via Rel. Remessa n&deg;".$dados['rrNumReceb']."/".$dados['rrAnoReceb'],$dados['unOrgReceb'],'entrada','','Recebido')) {
+=======
+				if ($doc->doLogHist($_SESSION['id'],"Recebido de ".$dados['unOrgReceb']." via Rel. Remessa n&deg;".$dados['rrNumReceb']."/".$dados['rrAnoReceb'],'')) {
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 					if($DEBUG) $html .= "Hist&oacute;rico criado com sucesso.<br />";
 				} else {
 					if($DEBUG) $html .= '<b>Falha ao criar hist&oacute;rico de Recebimento</b><br />';
@@ -951,8 +1179,12 @@
 		//inicializacao da variavel
 		$html = "";
 		//print $entrada.'/'.$dados['rrNumReceb'].'/'.$dados['unOrgReceb'].'/'.$dados['rrAnoReceb'];exit();
+<<<<<<< HEAD
 		if($entrada && isset($dados['unOrgReceb']) && isset($dados['rrNumReceb']) && isset($dados['rrAnoReceb']) && $dados['unOrgReceb'] && $dados['rrNumReceb'] && $dados['rrAnoReceb']){
 			if ($doc->doLogHist($_SESSION['id'],'', " via Rel. Remessa n&deg;".$dados['rrNumReceb']."/".$dados['rrAnoReceb'],$dados['unOrgReceb'],'entrada','','Recebido')) {
+=======
+		if($entrada && isset($dados['unOrgReceb']) && isset($dados['rrNumReceb']) && isset($dados['rrAnoReceb']) && $dados['unOrgReceb'] && $dados['rrNumReceb'] && $dados['rrAnoReceb']){	if ($doc->doLogHist($_SESSION['id'],"Recebido de ".$dados['unOrgReceb']." via Rel. Remessa n&deg;".$dados['rrNumReceb']."/".$dados['rrAnoReceb'],'')) {
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 				if($mode == 'showFB') $html .= "Hist&oacute;rico criado com sucesso.<br />";
 			} else {
 				if($mode == 'showFB') $html .= '<b>Falha ao criar hist&oacute;rico de Recebimento</b><br />';
@@ -974,13 +1206,22 @@
 			//senao - sucesso ao salvar despacho
 			}else{
 				//gera msg de sucesso
+<<<<<<< HEAD
 				$html = 'Despacho para '.$desp.' gravado com sucesso.<br />';
+=======
+				$html = 'Despacho para '.$desp.' gravado com sucesso.<br />
+				<a href="javascript:void(0)" onclick="window.open(\'sgd.php?acao=geraCI&id='.$doc->id.'\')">Gerar CI</a>';
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 			}
 		}
 		//se o despacho foi para fora, e nao foi uma RR
 		if($dados['para'] == 'ext' && $dados['despExt'] && $doc->dadosTipo['nomeAbrv'] != 'rr')
 			//gerar atalho para RR 
+<<<<<<< HEAD
 			$html .= '<br /><a href="#" onclick="window.open('."'sgd.php?acao=novoDocVar&amp;action=novo&amp;tipoDoc=rr&amp;anoE=2011&amp;docsDesp=".$doc->id."&amp;unOrgDest=".urlencode($dados['despExt'])."&amp;ppara=ext&amp;despExt=".urlencode($dados['despExt'])."&amp;despacho=".urlencode(html_entity_decode($dados['despacho']))."','novaRR','width=900,height=650,scrollbars=yes,resizable=yes'".')">Gerar Rela&ccedil;&atilde;o de Remessa</a>.<br />';
+=======
+			$html .= '<br /><a href="#" onclick="window.open('."'sgd.php?acao=novoDocVar&action=novo&tipoDoc=rr&docsDesp=".$doc->id."&unOrgDest=".$dados['despExt']."&para=ext&despExt=".$dados['despExt']."&despacho=".urlencode(html_entity_decode($dados['despacho']))."','novaRR','width=900,height=650,scrollbars=yes,resizable=yes'".')">Gerar Rela&ccedil;&atilde;o de Remessa</a>.<br />';
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 		//retorna o cod html
 		return $html;
 	}
@@ -1006,7 +1247,11 @@
 			//verifica se ele foi passado para a pagina
 			if (isset($GET[$campo])) {
 				//se sim, coloca seu valor na variavel
+<<<<<<< HEAD
 				$dados[$campo] = urldecode($GET[$campo]);
+=======
+				$dados[$campo] = $GET[$campo];
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 			} else {
 				//senao, deixa o valo da variavel vazio
 				$dados[$campo] = '';
@@ -1020,7 +1265,11 @@
 			$dados['camposGerais'] = $doc->dadosTipo['campos'];
 			//seta os campos de busca
 			$dados['camposBusca'] = '';
+<<<<<<< HEAD
 		} elseif ($GET['action'] == 'novo'){
+=======
+		}elseif ($GET['action'] == 'novo'){
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 			//se for novo documento, apenas eh necessario setar a acao
 			$dados['action'] = 'novo';
 		}
@@ -1029,10 +1278,17 @@
 		//id=0 pois eh um novo documento
 		$dados['id'] = 0;
 		//cria os dados para despacho se houver. senao deixa os campos de despacho em branco
+<<<<<<< HEAD
 		if(isset($GET['para']))    $dados['para']     = urldecode($GET['ppara']);    else   $dados['para'] = '';
 		if(isset($GET['despExt'])) $dados['despExt']  = urldecode($GET['despExt']);  else   $dados['despExt'] = '';
 		if(isset($GET['outro']))   $dados['outro']    = urldecode($GET['outro']);    else   $dados['outro'] = '';
 		if(isset($GET['despacho']))$dados['despacho'] = htmlentities(htmlentities($GET['despacho'])); else   $dados['despacho'] = '';
+=======
+		if(isset($GET['para']))    $dados['para']     = $GET['para'];     else   $dados['para'] = '';
+		if(isset($GET['despExt'])) $dados['despExt']  = $GET['despExt'];  else   $dados['despExt'] = '';
+		if(isset($GET['outro']))   $dados['outro']    = $GET['outro'];    else   $dados['outro'] = '';
+		if(isset($GET['despacho']))$dados['despacho'] = $GET['despacho']; else   $dados['despacho'] = '';
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 		//cria a 'lista' de documentos anexos, se houver
 		if (isset($GET['docsAnexos'])) {
 			$dados['docsAnexos'] = $GET['docsAnexos'];
@@ -1054,6 +1310,7 @@
 		//retorna array com todas as variaveis necessarias para a acriacao do documento
 		return $dados;
 	}
+<<<<<<< HEAD
 	
 	/**
 	 * Salva nova atribuição de valor a um determinado documento
@@ -1153,4 +1410,6 @@
 			return array(array('success' => false));
 		}
 	}
+=======
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 ?>

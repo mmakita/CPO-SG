@@ -6,6 +6,7 @@
 	 * @desc pagina que lida com os modulos de gerenciamento de obras
 	 */
 	include_once('includeAll.php');
+<<<<<<< HEAD
 	includeModule('sgo');
 
 	//verifica se usuario esta logado
@@ -90,6 +91,25 @@
 	} else {
 		$html->content[1] = verObraFeedback(array("success" => false, "errorNo" => 1, "errorFeedback" => "P&aacute;gina inv&aacute;lida"));
 	}
+=======
+	include_once('sgd_modules.php');
+	session_start();
+	
+	checkLogin(6);
+	
+	$html = new html($conf);
+	$bd = new BD($conf["DBLogin"], $conf["DBPassword"], $conf["DBhost"], $conf["DBTable"]);
+	
+	$html->setTemplate($conf['template']);
+	$html->header = "Ger&ecirc;ncia de Obras";
+	$html->campos['codPag'] = showCodTela();
+	$html->title .= "Em construção";
+	$html->user = $_SESSION["nomeCompl"];
+	$html->path = showNavBar(array());
+	$html->menu = showMenu($conf['template_menu'],$_SESSION["perm"],30,$bd);
+	
+	$html->content[1] = "Em constru&ccedil;&atilde;o.";
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 	
 	$html->showPage();
 ?>

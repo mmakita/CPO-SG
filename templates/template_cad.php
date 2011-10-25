@@ -12,11 +12,23 @@
 <br />
 <form id="cadForm" action="sgd.php?acao=salvar" method="post" enctype="multipart/form-data">
 <table width="100%">
+<<<<<<< HEAD
 <tr><td>{$emitente}</td></tr>
 <tr><td>{$campos}</td></tr>
 <tr><td>
 	<b>Anexar Arquivo:</b><br />
 	{$anexarArq}
+=======
+<tr><td width="50%">
+	{$campos}<br /><br />
+	
+	<b>Anexar Arquivo:</b><br />
+	{$anexarArq}
+</td><td width="50%" style="padding-left:20px;">
+	{$documentos}
+	{$obra}
+	{$empresa}
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 </td></tr>
 
 <tr><td colspan="2"><b>Hist&oacute;rico:</b></td></tr>

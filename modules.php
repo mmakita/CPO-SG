@@ -17,6 +17,7 @@
 		//carrega o arquivo com o codigo HTML basico da pagina
 		$html = file_get_contents($template);
 		$buffer = '';
+<<<<<<< HEAD
 		$data["itens_obra"] = '';
 		
 		//monta o 1o menu (de obras) se houver permissao
@@ -25,6 +26,15 @@
 		
 			//$area /= 2;//areas que serao mostradas
 		
+=======
+		
+		//monta o 1o menu (de obras) se houver permissao
+		if ($perm[12]) $data["itens_obra"] = '<a href="sgo.php?acao=buscar">Gerenciar Obra</a>';
+		else{
+			$data["itens_obra"] = "";
+			$area /= 2;//areas que serao mostradas
+		}
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 		
 		//seleciona todos os tipos de documento
 		$docs = $bd->query("SELECT nome,nomeAbrv,cadAcaoID FROM label_doc WHERE cadAcaoID > 0");
@@ -227,7 +237,11 @@
 		}
 		//se nao estiver logado, volta para tela de login com as variaveis corretas
 		if(!isset($_SESSION['logado']) || (isset($_SESSION['logado']) && !$_SESSION['logado']))
+<<<<<<< HEAD
 			showError(-1,"login.php?redir=".urlencode($varsGET));
+=======
+			showError($id,"login.php?redir=".urlencode($varsGET));
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 	}
 	
 	/**
@@ -237,6 +251,7 @@
 	 */
 	function checkPermission($permID) {
 		//le no vetor de permissoes se o usuario logado tem permissao para realizar a acao
+<<<<<<< HEAD
 		//print($_SESSION['perm'][$permID]);exit();
 		if(isset($_SESSION['perm'][$permID]) && $_SESSION['perm'][$permID] > 0) {
 			return true;
@@ -250,6 +265,12 @@
 		} else {
 			return false;
 		}
+=======
+		if(isset($_SESSION['perm'][$permID]) && $_SESSION['perm'][$permID] > 0)
+			return true;
+		else
+			showError(12);
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 	}
 	
 	/**
@@ -278,12 +299,16 @@
 		
 		$campo['nome']  = $cp['nome']; //nome eh o proprio nome passado por parametro (e o mesmo no BD)
 		$campo['label'] = $cp['label']; //o label eh aquele lido do BD sem tratamento algum
+<<<<<<< HEAD
 		$campo['tipo'] = $cp['tipo'];
+=======
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 		$campo['cod']   = '';
 		$campo['valor'] = '';
 		$campo['parte'] = false;
 		
 		if ($cp['tipo'] == 'input') {
+<<<<<<< HEAD
 			// se campo text, valor eh o que foi digitado sem tratamento (valor do indice dado)
 			if(isset($valor[$c])) $campo['valor'] = $valor[$c];
 			
@@ -294,10 +319,17 @@
 				else
 					$campo['cod'] = '<input autocomplete="off" name="'.$cp['nome'].'" id="'.$cp['nome'].'" '.$cp['attr'].' />';
 				$campo['cod'] .= '<script type="text/javascript">$(document).ready(function(){$("#'.$cp['nome'].'").autocomplete("unSearch.php",{minChars:2,matchSubset:1,matchContains:true,maxCacheLength:20,extraParams:{\'show\':\'un\'},selectFirst:true,onItemSelect: function(){$("#'.$cp['nome'].'").focus();}});});</script>';
+=======
+			//se for input com autocompletar de unidades, gera o HTML + javascript correspondente
+			if (strpos($cp['extra'],"unOrg_autocompletar") !== false){
+				$campo['cod'] = '<input autocomplete="off" name="'.$cp['nome'].'" id="'.$cp['nome'].'" '.$cp['attr'].' />
+				<script type="text/javascript">$(document).ready(function(){$("#'.$cp['nome'].'").autocomplete("unSearch.php",{minChars:2,matchSubset:1,matchContains:true,maxCacheLength:20,extraParams:{\'show\':\'un\'},selectFirst:true,onItemSelect: function(){$("#'.$cp['nome'].'").focus();}});});</script>';
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 			//se for campo input com ano autal, cria input com pre-valor caso cadastro e em branco caso busca
 			} elseif (strpos($cp['extra'],"current_year") !== false){
 				if($tipo == 'cad') $campo['cod'] = '<input name="'.$cp['nome'].'" id="'.$cp['nome'].'" '.$cp['attr'].' value="'.date("Y").'" />';
 				if($tipo == 'bus') $campo['cod'] = '<input name="'.$cp['nome'].'" id="'.$cp['nome'].'" '.$cp['attr'].' />';
+<<<<<<< HEAD
 				if($tipo == 'edt') $campo['cod'] = '<input name="'.$cp['nome'].'" id="'.$cp['nome'].'" '.$cp['attr'].' value="'.$campo['valor'].' />';
 			} else {
 				//se for input simples, monta a tag
@@ -311,6 +343,19 @@
 			//monta a estrutura basica de campo select (com 1a opcao --selecione--)
 			$campo['cod'] = '<select name="'.$cp['nome'].'" id="'.$cp['nome'].'">';
 			if($tipo != 'edt') $campo['cod'] .= '<option selected value="nenhum"> -- Selecione -- </option>';
+=======
+			} else {
+				//se for input simples, monta a tag
+				$campo['cod'] = '<input name="'.$cp['nome'].'" id="'.$cp['nome'].'" '.$cp['attr'].' />';
+			}
+			// se campo text, valor eh o que foi digitado sem tratamento (valor do indice dado)
+			if(isset($valor[$c])) $campo['valor'] = $valor[$c];
+			
+		} elseif ($cp['tipo'] == 'select') {
+			//monta a estrutura basica de campo select (com 1a opcao --selecione--)
+			$campo['cod'] = '<select name="'.$cp['nome'].'" id="'.$cp['nome'].'">
+			<option selected value="nenhum"> -- Selecione -- </option>';
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 			//separa todas as opcoes da selecao
 			$attr = explode(",",$cp['attr']);
 			//para cada selecao, monta o HTML correspondente
@@ -321,6 +366,7 @@
 				if(strpos($c[0], '_separador_') !== false)
 					$campo['cod'] .= '<option value="" disabled="" style="background-color: #404040; color:white">-&gt; '.$c[1].'</option>';
 				else
+<<<<<<< HEAD
 					if($tipo == 'edt' && $valor[$campo['nome']] == $c[0]) { 
 						//se for edicao, o valor do campo deve estar pre-selecionado
 						$campo['cod'] .= '<option value="'.$c[0].'" selected="selected">'.$c[1].'</option>';
@@ -328,11 +374,17 @@
 						//senao cria campo normal
 						$campo['cod'] .= '<option value="'.$c[0].'">'.$c[1].'</option>';
 					}
+=======
+					//senao cria campo normal
+					$campo['cod'] .= '<option value="'.$c[0].'">'.$c[1].'</option>';
+				
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 				//valor eh o 'value' da opcao selecionada
 				if (isset($valor[$campo['nome']]) && $c[0] == $valor[$campo['nome']])
 					$campo['valor'] = $c[1];
 			}
 			$campo['cod'] .= '</select>';
+<<<<<<< HEAD
 						
 		} elseif ($cp['tipo'] == 'yesno') {
 			if($tipo == 'edt') {
@@ -343,6 +395,12 @@
 				//se for tipo yes/no monta os 2 campos			
 				$campo['cod'] = '<input type="radio" name="'.$cp['nome'].'" id="'.$cp['nome'].'" value="1" /> Sim&nbsp;&nbsp;<input type="radio" name="'.$cp['nome'].'" id="'.$cp['nome'].'" value="0" /> N&atilde;o';
 			}
+=======
+			
+		} elseif ($cp['tipo'] == 'yesno') {
+			//se for tipo yes/no monta os 2 campos			
+			$campo['cod'] = '<input type="radio" name="'.$cp['nome'].'" id="'.$cp['nome'].'" value="1" /> Sim&nbsp;&nbsp;<input type="radio" name="'.$cp['nome'].'" id="'.$cp['nome'].'" value="0" /> N&atilde;o';
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 			//se o valor for 1, retorna sim, se 0, retorna nao, senao, nao informado
 			if(isset($valor[$c])){
 				if($valor[$c] == 1)	$campo['valor'] = 'sim';
@@ -352,10 +410,14 @@
 			
 		} elseif ($cp['tipo'] == 'checkbox') {
 			//se for checkbox, monta o campo
+<<<<<<< HEAD
 			if($tipo == 'edt' && $valor[$c] == 1)
 				$campo['cod'] = '<input type="checkbox" name="'.$cp['nome'].'" id="'.$cp['nome'].'" value="1" checked="checked" />';
 			else 
 				$campo['cod'] = '<input type="checkbox" name="'.$cp['nome'].'" id="'.$cp['nome'].'" value="1" />';
+=======
+			$campo['cod'] = '<input type="checkbox" name="'.$cp['nome'].'" id="'.$cp['nome'].'" value="1" />';
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 			if(isset($valor[$c])){
 				//se valor for 1, retorna sim, se for 0, retorna nao, senao, retorna nao informado
 				if($valor[$c] == 1)	$campo['valor'] = 'sim';
@@ -367,13 +429,19 @@
 			//monta campo de autoincrement
 			if($tipo == "cad") $campo['cod'] = '<input type="hidden" name="'.$cp['nome'].'" id="'.$cp['nome'].'" value="" />(Ser&aacute; gerado automaticamente.)';
 			if($tipo == "bus") $campo['cod'] = '<input type="text" size="10" name="'.$cp['nome'].'" id="'.$cp['nome'].'" value="" />';
+<<<<<<< HEAD
 			if($tipo == "edt") $campo['cod'] = '';
+=======
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 			if(isset($valor[$c])) $campo['valor'] = $valor[$c];
 			
 		} elseif ($cp['tipo'] == 'textarea') {
 			//monta o campo de texto
 			if($tipo == "cad") $campo['cod'] = '<textarea name="'.$cp['nome'].'" id="'.$cp['nome'].'" '.$cp['attr'].'"></textarea>';
+<<<<<<< HEAD
 			if($tipo == "edt") $campo['cod'] = '<textarea name="'.$cp['nome'].'" id="'.$cp['nome'].'" '.$cp['attr'].'">'.$valor[$c].'</textarea>';
+=======
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 			if($tipo == "bus") $campo['cod'] = '<input name="'.$cp['nome'].'" id="'.$cp['nome'].'" size="35" />';
 			if(isset($valor[$c])) $campo['valor'] = $valor[$c];
 			
@@ -383,7 +451,10 @@
 				//se for campo de usuario atual, apenas mostra o nome do usuario e cria campo oculto com o ID do usuario atual no cad e mostra input para busca por nome
 				if($tipo == "cad") $campo['cod'] = '<input type="hidden" name="'.$cp['nome'].'" id="'.$cp['nome'].'" value="'.$_SESSION['id'].'" />'.$_SESSION['nomeCompl'];
 				if($tipo == "bus") $campo['cod'] = '<input type="text" size="20" name="'.$cp['nome'].'" id="'.$cp['nome'].'" />';
+<<<<<<< HEAD
 				if($tipo == "edt") $campo['cod'] = '';
+=======
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 			}
 			if(strpos($cp['extra'], 'select') !== false){
 				//campo de selecao de usuarios
@@ -405,7 +476,10 @@
 			//tendo o ID do usuario, procura no BD o nome do usuario, que eh o valor do campo
 			if (isset($valor[$campo['nome']]) && $valor[$campo['nome']] > 0){
 				$res = getNamesFromUsers($valor[$campo['nome']]);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 				if (count($res))
 					$campo['valor'] = $res[0]['nomeCompl'];
 				else
@@ -416,14 +490,22 @@
 			//campos de documetos. cria div que mostrara os nomes de documentos e um campo oculto que guardas os IDs a serem colocados no campo do BD 
 			$campo['cod'] = '<div id="'.$cp['nome'].'Nomes" class="cadDisp"></div><input type="hidden" name="'.$cp['nome'].'" id="'.$cp['nome'].'" />
 				<a id="addDocLink" href="#" onclick="window.open(\'sgd.php?acao=busca_mini&amp;onclick=adicionarCampo&amp;target='.$cp['nome'].'\',\'addDoc\',\'width=750,height=550,scrollbars=yes,resizable=yes\')">Adicionar Documento </a>';
+<<<<<<< HEAD
 			if($tipo == "edt") $campo['cod'] = '';
 			//retorna nome do documento
 			$campo['valor'] = '';
+=======
+			//retorna nome do documento
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 			foreach(explode(",",$valor[$c]) as $id) {
 				if($id) {
 					$docAnex = new Documento($id);
 					$docAnex->loadDados();
+<<<<<<< HEAD
 					$campo['valor'] .= showDocAnexo(array(array("id" => $docAnex->id, "nome" => $docAnex->dadosTipo['nome']." ".$docAnex->numeroComp)));
+=======
+					$campo['valor'] = showDocAnexo(array(array("id" => $docAnex->id, "nome" => $docAnex->dadosTipo['nome']." ".$docAnex->numeroComp)));
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 				}
 			}
 			
@@ -432,6 +514,7 @@
 			//algoritmo: le as partes, procura, recursivamente, o codigo de cada parte
 			$partes = explode("+",$cp['attr']);
 			$campo['cod'] = '<input type="hidden" name="'.$c.'" id="'.$c.'" value= "'.$cp['nome'].'" />';
+<<<<<<< HEAD
 			if(!isset($valor[$cp['nome']]) || $valor[$cp['nome']] == $cp['nome'] ){
 				//para cada parte, obtem o codigo da parte e concatena com os dados ja obtidos 
 				foreach ($partes as $p) {
@@ -450,12 +533,28 @@
 			}
 			if($tipo == "edt") $campo['cod'] = '<input type="text" size="40" name="'.$campo['nome'].'" id="'.$campo['nome'].'" value="'.$campo['valor'].'" />';
 			
+=======
+			//para cada parte, obtem o codigo da parte e concatena com os dados ja obtidos 
+			foreach ($partes as $p) {
+				$dados = montaCampo($p,$tipo,$valor,$busca);//busca nome, cod e valor da parte
+				if($dados != null){//se a parte for campo
+					$campo['nome'] .= ','.$dados['nome'];//concatena o nome da parte
+					$campo['cod'] .= $dados['cod'];//concatena o codigo da parte
+					$campo['valor'] .= $dados['valor'];//concatena o valor da parte
+				}else{//se a parte nao for campo (separador, por ex)
+					$campo['cod'] .= str_replace('"','',$p);//concatena o codigo com a parte sem aspas
+					$campo['valor'] .= str_replace('"','',$p);//concatena o valor com a parte sem aspas
+				}
+			}
+		
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 		} elseif($cp['tipo'] == 'anoSelect') {//tipo de anoSelect
 			$anoAtual = date("Y");//determina o ano atual
 			//se for busca, deicxa ano em branco por padrao (caso nao queira determinar o ano na busca)
 			
 			if($tipo == 'bus') {
 				$campo['cod'] = '<input type="text" id="'.$campo['nome'].'" name="'.$campo['nome'].'" value="" size="3" />';
+<<<<<<< HEAD
 			}elseif ($tipo == 'edt'){
 				$campo['cod'] = '<input type="text" id="'.$campo['nome'].'" name="'.$campo['nome'].'" value="'.$valor[$c].'" size="3" />';
 			} else { 
@@ -503,6 +602,48 @@
 			//valor do ano nao sofre tratamento
 			if(isset($valor[$c])) $campo['valor'] = $valor[$c];
 			else $campo['valor'] = date("Y");
+=======
+			} else { 
+				$campo['cod'] = '<input type="hidden" id="'.$campo['nome'].'" name="'.$campo['nome'].'" value="'.$anoAtual.'" />';
+				$campo['cod'] .= '<input type="text" id="'.$campo['nome'].'2" name="'.$campo['nome'].'2" size="3" maxlength="4" />'.//cria o campo de texto para digitar manualmente caso o ano seja inferior ao apresentados na selecao
+							'<select name="'.$campo['nome'].'1" id="'.$campo['nome'].'1">';
+				//cria opcao para nao determinar o ano de procura
+				$campo['cod'] .= '<option selected name="'.$anoAtual.'" value="'.$anoAtual.'">'.$anoAtual.'</option>';
+				//completa a selecao com os ultimos 5 anos
+				for ($i = 1; $i < 6; $i++) {
+					$campo['cod'] .= '<option name="'.($anoAtual-$i).'" value="'.($anoAtual-$i).'">'.($anoAtual-$i).'</option>';
+				}
+				//cria a opcao 'outros' e o codigo JS para mudar lidar com os campos
+				$campo['cod'] .= '<option id="'.$campo['nome'].'outroAno" name="'.$campo['nome'].'outroAno">Outro</option>
+								</select>
+								<script type="text/javascript">
+									//campo 2 comeca oculto
+									$("#'.$campo['nome'].'2").hide();
+									//quando mudados a opcao selecionada
+									$("#'.$campo['nome'].'1").change(function(){
+										//copia a opcao selecionada para o campo oculto principal
+										$("#'.$campo['nome'].'").val($("#'.$campo['nome'].'1").val());
+										if($("#'.$campo['nome'].'outroAno").attr("selected")){
+											//se selecionarmos outro, limpa o valor do campo principal
+											$("#'.$campo['nome'].'").val("");
+											//esconde o campo de selecao
+											$("#'.$campo['nome'].'1").hide();
+											//mostra o campo de texto pra digitacao
+											$("#'.$campo['nome'].'2").show();
+											//coloca o campo de texto no foco
+											$("#'.$campo['nome'].'2").focus();
+										}
+									});
+									
+									//para cada caracter digitado, copia o novo valor do campo2 para o campo principal
+									$("#'.$campo['nome'].'2").keyup(function(){
+										$("#'.$campo['nome'].'").val($("#'.$campo['nome'].'2").val());
+									});
+								</script>';
+				}
+			//valor do ano nao sofre tratamento
+			if(isset($valor[$c])) $campo['valor'] = $valor[$c];
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 		} else {
 			//se for outra coisa, copia o codigo HTML em attr
 			$campo['cod'] = $cp['attr'];
@@ -592,7 +733,11 @@
 		
 		//tratamento de campos especiais (que nao apenas imprimir os dados do BD)
 		foreach ($doc->campos as $ch => $dado) {
+<<<<<<< HEAD
 			$res = getCampo($ch);// print_r($doc->campos);
+=======
+			$res = getCampo($ch);
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 			$res = $res[0];
 			
 			if($res['tipo'] == 'userID'){
@@ -604,7 +749,10 @@
 				}
 			}elseif($res['tipo'] == 'input' && strpos($res['extra'],"unOrg_autocompletar") !== false){
 				//tratamento de unOrg
+<<<<<<< HEAD
 				//$unOrg['tudo'] = $dado;
+=======
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 				$un = explode("(", $dado);//corta o campo nos (
 				$unOrg['sigla'] = rtrim($un[count($un)-1],")");//a sigla eh o que esta entre u ultimo ()
 				$un = explode(' - ',$un[0],2);//separa no ' - ' 
@@ -617,15 +765,22 @@
 				}
 			}elseif ($res['tipo'] == 'documentos'){
 				//tratamento de documentos (mostrar nomes, numeros, etc)
+<<<<<<< HEAD
 				$docID = explode(",", $dado); //print_r($dado);
 				$docs[1]['nome'] = ''; $docs[2]['nome'] = ''; $docs['total']['nome'] = '';
 				$docs['total']['tam'] = 0;
+=======
+				$docID = explode(",", $dado);
+				$docs[1]['nome'] = ''; $docs[2]['nome'] = ''; $docs['total']['nome'] = '';
+				$docs[1]['tam'] = 0; $docs[2]['tam'] = 0; $docs['total']['tam'] = 0;
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 				$i = 0;
 				foreach ($docID as $did) {
 					//obtem os IDs dos documentos anexados
 					if($did != ''){
 						//carrega os dados do documento
 						$doci = new Documento($did);
+<<<<<<< HEAD
 						$doci->loadCampos();
 						if($doci->dadosTipo['nomeAbrv'] != 'dgen')
 							$docs['total']['nome'] .= $doci->dadosTipo['nome'].' '.$doci->numeroComp.' ('.$doci->campos['assunto'].')<br />';
@@ -639,6 +794,31 @@
 				//completa a coluna total para que tenha pelo menos 6 linhas de altura
 				while($docs['total']['tam'] < 6){
 					$docs[1]['nome'] .= '<br />';
+=======
+						$doci->loadTipoData();
+						$docs['total']['nome'] .= $doci->dadosTipo['nome'].' '.$doci->numeroComp.'<br />';
+						$docs['total']['tam']++;
+						//se houver mais de 5 documentos, divide em 2 colunas
+						if(count($docID) >= 6 && $i%2 == 1){
+						 	$docs[2]['nome'] .= $doci->dadosTipo['nome'].' '.$doci->numeroComp.'<br />';
+						 	$docs[2]['tam']++;
+						} else {
+						 	$docs[1]['nome'] .= $doci->dadosTipo['nome'].' '.$doci->numeroComp.'<br />';
+						 	$docs[1]['tam']++;
+						}
+						$i++;
+					}
+				}
+				//completa as colunas para que a tabela tenha pelo menos 6 linhas de altura
+				while ($docs[1]['tam'] < 6 && $docs[2]['tam'] < 6){
+					$docs[1]['nome'] .= '<br />';
+					$docs[2]['nome'] .= '<br />';
+					$docs[1]['tam']++;
+					$docs[2]['tam']++;
+				}
+				//completa a coluna total para que tenha pelo menos 6 linhas de altura
+				while($docs['total']['tam'] < 6){
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 					$docs['total']['nome'] .= '<br />';
 					$docs['total']['tam']++;
 				}
@@ -655,11 +835,16 @@
 		//coloca despacho no documento
 		$despacho = $doc->getHist();
 		$desp = '';
+<<<<<<< HEAD
 		$i=count($despacho);
 		while($i >= 0){
 			$desp = $despacho[$i]['despacho'];
 			if($desp != '') break;
 			$i--;
+=======
+		for($i=count($despacho);$desp == '';$i--){
+			$desp = $despacho[$i]['despacho'];
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 		}
 		
 		$html = str_replace('{$despacho}',$desp,$html);
@@ -700,11 +885,15 @@
 		return $fileName;
 	}
 	
+<<<<<<< HEAD
 	/**
 	 * EM DESUSO
 	 * @param unknown_type $id
 	 */
 	function geraCI($id){
+=======
+		function geraCI($id){
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 		require_once("classes/mpdf51/mpdf.php");
 		
 		$html = file_get_contents("templates/modelo_ci.html");

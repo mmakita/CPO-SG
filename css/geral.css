@@ -1,9 +1,14 @@
+<<<<<<< HEAD
 body {
+=======
+body{
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 	background-image: url('../img/bg.png');
 	font-family: Arial, Calibri, sans-serif;
 	font-size: 10pt;
 }
 
+<<<<<<< HEAD
 td.topMenu:hover {
 	background-color: #DDDDDD;
 }
@@ -20,6 +25,9 @@ div.alert {
 }
 
 div.cadDisp {padding: 5px;}
+=======
+div.cadDisp{padding: 5px;}
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 
 input[type="button"],input[type="submit"],input[type="reset"]{
 	border: 1px solid white;
@@ -67,7 +75,11 @@ div.subMenu1,div.subMenu2{
 div.subMenu1{background-color: #d8d8d8;}
 div.subMenu2{background-color: #dddddd;}
 
+<<<<<<< HEAD
 a.menuHeader,span.menuHeader{
+=======
+span.menuHeader{
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 	color: #BE1010;
 	display:block;
 	font-size:12pt;

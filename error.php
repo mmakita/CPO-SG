@@ -25,6 +25,7 @@
 		$erro[11]= "Erro. Não há dados suficientes pra realizar esta ação.";
 		$erro[12]= "Erro. Este usuário não tem privilégios suficentes para realizar esta operação.";
 		$erro[13]= "Erro ao se conectar ao Active Directory. Contate o administrador de redes.";
+<<<<<<< HEAD
 		$erro[14]= "Erro. Há dados que provavelmente foram perdidos.";
 		$erro[15]= "Erro ao ler permissão. Efetue o login e tente novamente";
 		
@@ -44,5 +45,12 @@
 			else
 				header("Location: ".$redir."&alert=".$erro[$cod]);
 		}
+=======
+		
+		if (strpos($redir, "?") === FALSE)
+			header("Location: ".$redir."?alert=".$erro[$cod]);
+		else
+			header("Location: ".$redir."&alert=".$erro[$cod]);
+>>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 }
 ?>
