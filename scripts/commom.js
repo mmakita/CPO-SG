@@ -15,7 +15,6 @@ function showInputFile(i){//mostra outro campo para anexo de arquivo
 	$("#fileUpCell").append('<br /><input type="file" id="arq'+i+'" name="arq'+i+'" onclick="showInputFile('+(i+1)+')" />');
 }
 
-<<<<<<< HEAD
 
 function html_entity_decode(str) {
 	var ta=document.createElement("textarea");
@@ -25,9 +24,6 @@ function html_entity_decode(str) {
 
 function convertFromHTML(a){
 	a = a + '';
-=======
-function convertFromHTML(a){
->>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 	a = a.replace("&aacute;","á");
 	a = a.replace("&atilde;","ã");
 	a = a.replace("&agrave;","à");
@@ -96,13 +92,10 @@ function getUrlVars(){
 FUNCOES PARA GERENCIAMENTO DE TABELAS/LINKS
 =========================================*/
 
-<<<<<<< HEAD
 function showDesp(i){
 	$('#desp'+i).slideDown();
 }
 
-=======
->>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 function newEmprCadLink(data,nome){
 	$.get('empresa.php?acao=cad&data='+data,function(suc){
 		if(suc == '0'){
@@ -131,7 +124,6 @@ function newDocLink(id,nome,target,sep){//monta um link de documento anexo
 	} else {
 		$("#"+target).val($("#"+target).val()+','+id);
 	}
-<<<<<<< HEAD
 	
 	if(target == 'ofir' || target == 'saa') {
 		validateDoc(target);
@@ -140,12 +132,6 @@ function newDocLink(id,nome,target,sep){//monta um link de documento anexo
 
 function newDelBut(id,target,sep){//cria o link para remocao do documento
 	return ' <a href="javascript:void(0)" class="retirar" onclick="delDoc('+id+',\''+target+'\',\''+sep+'\')">[Retirar]</a>';
-=======
-}
-
-function newDelBut(id,target,sep){//cria o link para remocao do documento
-	return ' <a href="#" class="retirar" onclick="delDoc('+id+',\''+target+'\',\''+sep+'\')">[Retirar]</a>';
->>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 }
 
 function delDoc(id,target,sep){//faz a remocao do documento
@@ -163,7 +149,6 @@ function delDoc(id,target,sep){//faz a remocao do documento
 }
 
 function newWinLink(url,name,w,h,label){//monta o link para abrir em nova janela
-<<<<<<< HEAD
 	return '<a href="javascript:void(0)" id="'+name+'" onclick="window.open(\''+url+'\',\''+name+'\',\'width='+w+',height='+h+',scrollbars=yes,resizable=yes\')">'+label+'</a>';
 }
 
@@ -196,7 +181,4 @@ function newDocInNewWindow(tipo,target,acao){
 function updateDocID(target,value){
 	$("#"+target+"Names").html("Documento "+value+" selecionado.");
 	$("#"+target).val(value);
-=======
-	return '<a href="#" onclick="window.open(\''+url+'\',\''+name+'\',\'width='+w+',height='+h+',scrollbars=yes,resizable=yes\')">'+label+'</a>';
->>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 }

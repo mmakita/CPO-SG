@@ -94,7 +94,6 @@
 	//
 	//  Consulta as tabelas de usuarios
 	//
-<<<<<<< HEAD
 	function getAllUsersName($activeOnly = true){
 		global $bd;
 		
@@ -104,8 +103,6 @@
 		return $bd->query("SELECT id, nomeCompl FROM usuarios $where ORDER BY nomeCompl");
 	}
 	
-=======
->>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 	function getUsers($user_id){
 		global $bd;
 		
@@ -119,11 +116,7 @@
 	function getNamesFromUsers($user_id){
 		global $bd;
 		
-<<<<<<< HEAD
 		return $bd->query("SELECT nomeCompl FROM usuarios WHERE id = $user_id");
-=======
-		$bd->query("SELECT nomeCompl FROM usuarios WHERE id = $user_id");
->>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 	}
 	
 	/**
@@ -140,7 +133,6 @@
 		
 		return $bd->query("SELECT area FROM usuarios WHERE id=$id LIMIT 1");
 	}
-<<<<<<< HEAD
 	
 	//
 	//CONSULTAS DE BUSCA DE DOCUMENTOS
@@ -153,22 +145,23 @@
 		$despIDs = "h.tipo = 'saida' AND ";
 		$dataDespacho = montaData($variables['dataDespacho']);
 		$dataReceb = montaData($variables['dataReceb']);
+		
 		if(count($dataDespacho) || $variables['un']) { // procura por despacho
-			if($dataDespacho[0] == null)
-				$recebIDs .= 'h.data > '.$dataDespacho[0].' AND ';
-			if($dataDespacho[1] == null)
-				$recebIDs .= 'h.data < '.$dataDespacho[1].' AND ';
+			if($dataDespacho[0])
+				$despIDs .= 'h.data > '.$dataDespacho[0].' AND ';
+			if($dataDespacho[1])
+				$despIDs .= 'h.data < '.$dataDespacho[1].' AND ';
 			if($variables['unReceb'])
-				$recebIDs .= "h.unidade LIKE '%".$variables['unDespacho']."%' AND ";
+				$despIDs .= "h.unidade LIKE '%".$variables['unDespacho']."%' AND ";
 		
 		}
-		if(count($dataReceb) || $variables['unDespacho']) { //procura por Recebimento
-			if($dataReceb[0] == null)
-				$despIDs .= 'h.data > '.$dataDespacho[0].' AND ';
-			if($dataReceb[1] == null)
-				$despIDs .= 'h.data < '.$dataDespacho[1].' AND ';
+		if(count($dataReceb) || $variables['unReceb']) { //procura por Recebimento
+			if($dataReceb[0])
+				$recebIDs .= 'h.data > '.$dataReceb[0].' AND ';
+			if($dataReceb[1])
+				$recebIDs .= 'h.data < '.$dataReceb[1].' AND ';
 			if($variables['unDespacho'])
-				$despIDs .= "h.unidade LIKE '%".$variables['unDespacho']."%' AND ";
+				$recebIDs .= "h.unidade LIKE '%".$variables['unReceb']."%' AND ";
 		} 
 		
 		$despIDs = rtrim($despIDs," AND ");
@@ -189,7 +182,7 @@
 			$sql = rtrim($sql, ' AND ');
 			$sql .= " GROUP BY h.docID";
 		}
-		//print $sql;
+		//print $sql;exit();
 		return $sql;
 	}
 	
@@ -218,10 +211,10 @@
 		$restr['tipo'] .= ')';
 		
 		if(count($tipos) > 1) {
-			$sql = "SELECT d.id FROM doc AS d WHERE ";
+			$sql = "SELECT d.id FROM doc AS d RIGHT JOIN data_historico AS h ON d.id = h.docID WHERE ";
 		} else {
 			$tab = $tipos[0]['tab'];
-			$sql = "SELECT d.id FROM doc AS d INNER JOIN $tab AS t ON t.id = d.tipoID WHERE ";
+			$sql = "SELECT d.id FROM doc AS d INNER JOIN $tab AS t ON t.id = d.tipoID RIGHT JOIN data_historico AS h ON d.id = h.docID WHERE ";
 			foreach ($restrTipos as $cName => $cValue) {
 				$valor = montaCampo($cName,'bus',$restrTipos);
 				//tratamento de campos compostos
@@ -244,8 +237,41 @@
 		}
 		$sql = rtrim($sql," AND ");
 		//adicionando condicoes de historico
-		if ($histBuscaSQL)
-			$sql .= " AND d.id IN ($histBuscaSQL) ";
+		if ($histBuscaSQL){
+			$sql_desp = '';
+			$sql_receb = '';
+			$sql_cont = '';
+			if((isset($histBuscaSQL['dataDespacho']) && count($histBuscaSQL['dataDespacho']) == 2) || (isset($histBuscaSQL['unDespacho']) && $histBuscaSQL['unDespacho'])) {
+				$sql_desp = "(h.tipo = 'saida' AND ";
+				if(isset($histBuscaSQL['dataDespacho']) && count($histBuscaSQL['dataDespacho']) == 2)
+					$sql_desp .= "h.data < ".$histBuscaSQL['dataDespacho'][1]." AND h.data > ".$histBuscaSQL['dataDespacho'][0]." AND ";
+				if(isset($histBuscaSQL['unDespacho']) && $histBuscaSQL['unDespacho'])
+					$sql_desp .= "h.unidade LIKE '%".str_replace(' ', '%', $histBuscaSQL['unDespacho'])."%'";
+				$sql_desp = rtrim($sql_desp, " AND "). ")";
+			}
+			if((isset($histBuscaSQL['dataReceb']) && count($histBuscaSQL['dataReceb']) == 2) || (isset($histBuscaSQL['unReceb']) && $histBuscaSQL['unReceb'])) {
+				$sql_receb = "(h.tipo = 'entrada' AND ";
+				if(isset($histBuscaSQL['dataReceb']) && count($histBuscaSQL['dataReceb']) == 2)
+					$sql_receb .= "h.data < ".$histBuscaSQL['dataReceb'][1]." AND h.data > ".$histBuscaSQL['dataReceb'][0]." AND ";
+				if(isset($histBuscaSQL['unReceb']) && $histBuscaSQL['unReceb'])
+					$sql_receb .= "h.unidade LIKE '%".str_replace(' ', '%', $histBuscaSQL['unReceb'])."%'";
+				$sql_receb = rtrim($sql_receb, " AND "). ")";
+			}
+			if(isset($histBuscaSQL['contDesp']) && $histBuscaSQL['contDesp']) {
+				$sql_cont = "( h.despacho LIKE '%".str_replace(' ', '%', $histBuscaSQL['contDesp'])."%') ";
+			}
+			if($sql_cont || $sql_desp || $sql_receb){
+				$sql .= " AND (";
+				if($sql_cont)
+					$sql .= $sql_cont." OR ";
+				if($sql_desp)
+					$sql .= $sql_desp." OR ";
+				if($sql_receb)
+					$sql .= $sql_receb;
+				$sql = rtrim($sql," OR ").")";
+			}
+			
+		}
 		
 		$genID = buscaGen($contGen,$restr['tipo'],$tipos);
 		if($genID)
@@ -302,6 +328,4 @@
 			return null;
 		}
 	}
-=======
->>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 ?>
