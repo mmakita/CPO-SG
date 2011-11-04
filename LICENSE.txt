@@ -1,0 +1,18 @@
+Este software esta licenciado sob:
+
+CC - Creative Commomns - Atribuição 3.0 Não Adaptada (BY)
+
+Resumindo faça tudo o que quiser com este trabalho desde que seja creditado ao dono Original
+
+Para o termo de licensa completo visite: http://creativecommons.org/licenses/by/3.0/legalcode
+
+===== LICENÇAS DE SOFTWARES TERCEIROS =====
+
+Este projeto utiliza software de terceiros:
+
+ADLAP
+mPDF
+CKEditor
+SimpleTest
+
+Os softwares descritos acima bem como suas respectivas licensas de uso nao sao de  responsabilidade da desenvolvedora do SiGPOD
