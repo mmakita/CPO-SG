@@ -4,6 +4,8 @@ class Recurso {
 	
 	private $id;
 	
+	public $empreendID;
+	
 	public $ObraID;
 	
 	public $montante;
@@ -12,12 +14,14 @@ class Recurso {
 	
 	public $prazo;
 	
-	public $tipo;
+	public $tipo;//pode ser c=credito ou d=debito
+	
+	private $bd;
 	
 	/**
 	 * Metodo construtor. Preenche com os dados de formulario enviado ou apenas cria um Rercurso em branco
 	 */
-	function __construct() {
+	function __construct($bd) {
 		//na epoca de construido, o recurso ainda nao tem ID
 		$this->id = 0;
 		//se ha dados de formulario enviado, le e constroi a classe com esses dados
@@ -38,6 +42,7 @@ class Recurso {
 		}
 		
 		$this->tipo = 'c';
+		$this->bd = $bd;
 	}
 	
 	/**
@@ -45,19 +50,18 @@ class Recurso {
 	 * @param int $id
 	 */
 	function load($id) {
-		global $bd;
-		
 		//seleciona a coluna do BD
-		$rec = $bd->query("SELECT obraID, montante, origem, prazo, tipo FROM obra_rec WHERE id={$id}");
+		$rec = $this->bd->query("SELECT obraID, montante, origem, prazo, tipo FROM obra_rec WHERE id={$id}");
 		//se houver exatamente 1 recurso encontrado
 		if(count($rec) == 1) {
 			//atribui os valores as variaveis
-			$this->id       = $id;
-			$this->ObraID   = $rec[0]['obraID'];
-			$this->montante = $rec[0]['montante'];
-			$this->origem   = $rec[0]['origem'];
-			$this->prazo    = $rec[0]['prazo'];
-			$this->tipo     = $rec[0]['tipo'];
+			$this->id         = $id;
+			$this->empreendID = $rec[0]['empreendID'];
+			$this->ObraID     = $rec[0]['obraID'];
+			$this->montante   = $rec[0]['montante'];
+			$this->origem     = $rec[0]['origem'];
+			$this->prazo      = $rec[0]['prazo'];
+			$this->tipo       = $rec[0]['tipo'];
 			//retorna sucesso
 			return array("success" => true, "errorNo" => 0, "errorFeedback" => "");
 		} else {
@@ -70,16 +74,14 @@ class Recurso {
 	 * Metodo para inserir recurso em uma determinada obra com um ID passado por parametro
 	 * @param int $obraID
 	 */
-	function insertRecursoInObra($obraID) {
+	function insertRecursoInEmpreend($empreendID) {
 		//se foi inserido um ID inválido
-		if(!$obraID) return array("success" => false, "errorNo" => 5, "errorFeedback" => "ID invalido");
+		if(!$empreendID) return array("success" => false, "errorNo" => 5, "errorFeedback" => "ID invalido");
 		//se foi inserido montante em branco
 		if(!$this->montante) return array("success" => false, "errorNo" => 5, "errorFeedback" => "Nao e possivel adicionar recurso igual a zero ou vazio");
-		
-		global $bd;
-		
+				
 		//insercao no BD
-		$r = $bd->query("INSERT INTO obra_rec (obraID,montante,origem,prazo,tipo) VALUES ($obraID,{$this->montante},'{$this->origem}',{$this->prazo},'{$this->tipo}')");
+		$r = $this->bd->query("INSERT INTO obra_rec (empreendID, obraID,montante,origem,prazo,tipo) VALUES (empreendID, 0,{$this->montante},'{$this->origem}',{$this->prazo},'{$this->tipo}')");
 		
 		//descoberta do id
 		//EH FALSO SE HA 2 RECURSOS IGUAIS! DIFERENCIACAO OU SEM ID??
@@ -102,9 +104,8 @@ class Recurso {
 		//se hao ha id para selecionar registro
 		if(!$this->id) return array("success" => false, "errorNo" => 5, "errorFeedback" => "ID invalido");
 		
-		global $bd;
 		//atualizacao do BD
-		$res = $bd->query("UPDATE obra_rec SET montante={$this->montante}, origem='{$this->origem}', prazo={$this->prazo} WHERE id={$this->id}");
+		$res = $this->bd->query("UPDATE obra_rec SET montante={$this->montante}, origem='{$this->origem}', prazo={$this->prazo}, obraID={$this->obraID} WHERE id={$this->id}");
 		
 		//retorno
 		if($res) {

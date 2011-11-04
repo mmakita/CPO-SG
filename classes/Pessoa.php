@@ -83,11 +83,7 @@ class Pessoa{
 	 * @desc inicia uma nova variavel com valores nulos
 	 */
 	public function __construct() {
-<<<<<<< HEAD
 		//session_start();
-=======
-		session_start();
->>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 		
 		$this->setNull();
 		//loga com os dados da sessao ou seta todas as variaveis = null
@@ -116,7 +112,6 @@ class Pessoa{
 		//vetor de dados do usuario
 		$user = null;
 		
-<<<<<<< HEAD
 		//se true, ignora autenticacao e prossegue com login (AD Down ou debug)
 		$AD_override = false; 
 		
@@ -188,49 +183,6 @@ class Pessoa{
 		
 		
 		
-=======
-		
-		try {
-			//inicia conexao com adLDAP
-			$adldap = new adLDAP();
-			//realiza autenticacao
-			if($adldap->authenticate($username, $senha)){
-				//verifica se o usuario existe no AD e pega os dados
-				$userdataAD = $adldap->user_info($username,array('displayname','samAccountName','sn','GivenName','userPrincipalName','telephoneNumber','mail','title','department','description','initials','AccountDisabled','enabled'));
-				//pega os dados salvos no BD
-				$userdataBD = $this->getUserData($username,$bd);
-				//atualiza os dados do usuario no BD
-				$this->updateUserData($userdataAD,$userdataBD,$bd);
-				
-				//pega os dados salvos no BD novamente para refletir qualquer mudanca
-				$userdataBD = $this->getUserData($username,$bd);
-				
-				//seta array de dados
-				if(isset($userdataBD[0])){
-					$user['username']  = $userdataBD[0]['username'];
-					$user['nome']      = $userdataBD[0]['nome'];
-					$user['sobrenome'] = $userdataBD[0]['sobrenome'];
-					$user['nomeCompl'] = $userdataBD[0]['nomeCompl'];
-					$user['email']     = $userdataBD[0]['email'];
-					$user['area']      = $userdataBD[0]['area'];
-					$user['cargo']     = $userdataBD[0]['cargo'];
-					$user['matricula'] = $userdataBD[0]['matr'];
-					$user['descr']     = $userdataBD[0]['descr'];
-					$user['id']        = $userdataBD[0]['id'];
-					$user['grupo']     = $userdataBD[0]['gid'];
-					$user['perm']      = $this->getPermission($user['grupo'],$bd);
-					$user['ativo']     = true;
-					$user['logado']    = true;
-				}
-			}
-		} catch (Exception $e) {
-			//se pegar excecao, loga no BD
-			doLog('ERROAD', 'ERRO AD: '. $e->getMessage(), $bd);
-			//mostra erro de falha de conexao com o BD
-			showError(13,'login.php');
-			exit();
-		}
->>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 		//se o usuario se logou com sucesso, loga e retorna true
 		if($user['logado']){
 			$_SESSION = $user;
@@ -370,29 +322,19 @@ class Pessoa{
 	 * @desc retorna array de permissoes para o usuario
 	 * @param int $gid
 	 */
-<<<<<<< HEAD
 	function getPermission($gid,$bd = null) {
 		if($bd == null) {
 			global $bd;
 		}
 		//seleciona as permissoes do grupo ao qual o usuario pertence
 		$res = $bd->query("SELECT id,G$gid FROM label_acao");
-=======
-	private function getPermission($gid,$bd) {
-		//seleciona as permissoes do grupo ao qual o usuario pertence
-		$res = $bd->query("SELECT G$gid FROM label_acao");
->>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 		//inicializa o vetor
 		$perm[0] = 0;
 		//se houver o grupo no BD
 		if(count($res)) {
 			foreach ($res as $r) {
 				//pega a permissao para a acao i
-<<<<<<< HEAD
 				$perm[$r['id']] = $r["G$gid"];
-=======
-				$perm[] = $r["G$gid"];
->>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 			}
 			return $perm;
 		}

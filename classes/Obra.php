@@ -1,5 +1,4 @@
 <?php
-<<<<<<< HEAD
 class Obra {
 	
 	private $id;
@@ -49,17 +48,18 @@ class Obra {
 	public $visivel;
 	
 	public $historico;
+	
+	private $bd;
 	/**
 	 * 
 	 */
-	function __construct() {
+	function __construct($bd) {
 		//construtor de classe. Inicia as variaveis
 		$this->id = 0;
 		$this->codigo = '';
 		$this->nome = '';
 		$this->tipo = '';
 		$this->caract = '';
-		$this->descricao = '';
 		$this->area = array('valor' => '', 'un' => '');
 		$this->amianto = '';
 		$this->ocupacao = '';
@@ -69,14 +69,13 @@ class Obra {
 		$this->responsavelProj = array("id" => "", "matr" => "", "username" => "", "gid" => "", "nome" => "", "sobrenome" => "", "nomeCompl" => "", "cargo" => "", "area" => "", "ramal" => "", "email" => "", "descr");
 		$this->responsavelObra = array("id" => "", "matr" => "", "username" => "", "gid" => "", "nome" => "", "sobrenome" => "", "nomeCompl" => "", "cargo" => "", "area" => "", "ramal" => "", "email" => "", "descr");
 		$this->estado = '';
-		$this->unOrg = '';
-		$this->solic = array('nome' => '', 'depto' => '', 'email' => '', 'ramal' => '');
 		$this->recursos = array();
 		$this->local = array('lat' => '', 'lng' => '') ;
 		$this->etapas = array();
 		$this->custo = null;
 		$this->desc_img = null;
 		$this->visivel = array("bool" => null, "text" => "N&atilde;o");
+		$this->bd = $bd;
 	}
 	
 	/**
@@ -89,8 +88,7 @@ class Obra {
 		if ($id <= 0) 
 			return array("success" => false, "errorNo" => 5, "errorFeedback" => "ID invalido");
 		
-		//resgat variavel global
-		global $bd;
+		$bd = $this->bd;
 		
 		//carrega registro com ID selecionado do BD
 		$result = $bd->query("SELECT * FROM obra_cad WHERE id=".$id);
@@ -124,12 +122,6 @@ class Obra {
 		else
 			$this->pavimentos['label'] = "Desconhecido";
 		
-		$this->descricao['valor'] = $result['descricao'];
-		if($result['descricao'] != '')
-			$this->descricao['label'] = $result['descricao'];
-		else
-			$this->descricao['label'] = "Nenhuma adicionada";
-		
 		//AREA
 		$this->area          = array('dimensao' => $result['dimensao'], 'un' => array('valor' => $result['dimensaoUn'], 'label' => ''));
 		if(!$this->area['dimensao']) {
@@ -144,11 +136,7 @@ class Obra {
 			}
 			$this->area['compl'] = $this->area['dimensao'] . ' ' . $this->area['un']['label'];
 		}
-		//SOLICITANTE
-		$this->solic['nome'] = $result['nomeSolic'];
-		$this->solic['depto']= $result['deptoSolic'];
-		$this->solic['email']= $result['emailSolic'];
-		$this->solic['ramal']= $result['ramalSolic'];
+		
 		
 		//CARACT
 		$this->caract['abrv']= $result['caract'];
@@ -219,7 +207,7 @@ class Obra {
 			$this->responsavelProj['nomeCompl'] = "Desconhecido.";
 		}
 		
-		//RESPONSAVEL PROJ
+		//RESPONSAVEL OBRA
 		if($result['responsavelObraID']) {
 			$resp = $bd->query("SELECT * FROM usuarios WHERE id = {$result['responsavelObraID']}");
 			$this->responsavelObra = $resp[0];
@@ -250,26 +238,13 @@ class Obra {
 		//carregamento do historico
 		if(!$basic)
 			$this->getHistorico();
-		
-		//conulta a unidade da obra
-		$unOrg = $bd->query("SELECT id,nome,sigla FROM unidades WHERE id='".$result['unOrg']."'");
-		
-		if (count($unOrg)){
-			$this->unOrg['compl'] = $unOrg[0]['id'].' - '.$unOrg[0]['nome'].' ('.$unOrg[0]['sigla'].')';
-			$this->unOrg['id']    = $unOrg[0]['id'];
-			$this->unOrg['nome']  = $unOrg[0]['nome'];
-			$this->unOrg['sigla'] = $unOrg[0]['sigla'];
-			
-		} else {
-			$this->unOrg = $result['unOrg'];
-		}
 	}
 	
 	/**
 	 * Salva os dados da obra no BD
 	 */
 	function save(){
-		global $bd;
+		$bd = $this->bd;
 		$dados = trataCadVars();
 
 		$this->calcula_campus($dados['latObra'],$dados['lngObra']);
@@ -310,23 +285,22 @@ class Obra {
 		
 		//cria a consulta SQL para a atualização de dados
 		$sql = "UPDATE obra_cad SET
-		nome          = '{$dados['nome']}',
-		descricao     = '{$dados['descricao']}',
-		tipo          = '{$dados['tipo']}',
-		caract        = '{$dados['caract']}',
-		lat           =  {$dados['latObra']},
-		lng           =  {$dados['lngObra']},
-		campus        = '{$dados['campus']}',
-		dimensao      =  {$dados['dimensao']},
-		dimensaoUn    = '{$dados['dimensaoUn']}',
-		responsavelProjID = {$dados['respProjID']},
-		responsavelObraID = {$dados['respObraID']},
-		ocupacao      = '{$dados['ocupacao']}',
-		amianto       =  {$dados['amianto']},
-		residuos      = '{$dados['residuos']}',
-		pavimentos    =  {$dados['pavimentos']},
-		visivel       =  {$dados['visivel']},
-		elevador      =  {$dados['elevador']}"
+		nome              = '{$dados['nome']}',
+		tipo              = '{$dados['tipo']}',
+		caract            = '{$dados['caract']}',
+		lat               =  {$dados['latObra']},
+		lng               =  {$dados['lngObra']},
+		campus            = '{$dados['campus']}',
+		dimensao          =  {$dados['dimensao']},
+		dimensaoUn        = '{$dados['dimensaoUn']}',
+		responsavelProjID =  {$dados['respProjID']},
+		responsavelObraID =  {$dados['respObraID']},
+		ocupacao          = '{$dados['ocupacao']}',
+		amianto           =  {$dados['amianto']},
+		residuos          = '{$dados['residuos']}',
+		pavimentos        =  {$dados['pavimentos']},
+		visivel           =  {$dados['visivel']},
+		elevador          =  {$dados['elevador']}"
 		. $arqDesc . "
 		WHERE id = {$this->get('id')}";		
 		
@@ -342,7 +316,7 @@ class Obra {
 	}
 	
 	function saveNew() {
-		global $bd;
+		$bd = $this->bd;
 		
 		//tratamento de variaveis
 		$d = trataCadVars();
@@ -371,7 +345,6 @@ class Obra {
 		$insert = $bd->query("INSERT INTO obra_cad (
 			nome,
 			cod,
-			descricao,
 			lat,
 			lng,
 			dimensao,
@@ -383,15 +356,9 @@ class Obra {
 			ocupacao,
 			residuos,
 			elevador,
-			unOrg,
-			nomeSolic,
-			deptoSolic,
-			ramalSolic,
-			emailSolic
 			) VALUES (
 			'{$d['nome']}',
 			'{$codObra}',
-			'{$d['descricao']}',
 			 {$d['latObra']},
 			 {$d['lngObra']},
 			 {$d['dimensao']},
@@ -403,11 +370,6 @@ class Obra {
 			'{$d['ocupacao']}',
 			'{$d['residuos']}',
 			 {$d['elevador']},
-			'{$d['unOrgSolic']}',
-			'{$d['nomeSolic']}',
-			'{$d['deptoSolic']}',
-			 {$d['ramalSolic']},
-			'{$d['emailSolic']}'
 			)");
 		
 		if(!$insert) return array("success" => false, "errorNo" => 2, "errorFeedback" => "Erro ao salvar dados no BD");
@@ -425,11 +387,6 @@ class Obra {
 		$this->ocupacao      = $d['ocupacao'];
 		$this->residuos      = $d['residuos'];
 		$this->elevador      = $d['elevador'];
-		$this->unOrg         = $d['unOrgSolic'];
-		$this->solic['nome'] = $d['nomeSolic'];
-		$this->solic['depto']= $d['deptoSolic'];
-		$this->solic['email']= $d['emailSolic'];
-		$this->solic['ramal']= $d['ramalSolic'];
 		$this->codigo		 = $codObra;		
 		
 		//recupera o ID da obra salva
@@ -445,13 +402,14 @@ class Obra {
 			
 		}
 		
-		if(isset($_POST['recursos']) && $_POST['recursos'] && isset($_POST['montanteRec']) && $_POST['montanteRec']){
+		//UPDATE: Recurso da tela de cadastro agora vai para o empreendimento
+		/*if(isset($_POST['recursos']) && $_POST['recursos'] && isset($_POST['montanteRec']) && $_POST['montanteRec']){
 			//adicao de recurso
 			$rec = new Recurso();
 			$insert = $rec->insertRecursoInObra($this->id);
 			if (!$insert['success']) return array("success" => false, "errorNo" => 2, "errorFeedback" => "Erro ao salvar dados no BD");
 			$this->getRecursos();
-		}
+		}*/
 		//cria a etapa padrao (Geral)
 		$etapa = new Etapa($this->id, 1);
 		$etapa->save();
@@ -517,7 +475,7 @@ class Obra {
 	 * Le todos os recursos adicionados para esta obra
 	 */
 	function getRecursos() {
-		global $bd;
+		$bd = $this->bd;
 		
 		//seleciona todos os IDs de obras referentes a esta obra
 		$recID = $bd->query("SELECT id FROM obra_rec WHERE obraID = $this->id");
@@ -541,7 +499,7 @@ class Obra {
 	 * Le todas as etapas adicionadas a esta obra
 	 */
 	function getEtapas() {
-		global $bd;
+		$bd = $this->bd;
 		
 		//seleciona IDs de todos as etapas relacionadas a esta obra
 		$etapasID = $bd->query("SELECT id FROM obra_etapa WHERE obraID=$this->id");
@@ -563,7 +521,7 @@ class Obra {
 	
 	
 	function getHistorico() {
-		global $bd;
+		$bd = $this->bd;
 		
 		$histID = $bd->query("SELECT id FROM obra_historico WHERE obraID=$this->id");
 		
@@ -656,79 +614,8 @@ class Obra {
 		if($histEntr->save())
 			$this->historico[] = $histEntr;
 	}
+	
 }
 
 
 ?>
-=======
-
-class Obra {
-	private $id;
-	private $cadastro;
-	private $recurso;
-	
-	/**
-	 * cria nova obra com os atrributos passados por parametro
-	 * @param array $attr
-	 */
-	public function __construct($id){
-		$this->id = $id;
-	}
-	
-	/**
-	 * Cria um novo cadastro de obra
-	 * @param array $attrVal
-	 */
-	public function newCadastro($attrVal){
-		if ($this->id != 0) return null;
-		
-		global $bd;
-		
-		$attr = array('nome','local_lat','local_lng','dimensao','pavimentos','tipo','ocupacao','residuos','elevador','fase');
-		
-		foreach ($attr as $a) {
-			if(isset($attrVal[$a]))
-				;
-			
-				
-		}
-		
-		$this->cadastro[$attr];
-	}
-	
-	/**
-	 * Le um cadastro de obra do BD
-	 */
-	public function readCadastro(){
-		if ($this->id == 0) return null;
-		
-	}
-	
-	/**
-	 * 
-	 * Enter description here ...
-	 * @param unknown_type $attr
-	 */
-	public function getAttr($attr) {
-		;
-	}
-	
-	/**
-	 * 
-	 * Enter description here ...
-	 * @param unknown_type $attr
-	 */
-	public function setAttr($attr) {
-		;
-	}
-	
-	/**
-	 * 
-	 * Enter description here ...
-	 * @param unknown_type $attr
-	 */
-	public function updateCadastro($attr){
-		;
-	}
-}
->>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
