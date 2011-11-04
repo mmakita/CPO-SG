@@ -80,11 +80,7 @@ class adLDAP {
     * 
     * @var array
     */
-<<<<<<< HEAD
     protected $_domain_controllers = array ("engenheiro.cpo.unicamp.br");
-=======
-    protected $_domain_controllers = array (/*"143.106.193.2",*/"143.106.56.116");
->>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 	
     /**
     * Optional account with higher privileges for searching
