@@ -11,10 +11,7 @@
 		<link rel="stylesheet" type="text/css" href="css/layout_mini.css" />
 		<script type="text/javascript" src="scripts/jquery.js"> </script>
 		<script type="text/javascript" src="scripts/commom.js"> </script>
-<<<<<<< HEAD
 		{$head}
-=======
->>>>>>> 4dd0e794cea62da21cb2ef318d6662dd305d5638
 		<title>{$title}</title>
 	</head>
 	<body>
