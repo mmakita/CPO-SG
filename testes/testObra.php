@@ -4,8 +4,6 @@ require_once '../includeAll.php';
 
 Mock::generate('BD');
 
-
-
 class TestObra extends UnitTestCase {
 	function setUp() {
 		includeModule('sgo');
